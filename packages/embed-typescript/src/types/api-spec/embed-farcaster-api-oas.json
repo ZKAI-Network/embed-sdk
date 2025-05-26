@@ -1,0 +1,1808 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "➡️ Farcaster Apis",
+    "description": "Collection of all farcaster apis",
+    "version": "2023-07-26T20:06:09.000Z"
+  },
+  "servers": [
+    {
+      "url": "https://api.mbd.xyz/v2/farcaster"
+    }
+  ],
+  "paths": {
+    "/casts/feed/for-you": {
+      "post": {
+        "tags": [
+          "Content Personalization"
+        ],
+        "summary": "/casts/feed/for-you",
+        "description": "## Recommend casts for a specific user\n\nThis API returns a list of recommended casts for a specific user (casts that a user is most likely to interact with).  \n\nThis API supports the `feed_id` parameter, a way to specify all filter options through the console without the need to do so in the API calls.  See our [guide on feed_id](https://docs.mbd.xyz/docs/feed-builder-feed_id) for more information. If the same parameters already specified in the `feed_id` are supplied in the API call, the values in saved in the `feed_id` will be overridden.\n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForYou"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "ForYou"
+      }
+    },
+    "/casts/feed/trending": {
+      "post": {
+        "tags": [
+          "Content Discovery"
+        ],
+        "summary": "/casts/feed/trending",
+        "description": "## Get currently trending casts\n\nThis API returns a list of trending casts on Farcaster.  Our models detect casts that are getting more attention before they become hot and popular.  \n\nThis API has 2 modes of operation:  1) `top_k` (impression) mode and 2) `paging` mode.  `top_k` mode is used if `top_k` is specified (and `page_size`, `page_number` parameters ignored), otherwise `paging` mode is used.\n\n1) In `top_k` mode, you specify a `top_k` along with an `impression_count`.  `impression_count` specifies the number of items in the returned results to be considered \"seen\" by the viewing user, and those items will be excluded in subsequent API calls.  If `impression_count` is 0, the same list is returned everytime.\n\n2) In `paging` mode, you can request for a specific range of items using a simple paging mechanism specified by `page_size` and `page_number`.  No impression information is taken into consideration when returning the items list.\n\nThis API supports the `feed_id` parameter, a way to specify all filter options through the console without the need to do so in the API calls.  See our [guide on feed_id](https://docs.mbd.xyz/docs/feed-builder-feed_id) for more information. If the same parameters already specified in the `feed_id` are supplied in the API call, the values in saved in the `feed_id` will be overridden.\n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/trendingNow"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "trendingNow"
+      }
+    },
+    "/casts/feed/popular": {
+      "post": {
+        "tags": [
+          "Content Discovery"
+        ],
+        "summary": "/casts/feed/popular",
+        "description": "## Get a list of popular casts \n\nThis API returns a list of popular casts on Farcaster.  \n\n\nThis API has 2 modes of operation:  1) `top_k` (impression) mode and 2) `paging` mode.  `top_k` mode is used if `top_k` is specified (and `page_size`, `page_number` parameters ignored), otherwise `paging` mode is used.\n\n1) In `top_k` mode, you specify a `top_k` along with an `impression_count`.  `impression_count` specifies the number of items in the returned results to be considered \"seen\" by the viewing user, and those items will be excluded in subsequent API calls.  If `impression_count` is 0, the same list is returned everytime.\n\n2) In `paging` mode, you can request for a specific range of items using a simple paging mechanism specified by `page_size` and `page_number`.  No impression information is taken into consideration when returning the items list.\n\nThis API supports the `feed_id` parameter, a way to specify all filter options through the console without the need to do so in the API calls.  See our [guide on feed_id](https://docs.mbd.xyz/docs/feed-builder-feed_id) for more information.  If the same parameters already specified in the `feed_id` are supplied in the API call, the values in saved in the `feed_id` will be overridden.\n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/popular"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "trendingNow"
+      }
+    },
+    "/casts/search/semantic": {
+      "post": {
+        "tags": [
+          "Content Discovery"
+        ],
+        "summary": "/casts/search/semantic",
+        "description": "## Semantic search on casts\n\nThis API returns a list of casts on Farcaster based on the input semantic query\n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemanticSearch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "Search Parameters"
+      }
+    },
+    "/casts/labels/for-items": {
+      "post": {
+        "tags": [
+          "Content Moderation"
+        ],
+        "summary": "/casts/labels/for-items",
+        "description": "## Get AI labels for casts\n\nThis API returns AI-generated labels for casts. (Please note that we support AI labels only for English content at the moment)\n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabelsForItems"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "Search Parameters"
+      }
+    },
+    "/casts/labels/for-text": {
+      "post": {
+        "tags": [
+          "Content Moderation"
+        ],
+        "summary": "/casts/labels/for-text",
+        "description": "## Get AI labels for text input\n\nThis API takes a list of text inputs and returns AI-generated labels for the text.  (Please note that we support AI labels only for English content at the moment)\n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabelsForText"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "LabelsForText"
+      }
+    },
+    "/casts/labels/top-items": {
+      "post": {
+        "tags": [
+          "Content Moderation"
+        ],
+        "summary": "/casts/labels/top-items",
+        "description": "## Get a list of items with the highest or lowest score of an AI label\n\nThis API takes a AI label name as input and returns a list of items with either the highest or lowest scores for that label (Please note that we support AI labels only for English content at the moment)\n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabelsTopItems"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "LabelsTopItems"
+      }
+    },
+    "/users/feed/similar": {
+      "post": {
+        "tags": [
+          "User Discovery"
+        ],
+        "summary": "/users/feed/similar",
+        "description": "## Get similar users\n\nThis API returns a list of similar users for an input user_id (fid)\n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsersFeedSimilar"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "UsersFeedSimilar"
+      }
+    },
+    "/users/labels/for-users": {
+      "post": {
+        "tags": [
+          "User Moderation"
+        ],
+        "summary": "/users/labels/for-users",
+        "description": "## Get AI labels for users\n\nThis API returns AI-generated labels for users. \n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabelsForUsers"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "LabelForUsers"
+      }
+    },
+    "/users/labels/top-users": {
+      "post": {
+        "tags": [
+          "User Moderation"
+        ],
+        "summary": "/users/labels/top-users",
+        "description": "## Get a list of users with the highest or lowest score of an AI label\n\nThis API takes a AI label name as input and returns a list of users with either the highest or lowest scores for that label. \n\nTo provide more control for exploration, you can specify the minimum activity count required for the user to be considered, and also a `ratio` range and a `confidence` range to be considered.  ratio is the percentage of the user's activity related ot the specified label, and confidence is the AI model confidence score (returned as `score` in the API results)\n\nThe API returns the `user_id` (fid), `score` (for the label), `count` (number of activities related to the label), and `ratio` (percentage of activities related to the label)\n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabelsTopUsers"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "LabelsTopUsers"
+      }
+    },
+    "/users/feed/for-channel": {
+      "post": {
+        "tags": [
+          "User Segmentation"
+        ],
+        "summary": "/users/feed/for-channel (sample)",
+        "description": "## Get users for a channel (sample based on older data - contact us if you would like real-time support for this feature)\n\nThis API returns a list of users based on a channel and event_type.\n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsersFeedForChannel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "UsersFeedForChannel"
+      }
+    },
+    "/users/feed/for-item": {
+      "post": {
+        "tags": [
+          "User Segmentation"
+        ],
+        "summary": "/users/feed//for-item (sample)",
+        "description": "## Get users for an item (sample based on older data - contact us if you would like real-time support for this feature)\n\nThis API returns a list of users based on an item_id and event_type.\n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsersFeedForItem"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "UsersFeedForItem"
+      }
+    },
+    "/users/feed/for-topic": {
+      "post": {
+        "tags": [
+          "User Segmentation"
+        ],
+        "summary": "/users/feed/for-topic (sample)",
+        "description": "## Get users for a topic (sample based on older data - contact us if you would like real-time support for this feature)\n\nThis API returns a list of users based on an topic and event_type.\n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsersFeedForTopic"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "UsersFeedForTopic"
+      }
+    },
+    "/users/search/semantic": {
+      "post": {
+        "tags": [
+          "User Discovery"
+        ],
+        "summary": "/users/search/semantic",
+        "description": "## Search for users based on text\n\nThis API takes text as input and searches for users that are \"similar\" to the content of the text\n",
+        "parameters": [
+          {
+            "name": "HTTP-Referer",
+            "in": "header",
+            "description": "(optional) your site's URL, for including your app on mbd.xyz rankings",
+            "schema": {
+              "type": "string",
+              "default": "https://docs.mbd.xyz/"
+            }
+          },
+          {
+            "name": "X-Title",
+            "in": "header",
+            "description": "(optional) name showing in rankings on mbd.xyz",
+            "schema": {
+              "type": "string",
+              "default": "mbd_docs"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsersSemanticSearch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empty"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "UsersSemanticSearch"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Empty": {
+        "title": "Empty Schema",
+        "type": "object"
+      },
+      "ForYou": {
+        "title": "FORYOU",
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "fid of user to get recommendations for\n\nNOTE: \n- wallet_address is ignored if user_id is specified\n- At least one of user_id and wallet_address is required\n",
+            "example": "1"
+          },
+          "wallet_address": {
+            "type": "string",
+            "description": "wallet address (verified on Farcaster) of user to get recommendations for\n\n          \nNOTE: \n- wallet_address is ignored if user_id is specified\n- At least one of user_id and wallet_address is required\n",
+            "example": 1.6628640849268445e+48
+          },
+          "feed_id": {
+            "type": "string",
+            "description": "if you have configured and saved a feed_id in console [Feed Builder](https://console.mbd.xyz/feed-builder), you can pass a feed_id as a parameter here. A feed ID represents a list of pre-configured parameters for calling this API.  See our [guide on feed_id](https://docs.mbd.xyz/docs/feed-builder-feed_id) for more information\n",
+            "example": "feed_390"
+          },
+          "top_k": {
+            "type": "integer",
+            "description": "maximum number of casts to return (max 500)",
+            "example": 25
+          },
+          "impression_count": {
+            "type": "integer",
+            "description": "the number of items returned from this API to be considered \"seen\" by the user (specified by user_id or wallet_address). \"Seen\" items will not be returned in subsequent API calls for the same user. \n\nNOTE:  This parameter is to be used alongside top_k (ignored if top_k is not specified)\n",
+            "example": 10
+          },
+          "scoring": {
+            "$ref": "#/components/schemas/ScoringParam"
+          },
+          "show_interacted_items": {
+            "type": "boolean",
+            "description": "items the current user_id has already interacted with are removed from the feed by default.  Set this to true to keep them in the feed",
+            "example": true
+          },
+          "remove_user_posts_from_feed": {
+            "type": "boolean",
+            "description": "whether or not to remove posts that are created by the current viewing user (set to true to prevent a user from seeing his or or own post)",
+            "example": true
+          },
+          "return_only_posts_with_social_proof": {
+            "type": "boolean",
+            "description": "whether or not limit the feed to only posts that people followed by the viewing user have interacted with - this can help improve the overall perceived relevancy of the feed to the user",
+            "example": true
+          },
+          "feed_diversity_config": {
+            "$ref": "#/components/schemas/FeedDiversityConfigParam"
+          },
+          "return_metadata": {
+            "type": "boolean",
+            "description": "whether to include metadata (including AI labels and data to help rendering the casts) in results",
+            "example": true
+          },
+          "filters": {
+            "$ref": "#/components/schemas/FiltersParam"
+          },
+          "promotion_filters": {
+            "$ref": "#/components/schemas/PromotionFiltersParam"
+          },
+          "fallback_feeds": {
+            "$ref": "#/components/schemas/FallbackFeedsParam"
+          }
+        }
+      },
+      "ForYouReranked": {
+        "title": "ForYouReranked",
+        "required": [
+          "items_list",
+          "user_id"
+        ],
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "fid of user to rerank the cast list for",
+            "example": "1"
+          },
+          "items_list": {
+            "type": "array",
+            "description": "cast list to be reranked for user (specified in the `user_id` parameter)\n\nThe maximum number of items in `items_list` is 500\n",
+            "example": [
+              2.9930606200959772e+47,
+              1.2389312802716048e+48,
+              7.1654573959651684e+47,
+              6.000671164745401e+47,
+              1.4122331300750504e+47,
+              1.7640633300417418e+47,
+              1.3183326525240524e+48,
+              2.632495707777599e+47,
+              1.5531039405586885e+47,
+              2.315025236642337e+46,
+              4.186884534183455e+47,
+              7.72770100044903e+47,
+              1.0231492869863572e+48,
+              1.3691467239687111e+48,
+              6.088210438503275e+47,
+              2.5659485658264052e+47,
+              9.396910799514946e+46,
+              1.360588644210125e+48,
+              1.635304049304235e+47,
+              1.3905831917600424e+48,
+              6.023635122568338e+47,
+              4.467391744066756e+47
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "scoring": {
+            "type": "string",
+            "description": "the type of interaction the recommendation scoring should be based on  \n\nAvailable values:\n- `all`\n",
+            "example": "all"
+          },
+          "return_metadata": {
+            "type": "boolean",
+            "description": "whether to include metadata (embed items, processed text, author fid) in results",
+            "example": true
+          },
+          "filters": {
+            "$ref": "#/components/schemas/FiltersParam"
+          }
+        }
+      },
+      "Similar": {
+        "title": "Similar",
+        "required": [
+          "item_id"
+        ],
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "description": "the ID of the cast to retrieve a list of similar casts for",
+            "example": 9.666793732686318e+44
+          },
+          "top_k": {
+            "type": "integer",
+            "description": "maximum number of casts to return (max 50 if return_ai_labels or return_metatdata is set to true)",
+            "example": 25
+          },
+          "return_metadata": {
+            "type": "boolean",
+            "description": "whether to include metadata (embed items, processed text, author fid) in results",
+            "example": true
+          },
+          "filters": {
+            "$ref": "#/components/schemas/FiltersParam"
+          }
+        }
+      },
+      "trendingNow": {
+        "title": "Trending",
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "fid of user viewing the feed\n \n\nIn `top_k` mode, if a non-zero `impression_count` is specified, the API treats the top `impression_count` items returned in this API call as seen by this user, and will not return the same items in the next API call.\n\nNOTE: \n- wallet_address is ignored if user_id is specified\n",
+            "example": "1"
+          },
+          "wallet_address": {
+            "type": "string",
+            "description": "wallet address (verified on Farcaster) of user viewing the feed\n\nIn `top_k` mode, if a non-zero `impression_count` is specified, the API treats the top `impression_count` items returned in this API call as seen by this user, and will not return the same items in the next API call.\n\n          \nNOTE: \n- wallet_address is ignored if user_id is specified\n",
+            "example": 1.6628640849268445e+48
+          },
+          "page_size": {
+            "type": "integer",
+            "description": "pagination - number of items to return at a time (maximum page size is 1000)",
+            "example": 25
+          },
+          "page_number": {
+            "type": "integer",
+            "description": "pagination - based on the page_size, return the set of items corresponding to the page_number",
+            "example": 2
+          },
+          "top_k": {
+            "type": "integer",
+            "description": "maximum number of casts to return (max 1000)",
+            "example": 25
+          },
+          "feed_id": {
+            "type": "string",
+            "description": "if you have configured and saved a feed_id in console [Feed Builder](https://console.mbd.xyz/feed-builder), you can pass a feed_id as a parameter here. A feed ID represents a list of pre-configured parameters for calling this API.  See our [guide on feed_id](https://docs.mbd.xyz/docs/feed-builder-feed_id) for more information\n",
+            "example": "feed_388"
+          },
+          "impression_count": {
+            "type": "integer",
+            "description": "the number of items returned from this API to be considered \"seen\" by the user (specified by user_id or wallet_address). \"Seen\" items will not be returned in subsequent API calls for the same user. \n\nNOTE:  This parameter is to be used alongside top_k (ignored if top_k is not specified)\n",
+            "example": 10
+          },
+          "show_interacted_items": {
+            "type": "boolean",
+            "description": "items the current user_id has already interacted with are removed from the feed by default.  Set this to true to keep them in the feed",
+            "example": true
+          },
+          "remove_user_posts_from_feed": {
+            "type": "boolean",
+            "description": "whether or not to remove posts that are created by the current viewing user (set to true to prevent a user from seeing his or or own post)",
+            "example": true
+          },
+          "return_only_posts_with_social_proof": {
+            "type": "boolean",
+            "description": "whether or not limit the feed to only posts that people followed by the viewing user have interacted with - this can help improve the overall perceived relevancy of the feed to the user",
+            "example": true
+          },
+          "feed_diversity_config": {
+            "$ref": "#/components/schemas/FeedDiversityConfigParam"
+          },
+          "return_metadata": {
+            "type": "boolean",
+            "description": "whether to include metadata (including AI labels and data to help rendering the casts) in results",
+            "example": true
+          },
+          "filters": {
+            "$ref": "#/components/schemas/FiltersParam"
+          },
+          "promotion_filters": {
+            "$ref": "#/components/schemas/PromotionFiltersParam"
+          },
+          "fallback_feeds": {
+            "$ref": "#/components/schemas/FallbackFeedsParam"
+          }
+        }
+      },
+      "popular": {
+        "title": "Popular",
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "fid of user viewing the feed\n \n\nIn `top_k` mode, if a non-zero `impression_count` is specified, the API treats the top `impression_count` items returned in this API call as seen by this user, and will not return the same items in the next API call.\n\nNOTE: \n- wallet_address is ignored if user_id is specified\n",
+            "example": "1"
+          },
+          "wallet_address": {
+            "type": "string",
+            "description": "wallet address (verified on Farcaster) of user viewing the feed\n\nIn `top_k` mode, if a non-zero `impression_count` is specified, the API treats the top `impression_count` items returned in this API call as seen by this user, and will not return the same items in the next API call.\n\n          \nNOTE: \n- wallet_address is ignored if user_id is specified\n",
+            "example": 1.6628640849268445e+48
+          },
+          "scoring": {
+            "type": "string",
+            "description": "the type of trending recommendation to use - ie to return items that are trending in the latest 1 day period\n\nAvailable values:\n- `1day`\n",
+            "example": "1day"
+          },
+          "page_size": {
+            "type": "integer",
+            "description": "pagination - number of items to return at a time (maximum page size is 1000)",
+            "example": 25
+          },
+          "page_number": {
+            "type": "integer",
+            "description": "pagination - based on the page_size, return the set of items corresponding to the page_number",
+            "example": 2
+          },
+          "top_k": {
+            "type": "integer",
+            "description": "maximum number of casts to return (max 1000)",
+            "example": 25
+          },
+          "feed_id": {
+            "type": "string",
+            "description": "if you have configured and saved a feed_id in console [Feed Builder](https://console.mbd.xyz/feed-builder), you can pass a feed_id as a parameter here. A feed ID represents a list of pre-configured parameters for calling this API.  See our [guide on feed_id](https://docs.mbd.xyz/docs/feed-builder-feed_id) for more information\n",
+            "example": "feed_2"
+          },
+          "impression_count": {
+            "type": "integer",
+            "description": "the number of items returned from this API to be considered \"seen\" by the user (specified by user_id or wallet_address). \"Seen\" items will not be returned in subsequent API calls for the same user. \n\nNOTE:  This parameter is to be used alongside top_k (ignored if top_k is not specified)\n",
+            "example": 10
+          },
+          "show_interacted_items": {
+            "type": "boolean",
+            "description": "items the current user_id has already interacted with are removed from the feed by default.  Set this to true to keep them in the feed",
+            "example": true
+          },
+          "return_metadata": {
+            "type": "boolean",
+            "description": "whether to include metadata (embed items, processed text, author fid) in results",
+            "example": true
+          },
+          "filters": {
+            "$ref": "#/components/schemas/FiltersParam"
+          },
+          "promotion_filters": {
+            "$ref": "#/components/schemas/PromotionFiltersParam"
+          }
+        }
+      },
+      "SemanticSearch": {
+        "title": "SemanticSearch",
+        "required": [
+          "query"
+        ],
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "a description of what to search for",
+            "example": "What is tokenomics"
+          },
+          "top_k": {
+            "type": "integer",
+            "description": "maximum number of casts to return (default 10, max 100)",
+            "example": 25
+          },
+          "return_ai_labels": {
+            "type": "boolean",
+            "description": "whether to include AI labels in search results (note that only we officially only support English content for AI labels at the moment)",
+            "example": true
+          },
+          "return_metadata": {
+            "type": "boolean",
+            "description": "whether to include metadata (embed items, processed text) in results",
+            "example": true
+          },
+          "filters": {
+            "type": "object",
+            "properties": {
+              "start_timestamp": {
+                "type": "string",
+                "description": "return only casts after this start_timestamp, specified as Epoch time (Unix timestamp)",
+                "example": "1577836800"
+              },
+              "end_timestamp": {
+                "type": "string",
+                "description": "return only casts before this end_timestamp, specified as Epoch time (Unix timestamp)",
+                "example": "1798675200"
+              },
+              "ai_labels": {
+                "type": "array",
+                "description": "return only casts that have these AI labels \n",
+                "example": [
+                  "news_social_concern",
+                  "joy"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "author_id": {
+                "type": "string",
+                "description": "fid of the author of the cast",
+                "example": "134"
+              },
+              "channels": {
+                "type": "array",
+                "description": "return only casts in specific channels, specified by the channel url (root_parent_url)",
+                "example": [
+                  "https://farcaster.group/tokyo",
+                  "chain://eip155:1/erc721:0xdf3abf79aedcc085e9a41a569964e9fb53f33728"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "frames_only": {
+                "type": "boolean",
+                "description": "whether to limit search to only frames",
+                "example": false
+              },
+              "embed_domains": {
+                "type": "array",
+                "description": "return only casts with specific domains embedded",
+                "example": [
+                  "https://paragraph.xyz",
+                  "https://mirror.xyz"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "filtering options to be applied to the search"
+          }
+        }
+      },
+      "LabelsForItems": {
+        "title": "LabelsForItems",
+        "required": [
+          "items_list",
+          "label_category"
+        ],
+        "type": "object",
+        "properties": {
+          "items_list": {
+            "type": "array",
+            "description": "list of casts to retrieve labels for",
+            "example": [
+              1.453898179855201e+48,
+              7.758923629285368e+47
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "label_category": {
+            "type": "string",
+            "description": "the category of labels to retrieve.\n\nAvailable values for label_category: `topics`, `sentiment`, `emotion`, `moderation`, `all`\n- `topics` - include the following labels\n\n  - `arts_culture`\n \n   - `business_entrepreneurs`\n   \n   - `celebrity_pop_culture`\n   \n   - `diaries_daily_life`\n   \n   - `family`\n   \n   - `fashion_style`\n   \n   - `film_tv_video`\n   \n   - `fitness_health`\n   \n   - `food_dining`\n   \n   - `gaming`\n   \n   - `learning_educational`\n   \n   - `music`\n   \n   - `news_social_concern`\n   \n   - `other_hobbies`\n   \n   - `relationships`\n   \n   - `science_technology`\n   \n   - `sports`\n   \n   - `travel_adventure`\n   \n   - `youth_student_life`\n\n- `sentiment` - include the following labels\n \n   - `positive`\n   \n   - `neutral`\n   \n   - `negative`            \n\n- `emotion` - include the following labels\n\n   - `anger`\n   \n   - `anticipation`\n   \n   - `disgust`\n   \n   - `fear`\n   \n   - `joy`\n   \n   - `love`\n   \n   - `optimism`\n   \n   - `pessimism`\n   \n   - `sadness`\n   \n   - `surprise`\n   \n   - `trust`            \n\n- `moderation` - include the following labels\n \n   - `llm_generated`\n   \n   - `spam`\n   \n   - `sexual`\n   \n   - `hate`\n   \n   - `violence`\n   \n   - `harassment`\n   \n   - `self_harm`\n   \n   - `sexual_minors`\n   \n   - `hate_threatening`\n   \n   - `violence_graphic`\n\n- `all` - include all labels above\n",
+            "example": "moderation"
+          }
+        }
+      },
+      "LabelsForText": {
+        "title": "LabelsForText",
+        "required": [
+          "label_category",
+          "text_inputs"
+        ],
+        "type": "object",
+        "properties": {
+          "text_inputs": {
+            "type": "array",
+            "description": "list of text to get labels for",
+            "example": [
+              "Such a beautiful day!",
+              "That government is best which governs least"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "label_category": {
+            "type": "string",
+            "description": "the category of labels to retrieve.\n\nAvailable values for label_category: `topics`, `sentiment`, `emotion`, `moderation`\n- `topics` - include the following labels\n\n  - `arts_culture`\n \n   - `business_entrepreneurs`\n   \n   - `celebrity_pop_culture`\n   \n   - `diaries_daily_life`\n   \n   - `family`\n   \n   - `fashion_style`\n   \n   - `film_tv_video`\n   \n   - `fitness_health`\n   \n   - `food_dining`\n   \n   - `gaming`\n   \n   - `learning_educational`\n   \n   - `music`\n   \n   - `news_social_concern`\n   \n   - `other_hobbies`\n   \n   - `relationships`\n   \n   - `science_technology`\n   \n   - `sports`\n   \n   - `travel_adventure`\n   \n   - `youth_student_life`\n\n- `sentiment` - include the following labels\n \n   - `positive`\n   \n   - `neutral`\n   \n   - `negative`            \n\n- `emotion` - include the following labels\n\n   - `anger`\n   \n   - `anticipation`\n   \n   - `disgust`\n   \n   - `fear`\n   \n   - `joy`\n   \n   - `love`\n   \n   - `optimism`\n   \n   - `pessimism`\n   \n   - `sadness`\n   \n   - `surprise`\n   \n   - `trust`            \n\n- `moderation` - include the following labels\n \n   - `llm_generated`\n   \n   - `spam`\n   \n   - `sexual`\n   \n   - `hate`\n   \n   - `violence`\n   \n   - `harassment`\n   \n   - `self_harm`\n   \n   - `sexual_minors`\n   \n   - `hate_threatening`\n   \n   - `violence_graphic`\n",
+            "example": "topics"
+          }
+        }
+      },
+      "LabelsTopItems": {
+        "title": "LabelsTopItem",
+        "required": [
+          "label"
+        ],
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "the label to retrieve top scored casts for\n\n\nAvailable values:\n\n\nLabels in `topics` category\n\n - `arts_culture`\n \n - `business_entrepreneurs`\n \n - `celebrity_pop_culture`\n \n - `diaries_daily_life`\n \n - `family`\n \n - `fashion_style`\n \n - `film_tv_video`\n \n - `fitness_health`\n \n - `food_dining`\n \n - `gaming`\n \n - `learning_educational`\n \n - `music`\n \n - `news_social_concern`\n \n - `other_hobbies`\n \n - `relationships`\n \n - `science_technology`\n \n - `sports`\n \n - `travel_adventure`\n \n - `youth_student_life`\n \nLabels in `sentiment` category\n\n - `positive`\n \n - `neutral`\n \n - `negative`\n\nLabels in `emotion` category\n \n - `anger`\n \n - `anticipation`\n \n - `disgust`\n \n - `fear`\n \n - `joy`\n \n - `love`\n \n - `optimism`\n \n - `pessimism`\n \n - `sadness`\n \n - `surprise`\n \n - `trust`\n\nLabels in `moderation` category\n \n - `llm_generated`\n \n - `spam`\n \n - `sexual`\n \n - `hate`\n \n - `violence`\n \n - `harassment`\n \n - `self_harm`\n \n - `sexual_minors`\n \n - `hate_threatening`\n \n - `violence_graphic`\n",
+            "example": "joy"
+          },
+          "top_k": {
+            "type": "number",
+            "description": "maximum number of casts to return (default 100, max 1000)",
+            "example": 100
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": "whether to reverse the search, ie retrieve the lowest scored items (default false)",
+            "example": false
+          },
+          "filters": {
+            "type": "object",
+            "properties": {
+              "channels": {
+                "type": "array",
+                "description": "return only casts that belong to these channels, specified by channel urls (root_parent_url)\n",
+                "example": [
+                  "https://farcaster.group/founders",
+                  "https://warpcast.com/~/channel/reneecampbell",
+                  "https://warpcast.com/~/channel/fumblingdaily"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "author_id": {
+                "type": "string",
+                "description": "return only casts created by author with specified fid \n",
+                "example": ""
+              }
+            },
+            "description": "filtering options to be applied to the feed"
+          }
+        }
+      },
+      "LabelsForUsers": {
+        "title": "LabelsForUsers",
+        "required": [
+          "label_category",
+          "users_list"
+        ],
+        "type": "object",
+        "properties": {
+          "users_list": {
+            "type": "array",
+            "description": "list IDs of users to retrieve labels for",
+            "example": [
+              "1214",
+              "5650"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "label_category": {
+            "type": "string",
+            "description": "the category of labels to retrieve.\n\nAvailable values for label_category: `topics`, `sentiment`, `emotion`, `moderation`, `all`\n- `topics` - include the following labels\n\n  - `arts_culture`\n \n   - `business_entrepreneurs`\n   \n   - `celebrity_pop_culture`\n   \n   - `diaries_daily_life`\n   \n   - `family`\n   \n   - `fashion_style`\n   \n   - `film_tv_video`\n   \n   - `fitness_health`\n   \n   - `food_dining`\n   \n   - `gaming`\n   \n   - `learning_educational`\n   \n   - `music`\n   \n   - `news_social_concern`\n   \n   - `other_hobbies`\n   \n   - `relationships`\n   \n   - `science_technology`\n   \n   - `sports`\n   \n   - `travel_adventure`\n   \n   - `youth_student_life`\n\n- `sentiment` - include the following labels\n \n   - `positive`\n   \n   - `neutral`\n   \n   - `negative`            \n\n- `emotion` - include the following labels\n\n   - `anger`\n   \n   - `anticipation`\n   \n   - `disgust`\n   \n   - `fear`\n   \n   - `joy`\n   \n   - `love`\n   \n   - `optimism`\n   \n   - `pessimism`\n   \n   - `sadness`\n   \n   - `surprise`\n   \n   - `trust`            \n\n- `moderation` - include the following labels\n \n   - `llm_generated`\n   \n   - `spam`\n   \n   - `sexual`\n   \n   - `hate`\n   \n   - `violence`\n   \n   - `harassment`\n   \n   - `self_harm`\n   \n   - `sexual_minors`\n   \n   - `hate_threatening`\n   \n   - `violence_graphic`\n\n- `all` - include all labels above\n",
+            "example": "moderation"
+          }
+        }
+      },
+      "LabelsTopUsers": {
+        "title": "LabelsTopUsers",
+        "required": [
+          "label"
+        ],
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "the label to retrieve top scored users for\n\n\nAvailable values:\n\n\nLabels in `topics` category\n\n - `arts_culture`\n \n - `business_entrepreneurs`\n \n - `celebrity_pop_culture`\n \n - `diaries_daily_life`\n \n - `family`\n \n - `fashion_style`\n \n - `film_tv_video`\n \n - `fitness_health`\n \n - `food_dining`\n \n - `gaming`\n \n - `learning_educational`\n \n - `music`\n \n - `news_social_concern`\n \n - `other_hobbies`\n \n - `relationships`\n \n - `science_technology`\n \n - `sports`\n \n - `travel_adventure`\n \n - `youth_student_life`\n \nLabels in `sentiment` category\n\n - `positive`\n \n - `neutral`\n \n - `negative`\n\nLabels in `emotion` category\n \n - `anger`\n \n - `anticipation`\n \n - `disgust`\n \n - `fear`\n \n - `joy`\n \n - `love`\n \n - `optimism`\n \n - `pessimism`\n \n - `sadness`\n \n - `surprise`\n \n - `trust`\n\nLabels in `moderation` category\n \n - `llm_generated`\n \n - `spam`\n \n - `sexual`\n \n - `hate`\n \n - `violence`\n \n - `harassment`\n \n - `self_harm`\n \n - `sexual_minors`\n \n - `hate_threatening`\n \n - `violence_graphic`\n\n     \n",
+            "example": "joy"
+          },
+          "top_k": {
+            "type": "number",
+            "description": "maximum number of users to return (default 100, max 1000)",
+            "example": 100
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": "whether to reverse the search, ie retrieve the lowest scored items (default false)",
+            "example": false
+          },
+          "scoring": {
+            "type": "string",
+            "description": "the type of activity the scoring should be based on  \n\nAvailable values:\n\n  - `post`        \n\n  - `like`        \n\n  - `recast`        \n\n  - `reply`        \n\n  - `all`    \n  \n",
+            "example": "all"
+          },
+          "minimum_activity_count": {
+            "type": "number",
+            "description": "the minimum number of activity count required for the user to be included in the results (default 10)",
+            "example": 10
+          },
+          "ratio_min": {
+            "type": "number",
+            "description": "the minimum ratio of activity related to the specified label (must be a value between 0 and 1 - default 0.75)",
+            "example": 0.75
+          },
+          "conf_min": {
+            "type": "number",
+            "description": "the minimum AI model confidence score for the specified label (must be a value between 0 and 1 - default 0.6)",
+            "example": 0.6
+          }
+        }
+      },
+      "UsersFeedSimilar": {
+        "title": "UsersFeedSimilar",
+        "required": [
+          "user_id"
+        ],
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "a user_id (fid) to search similar users",
+            "example": "9082"
+          },
+          "top_k": {
+            "type": "number",
+            "description": "maximum number of users to return",
+            "example": 25
+          }
+        }
+      },
+      "UsersSemanticSearch": {
+        "title": "UsersSemanticSearch",
+        "required": [
+          "query"
+        ],
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "a query prompt about what to search",
+            "example": "What is tokenomics"
+          },
+          "top_k": {
+            "type": "number",
+            "description": "maximum number of users to return",
+            "example": 25
+          }
+        }
+      },
+      "UsersFeedForChannel": {
+        "title": "UsersFeedForChannel",
+        "required": [
+          "channel",
+          "event_type"
+        ],
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "description": "channel url for fetching users feed\n\n\nYou can get farcaster channels list from [here](https://api.warpcast.com/v2/all-channels).\n",
+            "example": "https://warpcast.com/~/channel/peru"
+          },
+          "event_type": {
+            "type": "string",
+            "description": "event_type for fetching users feed\n\n\nAvailable values:\n - `like`\n \n - `share`\n \n - `comment`\n \n - `all`\n",
+            "example": "all"
+          }
+        }
+      },
+      "UsersFeedForItem": {
+        "title": "UsersFeedForItem",
+        "required": [
+          "event_type",
+          "item_id"
+        ],
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "description": "item_id for fetching users feed",
+            "example": 7.151504160111162e+45
+          },
+          "event_type": {
+            "type": "string",
+            "description": "event_type for fetching users feed\n\n\nAvailable values:\n - `like`\n \n - `share`\n \n - `comment`\n \n - `all`\n",
+            "example": "all"
+          }
+        }
+      },
+      "UsersFeedForTopic": {
+        "title": "UsersFeedForTopic",
+        "required": [
+          "topic"
+        ],
+        "type": "object",
+        "properties": {
+          "topic": {
+            "$ref": "#/components/schemas/TopicParam"
+          },
+          "event_type": {
+            "type": "string",
+            "description": "event_type for fetching users feed\n\n\nAvailable values:\n - `like`\n \n - `share`\n \n - `comment`\n \n - `all`\n",
+            "example": "all"
+          }
+        }
+      },
+      "TopicParam": {
+        "title": "TopicParam",
+        "type": "string",
+        "description": "topic for fetching users feed\n\n\nAvailable Values:\n \n - `arts_culture`\n \n - `business_entrepreneurs`\n \n - `celebrity_pop_culture`\n \n - `diaries_daily_life`\n \n - `family`\n \n - `fashion_style`\n \n - `film_tv_video`\n \n - `fitness_health`\n \n - `food_dining`\n \n - `gaming`\n \n - `learning_educational`\n \n - `music`\n \n - `news_social_concern`\n \n - `other_hobbies`\n \n - `relationships`\n \n - `science_technology`\n \n - `sports`\n \n - `travel_adventure`\n \n - `youth_student_life`\n",
+        "example": "news_social_concern"
+      },
+      "FiltersParam": {
+        "type": "object",
+        "properties": {
+          "start_timestamp": {
+            "type": "string",
+            "description": "return only casts after this start_timestamp, specified as either an\nEpoch timestamp (Unix timestamp), or a relative time syntax specifying either a number of days ago or a number of hours ago (see example)\n\nExamples:\n- \"1577836800\"\n- \"days_ago:7\"\n- \"hours_ago:12\"            \n",
+            "example": [
+              "1577836800",
+              "days_ago:7",
+              "hours_ago:12"
+            ]
+          },
+          "end_timestamp": {
+            "type": "string",
+            "description": "return only casts before this end_timestamp, specified as either an\nEpoch timestamp (Unix timestamp), or a relative time syntax specifying either a number of days ago or a number of hours ago (see example)\n\n            \nExamples:\n- \"1577836800\"\n- \"days_ago:7\"\n- \"hours_ago:12\"   \n",
+            "example": [
+              "1577836800",
+              "days_ago:7",
+              "hours_ago:12"
+            ]
+          },
+          "app_fids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "return only casts that were created from these source apps (specified as the app's signer FID)\n",
+            "example": [
+              "9152",
+              "6131",
+              "193137"
+            ]
+          },
+          "geo_locations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "return only casts that were created from these geo-locations, specified as strings of latitude longitude pairs, to 2 decimal places, as specified in Farcaster\n            \nExamples:\n- \"48.86,2.35\" \n- \"51.51,-0.13\"\n- \"34.05,-118.24\"    \n\nNOTE:  remove_geo_locations is ignored if geo_locations is defined      \n",
+            "example": [
+              "48.86,2.35",
+              "51.51,-0.13",
+              "34.05,-118.24"
+            ]
+          },
+          "remove_geo_locations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "do not return casts created from these geo-locations, specified as strings of latitude longitude pairs, to 2 decimal places, as specified in Farcaster\n\nExamples:\n- \"48.86,2.35\" \n- \"51.51,-0.13\"\n- \"34.05,-118.24\"              \n\nNOTE:  this is ignored if geo_locations is defined\n",
+            "example": [
+              "48.86,2.35",
+              "51.51,-0.13",
+              "34.05,-118.24"
+            ]
+          },
+          "channels": {
+            "type": "array",
+            "description": "return only casts that belong to these channels, specified by channel urls (root_parent_url)\n",
+            "example": [
+              "https://farcaster.group/founders",
+              "https://warpcast.com/~/channel/reneecampbell",
+              "https://warpcast.com/~/channel/fumblingdaily"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "languages": {
+            "type": "array",
+            "description": "return only casts that use these languages\n",
+            "example": [
+              "en",
+              "hu",
+              "uk",
+              "fr",
+              "de",
+              "ko"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "author_ids": {
+            "type": "array",
+            "description": "return only casts created by authors with these fid's \n",
+            "example": [
+              "1423",
+              "513"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "remove_author_ids": {
+            "type": "array",
+            "description": "do not return casts created by authors with these fid's \n\n NOTE:  this is ignored if author_ids is defined\n",
+            "example": [
+              "1423",
+              "513"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "publication_types": {
+            "type": "array",
+            "description": "return only casts with these publication types\nAvailable values:\n- `image`\n- `video`\n- `audio`\n",
+            "example": [
+              "video",
+              "web3_nft"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "embed_domains": {
+            "type": "array",
+            "description": "return only casts with specific domains embedded",
+            "example": [
+              "paragraph.xyz",
+              "mirror.xyz"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "ai_labels": {
+            "$ref": "#/components/schemas/AILabelsFilterParam"
+          },
+          "remove_ai_labels": {
+            "type": "array",
+            "description": "do not return casts with these AI labels\n",
+            "example": [
+              "spam",
+              "sadness"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "engagement": {
+            "type": "object",
+            "description": "filter posts by specifying minimum or maximum engagement counts - this is useful for serving posts that are already engaging (having minimum engagement) or surfacing posts that have not been engaged yet (having 0 or small maximum engagement count)",
+            "properties": {
+              "min_likes_count": {
+                "type": "integer",
+                "description": "the miniumum number of likes the post must have received",
+                "example": 10
+              },
+              "max_likes_count": {
+                "type": "integer",
+                "description": "the maximum number of likes the post have received",
+                "example": 100
+              },
+              "min_shares_count": {
+                "type": "integer",
+                "description": "the minimum number of times the post have been shared",
+                "example": 5
+              },
+              "max_shares_count": {
+                "type": "integer",
+                "description": "the maximum number of times the post have been shared",
+                "example": 10
+              },
+              "min_comments_count": {
+                "type": "integer",
+                "description": "the minimum number of comments left on the post",
+                "example": 5
+              },
+              "max_comments_count": {
+                "type": "integer",
+                "description": "the maximum number of comments left on the post",
+                "example": 100
+              }
+            }
+          }
+        },
+        "description": "filtering options to be applied to the feed"
+      },
+      "AILabelsFilterParam": {
+        "type": "array",
+        "description": "return only casts that have these AI labels \nAvailable values:\n\n\nLabels in `topics` category\n\n - `arts_culture`\n \n - `business_entrepreneurs`\n \n - `celebrity_pop_culture`\n \n - `diaries_daily_life`\n \n - `family`\n \n - `fashion_style`\n \n - `film_tv_video`\n \n - `fitness_health`\n \n - `food_dining`\n \n - `gaming`\n \n - `learning_educational`\n \n - `music`\n \n - `news_social_concern`\n \n - `other_hobbies`\n \n - `relationships`\n \n - `science_technology`\n \n - `sports`\n \n - `travel_adventure`\n \n - `youth_student_life`\n \nLabels in `sentiment` category\n\n - `positive`\n \n - `neutral`\n \n - `negative`\n\nLabels in `emotion` category\n \n - `anger`\n \n - `anticipation`\n \n - `disgust`\n \n - `fear`\n \n - `joy`\n \n - `love`\n \n - `optimism`\n \n - `pessimism`\n \n - `sadness`\n \n - `surprise`\n \n - `trust`\n\nLabels in `moderation` category\n \n - `llm_generated`\n \n - `spam`\n \n - `sexual`\n \n - `hate`\n \n - `violence`\n \n - `harassment`\n \n - `self_harm`\n \n - `sexual_minors`\n \n - `hate_threatening`\n \n - `violence_graphic`\n\nLabels in `web3_topics` category\n\n - `web3_nft`\n\n - `web3_defi`\n\n - `web3_infra`\n\n - `web3_industry`\n\n - `web3_consumer`\n \n",
+        "example": [
+          "news_social_concern",
+          "joy"
+        ],
+        "items": {
+          "type": "string"
+        }
+      },
+      "PromotionFiltersParam": {
+        "type": "array",
+        "description": "define another set of filters for promotional content that will be be inserted in the resulting feed (currently only 1 promotion filter is supported)\n\nTwo types of promotions are supported: 1) `feed` and 2) `items`.  This is specified by the `promotion_type` parameter.\n\n1) `feed` promotion uses either the supplied filter or a `feed_id` to retrieve a \"promotional\" list of items to be inserted into the main feed.  `percent` can be used to control the ratio of items from main feed and promotion feed\n\n2) `items` promotion lets you specify a list of specific items to be inserted at specific locations (`rank`) in the response\n",
+        "items": {
+          "type": "object",
+          "properties": {
+            "promotion_type": {
+              "type": "string",
+              "description": "specifies the type of promotion\nSupported types:  `feed` or `items`\n",
+              "example": "feed"
+            },
+            "promotion_name": {
+              "type": "string",
+              "description": "a name for the promotion - can be used for identifying in the resulting feed the items belonging to the inserted promotion items.  The name specified here will be included as the value of the \"source_feed\" property in the returned items",
+              "example": "author_id_3"
+            },
+            "percent": {
+              "type": "integer",
+              "description": "the percentage of the resulting feed to contain items from this promotion \n(NOTE:  this is only used for `feed` type promotions)\n",
+              "example": 20
+            },
+            "feed_id": {
+              "type": "string",
+              "description": "feed_id of a previously created feed config, to be used for the filter to select promotion items\n(NOTE:  this is only used for `feed` type promotions)\n",
+              "example": "feed_1002"
+            },
+            "filters": {
+              "$ref": "#/components/schemas/FiltersParam"
+            },
+            "promoted_items": {
+              "type": "array",
+              "description": "the items to be inserted into the main feed\n(NOTE:  this is only used for `items` type promotions)\n",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "item_id": {
+                    "type": "string",
+                    "description": "the hash of the item to be inserted",
+                    "example": 8.382243135004635e+45
+                  },
+                  "rank": {
+                    "type": "integer",
+                    "description": "the position (starts from 1) to insert the item into the main feed",
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ScoringParam": {
+        "type": "string",
+        "description": "the type of algorithm to use for ranking - ie how to personalize the feed for the current user_id and decide what to show the user first\n\nIn the following description:\n- user interest is inferred from the user's past interaction with different types of content  \n- affinity is based on the user's following graph\n\nAvailable values:\n- `balanced_feed_v0.0.1` - balanced mix of interest and affinity based scoring (this is the default)\n- `balanced_feed_interest_bias_v0.0.1` - balanced mix of interest and affinity based scoring, with a bias towards interest-based scoring\n- `balanced_feed_affinity_bias_v0.0.1` - balanced mix of interest and affinity based scoring, with a bias towards affinity-based scoring\n- `user_affinity_all_following_v0.0.1` - recommend items for user based on all of the user's followings\n- `user_affinity_closest_following_v0.0.1` - recommend items for user based on their followings, with \"closer\" users (more frequent interaction) ranked higher\n- `user_interest_all_v0.0.1` - recommend items for user based on user interests, inferred from all past interactions\n- `user_interest_recent_v0.0.1` - recommend items for user based on user interests, inferred from past interactions with a recency bias  \n",
+        "example": "balanced_feed_v0.0.1"
+      },
+      "FeedDiversityConfigParam": {
+        "type": "object",
+        "description": "configurations that help improve the perceived diversity of the feed.  Post are returned in order of relevancy to the user based on the scoring algorithm, and thus it is possible that multiple posts from the same user are returned in the same feed.  Use these configurations to control how the API should handle multiple posts from the same author",
+        "properties": {
+          "max_posts_per_author": {
+            "type": "integer",
+            "description": "the maximum number of post from the same author the API is allowed to return",
+            "example": 3
+          },
+          "min_distance_between_posts_from_same_author": {
+            "type": "integer",
+            "description": "the minimum distance between posts from teh same author in the feed.  For example, if this is set to 5, then 2 posts from the same author must be separated by at least 5 posts in between",
+            "example": 5
+          }
+        }
+      },
+      "FallbackFeedsParam": {
+        "type": "array",
+        "description": "a feed can \"run out of items\" when a user has seen all items satisfying the feed configuration options.  Fallback feeds specifies alternative feeds to show the user when the main feed runs out.  A maximum of 3 fallback feeds can be specified, and they will be used in the order specified, when the previous active feed is completely consumed.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "feed_id": {
+              "type": "string",
+              "description": "the ID of the feed to be used as fallback",
+              "example": "feed_390"
+            }
+          }
+        }
+      },
+      "ColdstartParam": {
+        "type": "object",
+        "description": "this specifies a feed to be used when a user is under \"cold start\", meaning that the user is either new to the system or haven't interacted with the system for a long time.  When a user is in \"cold start\", engagement based recommendations is less reliable, and it might be beneficial to use a different feed configuration",
+        "properties": {
+          "cold_start_feed": {
+            "type": "string",
+            "description": "the ID of the feed to be used for cold start users",
+            "example": "feed_388"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "Bearer Bearer apiKey"
+      },
+      "api_key": {
+        "type": "apiKey",
+        "name": "x-api-key",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "x-amazon-apigateway-endpoint-configuration": {
+    "disableExecuteApiEndpoint": true
+  },
+  "x-original-swagger-version": "2.0",
+  "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  }
+}

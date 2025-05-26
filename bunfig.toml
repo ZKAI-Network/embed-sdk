@@ -1,0 +1,22 @@
+[workspaces]
+# Enable workspace support
+enabled = true
+
+[install]
+# Use exact versions for more predictable builds
+exact = true
+# Enable auto-install for missing dependencies
+auto = true
+
+[test]
+# Use vitest as the test runner
+runner = "vitest"
+
+[build]
+# Enable TypeScript support
+typescript = true
+
+# Package manager settings
+[package-manager]
+# Use bun as the package manager
+default = "bun"

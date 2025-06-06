@@ -43,8 +43,6 @@ export interface EndpointConfig<T> {
   method: "GET" | "POST"
   /** Effect Schema for type validation */
   schema: S.Schema<T>
-  /** Whether authentication is required */
-  requiresAuth?: boolean
   /** Human-readable description */
   description: string
   /** Category for logical grouping */
@@ -68,7 +66,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/casts/feed/for-you",
       method: "POST" as const,
       schema: ForYouSchema,
-      requiresAuth: true,
       description: "Personalized feed recommendations",
       category: "feeds" as const,
       internal: true, // Use convenience functions instead
@@ -82,7 +79,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/casts/feed/for-you-reranked",
       method: "POST" as const,
       schema: ForYouRerankedSchema,
-      requiresAuth: true,
       description: "Advanced reranked personalized feed",
       category: "feeds" as const
     },
@@ -90,7 +86,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/casts/feed/popular",
       method: "POST" as const,
       schema: PopularSchema,
-      requiresAuth: false,
       description: "Popular content by engagement metrics",
       category: "feeds" as const
     },
@@ -98,7 +93,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/casts/feed/trending",
       method: "POST" as const,
       schema: TrendingSchema,
-      requiresAuth: false,
       description: "Real-time trending content",
       category: "feeds" as const
     }
@@ -112,7 +106,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/casts/search/semantic",
       method: "POST" as const,
       schema: SearchSchema,
-      requiresAuth: false,
       description: "AI-powered semantic content search",
       category: "search" as const
     },
@@ -120,7 +113,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/users/search/semantic",
       method: "POST" as const,
       schema: UsersSemanticSearchSchema,
-      requiresAuth: false,
       description: "AI-powered user discovery",
       category: "search" as const
     }
@@ -134,7 +126,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/users/feed/for-channel",
       method: "POST" as const,
       schema: UsersFeedForChannelSchema,
-      requiresAuth: false,
       description: "User activity feed for specific channel",
       category: "users" as const
     },
@@ -142,7 +133,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/users/feed/for-item",
       method: "POST" as const,
       schema: UsersFeedForItemSchema,
-      requiresAuth: false,
       description: "User activity feed for specific item",
       category: "users" as const
     },
@@ -150,7 +140,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/users/feed/for-topic",
       method: "POST" as const,
       schema: UsersFeedForTopicSchema,
-      requiresAuth: false,
       description: "User activity feed by topic",
       category: "users" as const
     },
@@ -158,7 +147,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/users/feed/similar",
       method: "POST" as const,
       schema: UsersFeedSimilarSchema,
-      requiresAuth: false,
       description: "Feed from users with similar interests",
       category: "users" as const
     }
@@ -172,7 +160,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/ai-labels/for-items",
       method: "POST" as const,
       schema: LabelsForItemsSchema,
-      requiresAuth: false,
       description: "AI-generated labels for content items",
       category: "ai_labels" as const
     },
@@ -180,7 +167,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/ai-labels/for-text",
       method: "POST" as const,
       schema: LabelsForTextSchema,
-      requiresAuth: false,
       description: "AI-generated labels for text content",
       category: "ai_labels" as const
     },
@@ -188,7 +174,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/ai-labels/for-users",
       method: "POST" as const,
       schema: LabelsForUsersSchema,
-      requiresAuth: false,
       description: "AI-generated labels for users",
       category: "ai_labels" as const
     },
@@ -196,7 +181,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/ai-labels/top-items",
       method: "POST" as const,
       schema: LabelsTopItemsSchema,
-      requiresAuth: false,
       description: "Top-performing items by AI label",
       category: "ai_labels" as const
     },
@@ -204,7 +188,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/ai-labels/top-users",
       method: "POST" as const,
       schema: LabelsTopUsersSchema,
-      requiresAuth: false,
       description: "Top users by AI label classification",
       category: "ai_labels" as const
     }
@@ -218,7 +201,6 @@ export const ENDPOINTS = {
       endpoint: "/v2/farcaster/casts/similar",
       method: "POST" as const,
       schema: SimilarSchema,
-      requiresAuth: false,
       description: "Find content similar to given item",
       category: "similarity" as const
     }
@@ -268,7 +250,20 @@ export function createApiFunction<T>(config: EndpointConfig<T>) {
 
       if (params) {
         // Schema validation
-        const validatedParams = yield* S.decodeUnknown(config.schema)(params)
+        const validatedParams = yield* S.decodeUnknown(config.schema)(params).pipe(
+          Effect.mapError((error) => {
+            const enhancedMessage = `❌ Invalid parameters for ${config.description}\n\n` +
+              `${error.message}\n\n` +
+              `📖 Help:\n` +
+              `• Endpoint: ${config.endpoint}\n` +
+              `• Method: ${config.method}\n` +
+              `• Category: ${config.category}\n\n` +
+              `💡 Tip: Check the parameter types and make sure all required fields are provided.`
+
+            // Create a new error with enhanced message while preserving ParseError type
+            return new Error(enhancedMessage)
+          })
+        )
 
         // Custom validation
         if (config.customValidation) {
@@ -373,10 +368,6 @@ export const REGISTRY_META = {
     aiLabels: Object.keys(ENDPOINTS.aiLabels).length,
     similarity: Object.keys(ENDPOINTS.similarity).length
   },
-
-  authRequiredEndpoints: Object.entries(FLAT_REGISTRY)
-    .filter(([, config]) => config.requiresAuth)
-    .map(([name]) => name),
 
   endpointsByCategory: {
     feeds: Object.keys(ENDPOINTS.feeds),

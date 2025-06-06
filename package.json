@@ -1,6 +1,7 @@
 {
   "private": true,
   "type": "module",
+  "license": "MIT",
   "packageManager": "bun@1.1.34",
   "workspaces": [
     "packages/*"

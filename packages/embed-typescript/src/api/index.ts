@@ -1,42 +1,30 @@
-// Import all API methods
+// Import generic HTTP methods
 import { get, post } from "./common/http.js"
-import { ForYou, Popular, Trending } from "./farcaster/casts/feed/index.js"
-import { Search } from "./farcaster/casts/search/index.js"
+
+// Import auto-generated comprehensive API registry
+import { PublicApi, type PublicApiType } from "./api-registry.js"
+
+// Import additional SDK functions
+import * as ApiFunctions from "./functions/index.js"
 
 /**
- * API client with specific endpoint methods
+ * Enhanced Embed API Client
+ *
+ * Provides comprehensive API access:
+ * 🎯 Organized Functions - Opinionated defaults, prevents common errors
+ * ⚡ Generated Functions - Direct schema-based functions for advanced use
  */
 export const EmbedApi = {
-  /**
-   * Get the "for you" feed from Farcaster casts
-   */
-  ForYou,
+  // All SDK functions
+  ...ApiFunctions,
 
-  /**
-   * Get trending casts
-   */
-  Trending,
+  // All API functions
+  ...PublicApi,
 
-  /**
-   * Get popular casts
-   */
-  Popular,
-
-  /**
-   * Semantic search for casts
-   */
-  Search,
-
-  /**
-   * Generic POST request to any embed API endpoint
-   */
+  // HTTP methods for custom endpoints
   post,
-
-  /**
-   * Generic GET request to any embed API endpoint
-   */
   get
 }
 
-// Re-export individual methods for direct import
-export { ForYou, get, Popular, post, Search, Trending }
+// Type exports for TypeScript users
+export type { PublicApiType }

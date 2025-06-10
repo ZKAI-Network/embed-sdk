@@ -8,7 +8,7 @@ const app = new Hono()
 app.use(
   "*",
   cors({
-    origin: "*" // Allow any origin for cloudflared
+    origin: "*" // Allow any origin for now
   })
 )
 
@@ -19,7 +19,12 @@ app.get("/", (c: Context) => {
 app.use(
   "/trpc/*",
   trpcServer({
-    router: appRouter
+    router: appRouter,
+    createContext: () => {
+      return {
+        MBD_API_KEY: process.env.MBD_API_KEY,
+      };
+    },
   })
 )
 

@@ -6,9 +6,9 @@ import { cors } from "hono/cors"
 const app = new Hono()
 
 app.use(
-  "/trpc/*",
+  "*",
   cors({
-    origin: "http://localhost:5173" // vite dev server
+    origin: "*" // Allow any origin for cloudflared
   })
 )
 

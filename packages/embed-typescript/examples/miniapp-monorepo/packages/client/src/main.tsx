@@ -5,6 +5,7 @@ import { trpc } from "./trpc";
 import { httpBatchLink } from "@trpc/client";
 
 import App from "./App";
+import FrameProvider from "./FrameProvider";
 import "./index.css";
 
 function Root() {
@@ -23,7 +24,9 @@ function Root() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <FrameProvider>
+          <App />
+        </FrameProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );

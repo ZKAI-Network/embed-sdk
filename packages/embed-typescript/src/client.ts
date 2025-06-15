@@ -1,59 +1,114 @@
-import type { Layer } from "effect"
-import { Effect } from "effect"
-import { EmbedApi, getClient, type MbdApiConfig, type MbdHttpClient } from "./client-effect.js"
+import type { ForYouOptions } from "./casts/feed.js"
+import { getForYouFeedByUserId, getForYouFeedByWalletAddress } from "./casts/feed.js"
+import type { IHttpClient } from "./interfaces/index.js"
+import type { ForYouResponse } from "./types-return/ForYou.js"
 
 /**
- * Promise-based wrapper for the mbd.xyz HTTP client
- * This provides a familiar Promise API while using the underlying Effect implementation
+ * Configuration for the embed API client
  */
-export class MbdPromiseClient {
-  private layer: Layer.Layer<MbdHttpClient, unknown, never>
+export interface mbdClientConfig {
+  readonly baseUrl?: string
+  readonly token: string
+  readonly referer?: string
+  readonly title?: string
+}
 
-  constructor(configOrToken?: string | MbdApiConfig) {
-    if (!configOrToken) {
-      this.layer = getClient()
-    } else if (typeof configOrToken === "string") {
-      this.layer = getClient(configOrToken)
-    } else {
-      this.layer = getClient(configOrToken)
+/**
+ * Default configuration
+ */
+const DEFAULT_CONFIG = {
+  baseUrl: "https://api.mbd.xyz",
+  title: "embed_sdk_typescript"
+}
+
+/**
+ * Simple HTTP client for mbd API
+ */
+class HttpClient implements IHttpClient {
+  private config: Required<mbdClientConfig>
+
+  constructor(config: mbdClientConfig) {
+    this.config = {
+      baseUrl: DEFAULT_CONFIG.baseUrl,
+      title: DEFAULT_CONFIG.title,
+      referer: "",
+      ...config
     }
   }
 
   /**
-   * Wrapped EmbedApi client with all methods automatically converted to Promises
+   * Make a POST request to the API
    */
-  get api() {
-    return new Proxy(EmbedApi, {
-      get: (target, prop) => {
-        const originalMethod = target[prop as keyof typeof target]
+  async post<TResponse = unknown>(endpoint: string, body?: unknown): Promise<TResponse> {
+    const url = `${this.config.baseUrl}${endpoint}`
 
-        if (typeof originalMethod === "function") {
-          return (...args: Array<unknown>) => {
-            const effect =
-              (originalMethod as (...args: Array<unknown>) => Effect.Effect<unknown, unknown, MbdHttpClient>)
-                .apply(
-                  target,
-                  args
-                )
-            return Effect.runPromise(effect.pipe(Effect.provide(this.layer)))
-          }
-        }
-
-        return originalMethod
-      }
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${this.config.token}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "HTTP-Referer": this.config.referer,
+        "X-Title": this.config.title
+      },
+      body: body ? JSON.stringify(body) : null
     })
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status} ${response.statusText}`)
+    }
+
+    return response.json()
   }
 }
 
 /**
- * Factory function to create a promise-based client
- * - createMbdClient() - uses API_KEY_EMBED from environment
- * - createMbdClient(token) - uses token with default config
- * - createMbdClient(config) - uses full configuration
+ * Main mbd API client - your complete SDK
  */
-export function createMbdClient(): MbdPromiseClient
-export function createMbdClient(token: string): MbdPromiseClient
-export function createMbdClient(config: MbdApiConfig): MbdPromiseClient
-export function createMbdClient(configOrToken?: string | MbdApiConfig): MbdPromiseClient {
-  return new MbdPromiseClient(configOrToken)
+export class mbdClient {
+  private http: HttpClient
+
+  constructor(token?: string, options?: mbdClientConfig) {
+    if (!token && !options?.token) {
+      throw new Error("Token is required")
+    }
+
+    const config: mbdClientConfig = {
+      token: token || options?.token || "",
+      ...options
+    }
+
+    this.http = new HttpClient(config)
+  }
+
+  // ============================================================================
+  // FOR YOU FEED METHODS
+  // ============================================================================
+
+  /**
+   * Get personalized "For You" feed by user ID
+   */
+  async getForYouFeedByUserId(
+    userId: string,
+    options?: ForYouOptions
+  ): Promise<ForYouResponse> {
+    return getForYouFeedByUserId(this.http, userId, options)
+  }
+
+  /**
+   * Get personalized "For You" feed by wallet address
+   */
+  async getForYouFeedByWalletAddress(
+    walletAddress: string,
+    options?: ForYouOptions
+  ): Promise<ForYouResponse> {
+    return getForYouFeedByWalletAddress(this.http, walletAddress, options)
+  }
+}
+
+/**
+ * Factory function to create client
+ */
+export function getClient(token?: string, options?: mbdClientConfig): mbdClient {
+  return new mbdClient(token, options)
 }

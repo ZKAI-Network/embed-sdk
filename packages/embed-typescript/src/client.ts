@@ -114,7 +114,7 @@ const DEFAULT_CONFIG = {
 class HttpClient implements IHttpClient {
   private config: Required<Omit<mbdClientConfig, "retry">> & { retry: Required<RetryConfig> }
 
-  constructor(config: mbdClientConfig) {
+  constructor(config: mbdClientConfig & { token: string }) {
     this.config = {
       baseUrl: config.baseUrl ?? DEFAULT_CONFIG.baseUrl,
       title: config.title ?? DEFAULT_CONFIG.title,
@@ -292,7 +292,7 @@ export class mbdClient {
       throw new Error("Token is required")
     }
 
-    const config: mbdClientConfig = {
+    const config: mbdClientConfig & { token: string } = {
       token: token || options?.token || "",
       ...options
     }

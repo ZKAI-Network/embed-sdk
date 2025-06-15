@@ -104,7 +104,7 @@ async function errorHandlingExample() {
 async function advancedEffectExample() {
   console.log("\n=== Advanced Effect Example ===")
 
-  const client = new mbdClient("your-api-token", {
+  const client = new mbdClient(process.env.API_KEY_EMBED, {
     baseUrl: "https://api.mbd.xyz"
   })
 
@@ -151,6 +151,11 @@ async function runExamples() {
   await noRetryExample()
   await errorHandlingExample()
   await advancedEffectExample()
+}
+
+// Export examples for use in other files
+export {
+  advancedEffectExample, basicExample, customRetryExample, errorHandlingExample, noRetryExample, runExamples
 }
 
 // Run examples if this file is executed directly

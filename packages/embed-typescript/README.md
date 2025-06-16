@@ -1,218 +1,129 @@
 # Embed TypeScript
 
-The core TypeScript package for embed APIs, featuring a pre-configured HTTP client for mbd.xyz API.
+The core TypeScript package for embed APIs, featuring an Effect-based HTTP client with robust error handling and configurable retry logic for mbd.xyz API.
 
 ## Features
 
-- 🚀 Pre-configured HTTP client for mbd.xyz API
-- 🔐 Automatic authentication with Bearer tokens
-- 📝 All required headers set automatically
-- 🎯 **Dual API**: Choose between Effect-based or Promise-based clients
-- ⚙️ Configurable base URL, referer, and title
-- 🔧 Same reliable Effect implementation under the hood
-
-## Example
-
-See `examples/embed-typescript-sdk.ts` for a comprehensive showcase of:
-
-- ForYou Feed, Search, and Recommendations
-- Both Promise and Effect APIs
-- Sequential and concurrent operations
-- Actual JSON response output
-
-Run it with
-
-```bash
-bun run examples/embed-typescript-sdk.ts
-```
+- 🚀 **Effect-based HTTP client** with structured error handling
+- 🔄 **Configurable retry logic** with exponential backoff
+- 🛡️ **Type-safe error handling** with tagged error types
+- ⏱️ **Request timeouts** with proper timeout handling
+- 🔐 **Automatic authentication** with Bearer tokens
+- 📝 **All required headers** set automatically
+- 📊 **Built-in logging** of failed requests and retries
+- 🎯 **Selective retry logic** for different error types
 
 ## Quick Start
 
-Choose your preferred API style:
-
-### Option 1: Promise-based API (Familiar & Easy)
+### Basic Usage
 
 ```typescript
-import { createMbdClient } from "embed-typescript"
+import { mbdClient } from "embed-typescript"
 
-// Simple usage with async/await
-const client = createMbdClient("your-token-here")
+// Simple usage with default retry configuration
+const client = new mbdClient(process.env.API_KEY_EMBED)
 
-// Get personalized ForYou feed
-const feed = await client.api.ForYouReranked({
-  user_id: "3621",
-  items_list: []
-})
-
-// Search for content
-const results = await client.api.Search({
-  query: "crypto blockchain",
-  top_k: 5
-})
-
-console.log(feed, results)
+try {
+  const feed = await client.getForYouFeedByUserId("16085")
+  console.log("Success:", feed)
+} catch (error) {
+  console.error("Error:", error)
+}
 ```
 
-### Option 2: Effect-based API (Powerful & Composable)
+### What Gets Retried
+- ✅ Network errors (connection failures, DNS issues)
+- ✅ Timeout errors
+- ✅ Configurable HTTP status codes (500, 502, 503, 504 by default)
+- ✅ Rate limiting (429) when configured
+- ❌ Parse errors (malformed JSON)
+- ❌ Client errors (4xx except when configured)
+
+### Custom Retry Configuration
 
 ```typescript
-import { Effect } from "effect"
-import { EmbedApi, getClient } from "embed-typescript"
+import { mbdClient } from "embed-typescript"
 
-// Simple usage with Effect
-const program = Effect.gen(function* () {
-  // Get personalized ForYou feed
-  const feed = yield* EmbedApi.ForYouReranked({
-    user_id: "3621",
-    items_list: []
-  })
-
-  // Search for content
-  const results = yield* EmbedApi.Search({
-    query: "crypto blockchain",
-    top_k: 5
-  })
-
-  console.log(feed, results)
+const client = new mbdClient(process.env.API_KEY_EMBED, {
+  baseUrl: "https://api.mbd.xyz",
+  retry: {
+    maxRetries: 5,                    // Max retry attempts (default: 3)
+    initialDelay: 1000,               // Initial delay in ms (default: 1000)
+    exponentialBackoff: true,         // Use exponential backoff (default: true)
+    maxDelay: 15000,                  // Max delay in ms (default: 10000)
+    retryableStatusCodes: [429, 500, 502, 503, 504], // HTTP codes to retry
+    timeoutMs: 60000                  // Request timeout in ms (default: 30000)
+  }
 })
 
-// Run (assumes token in env variable: API_KEY_EMBED
-Effect.runPromise(program.pipe(Effect.provide(getClient())))
+const feed = await client.getForYouFeedByWalletAddress("0x123...")
 ```
 
-### Advanced Configuration
+## Error Handling
 
-#### Promise-based Configuration
+The client exports specific error types for structured error handling:
 
 ```typescript
-import { createMbdClient } from "embed-typescript"
+import {
+  mbdClient,
+  HttpRequestError,
+  NetworkError,
+  TimeoutError,
+  ParseError
+} from "embed-typescript"
 
-// Uses API_KEY_EMBED environment variable
-const client = createMbdClient()
+const client = new mbdClient("your-token")
 
-// Or with explicit token
-const clientWithToken = createMbdClient("your-token-here")
-
-// Use with async/await for concurrent requests
-const [feed, trending, popular] = await Promise.all([
-  client.api.ForYouReranked({ user_id: "3621", items_list: [] }),
-  client.api.Trending({ top_k: 10 }),
-  client.api.Popular({ top_k: 10 })
-])
+try {
+  const feed = await client.getForYouFeedByUserId("16085")
+} catch (error) {
+  if (error instanceof HttpRequestError) {
+    console.error(`HTTP Error: ${error.status} ${error.statusText}`)
+    console.error(`URL: ${error.url}`)
+  } else if (error instanceof NetworkError) {
+    console.error(`Network Error: ${error.message}`)
+  } else if (error instanceof TimeoutError) {
+    console.error(`Timeout Error: ${error.message} (${error.timeoutMs}ms)`)
+  } else if (error instanceof ParseError) {
+    console.error(`Parse Error: ${error.message}`)
+  }
+}
 ```
 
-#### Effect-based Configuration
+## API Methods
+
+### Available Methods
 
 ```typescript
-import { Effect } from "effect"
-import { EmbedApi, getClient } from "embed-typescript"
+// Get personalized "For You" feed by user ID
+await client.getForYouFeedByUserId(userId: string, options?: ForYouOptions)
 
-const program = Effect.gen(function* () {
-  // Concurrent operations with Effect.all
-  const [feed, trending, search] = yield* Effect.all(
-    [
-      EmbedApi.ForYouReranked({ user_id: "3621", items_list: [] }),
-      EmbedApi.Trending({ top_k: 10 }),
-      EmbedApi.Search({ query: "AI technology", top_k: 5 })
-    ],
-    { concurrency: "unbounded" }
-  )
-
-  return { feed, trending, search }
-})
-
-Effect.runPromise(program.pipe(Effect.provide(getClient())))
+// Get personalized "For You" feed by wallet address
+await client.getForYouFeedByWalletAddress(walletAddress: string, options?: ForYouOptions)
 ```
 
-## API Reference
+### Factory Function
 
-### Promise-based Client
+```typescript
+import { getClient } from "embed-typescript"
 
-#### `createMbdClient(token?: string)`
+// Create client with factory function
+const client = getClient(process.env.API_KEY_EMBED)
+```
 
-Creates a client. If no token provided, uses `API_KEY_EMBED` environment variable.
+## Examples
 
-#### `MbdPromiseClient` Methods
-
-Available through `client.api.*`:
-
-- `ForYouReranked(params)` - Get personalized feed for a user
-- `Search(params)` - Search for content
-- `Trending(params)` - Get trending content
-- `Popular(params)` - Get popular content
-- `Similar(params)` - Get similar content
-- `UsersSearch(params)` - Search for users
-- `UsersFeedByTopic(params)` - Get user feeds by topic
-- `LabelsForText(params)` - Get AI labels for text
-
-### Effect-based Client
-
-#### `EmbedApi`
-
-Pre-built API methods for all endpoints:
-
-- `EmbedApi.ForYouReranked(params)` - Get personalized feed for a user
-- `EmbedApi.Search(params)` - Search for content
-- `EmbedApi.Trending(params)` - Get trending content
-- `EmbedApi.Popular(params)` - Get popular content
-- `EmbedApi.Similar(params)` - Get similar content
-- `EmbedApi.UsersSearch(params)` - Search for users
-- `EmbedApi.UsersFeedByTopic(params)` - Get user feeds by topic
-- `EmbedApi.LabelsForText(params)` - Get AI labels for text
-
-### Configuration
-
-The HTTP client automatically sets these headers for all requests:
-
-- `HTTP-Referer`: Your configured referer (default: "https://docs.mbd.xyz/")
-- `X-Title`: Your configured title (default: "mbd_docs")
-- `accept`: "application/json"
-- `content-type`: "application/json"
-- `authorization`: "Bearer {your-token}"
-
-### Layer Providers
-
-- `getClient()` - Uses `API_KEY_EMBED` environment variable
-- `getClient(token)` - Uses provided token
-
-## Example cURL Equivalent
-
-This TypeScript client is equivalent to making requests like:
+Run the comprehensive examples to see all features in action:
 
 ```bash
-curl --request POST \
-     --url https://api.mbd.xyz/v2/farcaster/casts/feed/for-you-reranked \
-     --header 'HTTP-Referer: https://docs.mbd.xyz/' \
-     --header 'X-Title: mbd_docs' \
-     --header 'accept: application/json' \
-     --header 'authorization: Bearer TOKEN' \
-     --header 'content-type: application/json' \
-     --data '{"user_id": "3621", "items_list": []}'
+# Basic example with default retries
+bun run examples/retry-example.ts
 ```
 
-But with all the headers and authentication handled automatically!
+## Why Effect?
 
-## Why Choose This SDK?
-
-### 🎯 **Dual API Design**
-
-Choose the API style that fits your team:
-
-- **Promise-based**: Familiar `async/await` syntax for easy adoption
-- **Effect-based**: Advanced composition, error handling, and type safety
-
-### 🔧 **Same Reliable Foundation**
-
-Both APIs use the same underlying Effect implementation, ensuring:
-
-- Consistent behavior and reliability
-- Automatic header management
-- Type-safe HTTP operations
-- Robust error handling
-
-### 🚀 **Developer Experience**
-
-- Zero configuration for basic usage (uses environment variables)
-- Automatic authentication with Bearer tokens
-- All required headers set automatically
-- Comprehensive TypeScript support
+- **Structured Error Handling**: Type-safe error channels prevent runtime surprises
+- **Composable**: Chain and combine operations with powerful combinators
+- **Reliable**: Automatic retries handle transient failures gracefully
+- **Observable**: Built-in logging and tracing for debugging
+- **Type-Safe**: Full TypeScript support with inferred types

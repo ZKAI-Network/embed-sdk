@@ -11,12 +11,12 @@ interface FeedGridProps {
   fidToUse: number;
 }
 
-export function FeedGrid({ data, isLoading, error, fidToUse }: FeedGridProps) {
+export function FeedGrid({ data, isLoading, error }: FeedGridProps) {
   return (
     <Stack gap="md">
       <Group justify="space-between" align="center">
         <Title order={3} c="dimmed">
-          For You Feed • FID: {fidToUse}
+          For You Feed
         </Title>
         {isLoading && <Loader size="sm" />}
       </Group>

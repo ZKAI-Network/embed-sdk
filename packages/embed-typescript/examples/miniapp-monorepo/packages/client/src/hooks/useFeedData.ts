@@ -11,14 +11,19 @@ interface UseFeedDataReturn {
   timestamp: string;
   isRunningOnFrame: boolean;
   isSDKLoaded: boolean;
+  userInfo?: {
+    fid: number;
+    displayName?: string;
+    username?: string;
+    pfpUrl?: string;
+  };
 }
 
 export function useFeedData(): UseFeedDataReturn {
   const { isSDKLoaded, isRunningOnFrame, context } = useFrame();
   const [timestamp, setTimestamp] = useState("");
 
-  const fidToUse =
-    (isRunningOnFrame && (context as any)?.client?.requester?.fid) || 3;
+  const fidToUse = (isRunningOnFrame && context?.user?.fid) || 3;
 
   const {
     data: forYouData,
@@ -43,5 +48,11 @@ export function useFeedData(): UseFeedDataReturn {
     timestamp,
     isRunningOnFrame,
     isSDKLoaded,
+    userInfo: context?.user ? {
+      fid: context.user.fid,
+      displayName: context.user.displayName,
+      username: context.user.username,
+      pfpUrl: context.user.pfpUrl,
+    } : undefined,
   };
 } 

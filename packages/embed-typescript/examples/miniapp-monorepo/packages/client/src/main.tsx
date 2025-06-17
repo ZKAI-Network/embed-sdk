@@ -25,15 +25,15 @@ function Root() {
   );
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <MantineProvider>
-          <FrameProvider>
-            <App />
-          </FrameProvider>
-        </MantineProvider>
-      </QueryClientProvider>
-    </trpc.Provider>
+    <FrameProvider>
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <MantineProvider>
+              <App />
+          </MantineProvider>
+        </QueryClientProvider>
+      </trpc.Provider>
+    </FrameProvider>
   );
 }
 

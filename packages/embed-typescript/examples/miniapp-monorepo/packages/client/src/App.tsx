@@ -1,4 +1,4 @@
-import { Alert, Stack, Container } from "@mantine/core";
+import { Alert, Stack, Container, Group, Avatar, Text } from "@mantine/core";
 import { FeedHeader, FeedGrid } from "./components";
 import { useFeedData } from "./hooks";
 
@@ -11,6 +11,7 @@ function App() {
     timestamp,
     isRunningOnFrame,
     isSDKLoaded,
+    userInfo,
   } = useFeedData();
 
   return (
@@ -18,6 +19,25 @@ function App() {
       <Stack gap="xl">
         {/* Header */}
         <FeedHeader timestamp={timestamp} />
+        
+        {/* User Profile Section */}
+        {isRunningOnFrame && userInfo && (
+          <Group gap="md" p="md" style={{ border: '1px solid #e9ecef', borderRadius: '8px' }}>
+            <Avatar 
+              src={userInfo.pfpUrl} 
+              alt={userInfo.displayName || userInfo.username} 
+              size="lg" 
+            />
+            <div>
+              <Text fw={500} size="lg">
+                {userInfo.displayName || userInfo.username}
+              </Text>
+              <Text size="sm" c="dimmed">
+                @{userInfo.username} • FID: {userInfo.fid}
+              </Text>
+            </div>
+          </Group>
+        )}
         
         {/* Demo Mode Alert */}
         {!isRunningOnFrame && (

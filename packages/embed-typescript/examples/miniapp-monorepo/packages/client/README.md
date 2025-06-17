@@ -1,54 +1,80 @@
-# React + TypeScript + Vite
+# Farcaster Miniapp Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the React frontend for the Farcaster Miniapp monorepo example using the **Embed SDK**.
 
-Currently, two official plugins are available:
+## 📖 Documentation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**For complete setup and development instructions, see the [main README](../../README.md).**
 
-## Expanding the ESLint configuration
+## 🏗️ Client-Specific Information
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Tech Stack
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **Embed Personalized Feed** - Core functionality using the Embed SDK
+- **React 19** - Modern React with latest features
+- **TypeScript** - Type-safe development
+- **Vite** - Fast build tool and dev server
+- **Mantine UI** - Modern React components library
+- **tRPC** - Type-safe API communication
+- **Farcaster Frame SDK** - Integration with Farcaster miniapp context
+
+### Environment Variables
+
+Create `.env` in this directory:
+
+```bash
+VITE_API_URL=http://127.0.0.1:3000
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+> **Note:** For Farcaster miniapp testing, use your Cloudflare tunnel URL instead. See the [main README](../../README.md#testing-with-farcaster-miniapp) for details.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Development
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+From the **monorepo root**, run:
+
+```bash
+# Frontend only
+bun run dev:client
+
+# Or both frontend and backend
+bun dev
 ```
+
+The frontend will be available at `http://localhost:5173`.
+
+### Key Features
+
+- **Adaptive UI**: Shows different content based on whether it's running in a Farcaster miniapp or demo mode
+- **User Context**: Displays user profile information when running in Farcaster
+- **Personalized Feed**: Shows personalized content based on user's FID
+- **Responsive Design**: Works well on mobile and desktop
+- **Real-time Updates**: Uses tRPC for type-safe API communication
+
+### Project Structure
+
+```
+src/
+├── components/          # React components
+│   ├── FeedGrid.tsx    # Main feed display
+│   ├── FeedCard.tsx    # Individual feed items
+│   ├── FeedHeader.tsx  # App header
+│   └── ...
+├── hooks/              # Custom React hooks
+│   └── useFeedData.ts  # Feed data management
+├── FrameProvider.tsx   # Farcaster frame context
+├── trpc.ts            # tRPC client setup
+└── main.tsx           # App entry point
+```
+
+### Development Tips
+
+- The app automatically detects if it's running in a Farcaster miniapp context
+- In demo mode, it uses FID 3 for testing
+- Hot reload works automatically during development
+- Check browser console for API logs and errors
+
+## 🚀 Getting Started
+
+1. **Setup**: Follow the [main README](../../README.md) for complete setup instructions
+2. **Development**: Run `bun dev` from the monorepo root
+3. **Testing**: Use Cloudflare tunnels for Farcaster miniapp testing (see main README)

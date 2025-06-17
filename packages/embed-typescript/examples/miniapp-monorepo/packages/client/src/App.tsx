@@ -12,7 +12,6 @@ import {
   Title,
   Badge,
   Skeleton,
-  ActionIcon,
   SimpleGrid,
   Paper,
   Center,
@@ -105,35 +104,29 @@ function App() {
         {/* Engagement Stats */}
         <Group justify="space-between" mt="auto" pt="md">
           <Group gap="xs" align="center">
-            <ActionIcon variant="subtle" color="blue" size="sm" radius="xl">
-              <IconMessageCircle size={14} />
-            </ActionIcon>
+            <IconMessageCircle size={14} color="var(--mantine-color-blue-6)" />
             <Text size="xs" c="dimmed">
               {item.metadata.comments_count || 0}
             </Text>
           </Group>
           
           <Group gap="xs" align="center">
-            <ActionIcon variant="subtle" color="green" size="sm" radius="xl">
-              <IconRepeat size={14} />
-            </ActionIcon>
+            <IconRepeat size={14} color="var(--mantine-color-green-6)" />
             <Text size="xs" c="dimmed">
               {item.metadata.shares_count || 0}
             </Text>
           </Group>
           
           <Group gap="xs" align="center">
-            <ActionIcon variant="subtle" color="red" size="sm" radius="xl">
-              <IconHeart size={14} />
-            </ActionIcon>
+            <IconHeart size={14} color="var(--mantine-color-red-6)" />
             <Text size="xs" c="dimmed">
               {item.metadata.likes_count || 0}
             </Text>
           </Group>
           
-          <ActionIcon variant="subtle" color="gray" size="sm" radius="xl">
-            <IconShare size={14} />
-          </ActionIcon>
+          <Group gap="xs" align="center">
+            <IconShare size={14} color="var(--mantine-color-gray-6)" />
+          </Group>
         </Group>
       </Stack>
     </Card>
@@ -143,29 +136,26 @@ function App() {
     <Container size="xl" px="md" py="xl">
       <Stack gap="xl">
         {/* Header */}
-        <Paper p="md" radius="md" withBorder>
-          <Group justify="space-between" align="center">
-            <Title order={1} size="h2" c="blue">
-              📱 Feed Dashboard
-            </Title>
-            {timestamp && (
-              <Badge variant="light" color="green" size="md">
-                Updated: {timestamp}
-              </Badge>
-            )}
-          </Group>
-          
-          {!isRunningOnFrame && (
-            <Alert 
-              title="Demo Mode" 
-              color="blue" 
-              mt="md"
-              variant="light"
-            >
-              This is a demo feed. Run in a Farcaster frame for personalized content.
-            </Alert>
+        <Group justify="space-between" align="center">
+          <Title order={1} size="h2" c="blue">
+            Embed personalized feed
+          </Title>
+          {timestamp && (
+            <Badge variant="light" color="green" size="md">
+              Updated: {timestamp}
+            </Badge>
           )}
-        </Paper>
+        </Group>
+        
+        {!isRunningOnFrame && (
+          <Alert 
+            title="Demo Mode" 
+            color="blue" 
+            variant="light"
+          >
+            This is a demo feed. Run in a Farcaster frame for personalized content.
+          </Alert>
+        )}
 
         {/* Feed Content */}
         {isSDKLoaded && (

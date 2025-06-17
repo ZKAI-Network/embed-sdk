@@ -1,8 +1,9 @@
+// This file is used to share the tRPC router type definition with the client.
 import { initTRPC } from "@trpc/server";
 import { z } from "zod";
-import { createMbdClient } from "embed-typescript/src/client.js";
+import { getClient } from "embed-typescript/src/index.js";
 
-const t = initTRPC.context<{ MBD_API_KEY?: string }>().create();
+const t = initTRPC.context<{ API_KEY_EMBED?: string }>().create();
 
 export const appRouter = t.router({
   greeting: t.procedure
@@ -15,18 +16,15 @@ export const appRouter = t.router({
     .query(async ({ input, ctx }) => {
       console.log("Executing forYouFeed procedure with input:", input);
 
-      if (!ctx.MBD_API_KEY) {
-        throw new Error("MBD_API_KEY is not configured on the server.");
+      if (!ctx.API_KEY_EMBED) {
+        throw new Error("API_KEY_EMBED is not configured on the server.");
       }
 
       try {
-        console.log("Creating MBD client...");
-        const client = createMbdClient(ctx.MBD_API_KEY);
-        console.log("Fetching ForYouReranked feed for fid:", input.fid);
-        const feed = await client.api.ForYouReranked({
-          user_id: String(input.fid),
-          items_list: [],
-        });
+        console.log("Creating Embed client...");
+        const client = getClient(ctx.API_KEY_EMBED);
+        console.log("Fetching For You feed for fid:", input.fid);
+        const feed = await client.getForYouFeedByUserId(String(input.fid), { top_k: 10 });
         console.log("Successfully fetched feed:", feed);
         return feed;
       } catch (error) {
@@ -36,4 +34,4 @@ export const appRouter = t.router({
     }),
 });
 
-export type AppRouter = typeof appRouter;
+export type AppRouter = typeof appRouter; 

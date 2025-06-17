@@ -22,7 +22,7 @@ app.use(
     router: appRouter,
     createContext: () => {
       return {
-        MBD_API_KEY: process.env.MBD_API_KEY,
+        API_KEY_EMBED: process.env.API_KEY_EMBED,
       };
     },
   })

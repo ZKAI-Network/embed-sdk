@@ -3,6 +3,9 @@ import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { trpc } from "./trpc";
 import { httpBatchLink } from "@trpc/client";
+import { MantineProvider } from '@mantine/core';
+
+import '@mantine/core/styles.css';
 
 import App from "./App";
 import FrameProvider from "./FrameProvider";
@@ -15,7 +18,7 @@ function Root() {
       links: [
         httpBatchLink({
           url:
-            (import.meta.env.VITE_API_URL || "http://localhost:3000") + "/trpc",
+            (import.meta.env.VITE_API_URL || "http://127.0.0.1:3000") + "/trpc",
         }),
       ],
     })
@@ -24,9 +27,11 @@ function Root() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <FrameProvider>
-          <App />
-        </FrameProvider>
+        <MantineProvider>
+          <FrameProvider>
+            <App />
+          </FrameProvider>
+        </MantineProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );

@@ -11,23 +11,26 @@ import {
   Container,
   Title,
   Badge,
-  SimpleGrid,
   Skeleton,
-  useMantineTheme,
+  ActionIcon,
+  SimpleGrid,
+  Paper,
+  Center,
+  Loader,
 } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import {
   IconMessageCircle,
   IconHeart,
   IconRepeat,
+  IconShare,
+  IconUser,
 } from "@tabler/icons-react";
 
 function App() {
   const { isSDKLoaded, isRunningOnFrame, context } = useFrame();
-  const theme = useMantineTheme();
-  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
-  const fidToUse = (isRunningOnFrame && (context as any)?.client?.requester?.fid) || 3;
+  const fidToUse =
+    (isRunningOnFrame && (context as any)?.client?.requester?.fid) || 3;
 
   const {
     data: forYouData,
@@ -46,93 +49,189 @@ function App() {
     }
   }, [forYouData]);
 
+  const LoadingSkeleton = () => (
+    <Card withBorder radius="lg" p="lg" shadow="sm">
+      <Stack gap="md">
+        <Group gap="sm">
+          <Skeleton height={50} circle />
+          <Stack gap="xs" style={{ flex: 1 }}>
+            <Skeleton height={16} width="40%" />
+            <Skeleton height={12} width="30%" />
+          </Stack>
+        </Group>
+        <Stack gap="xs">
+          <Skeleton height={14} />
+          <Skeleton height={14} width="90%" />
+          <Skeleton height={14} width="75%" />
+        </Stack>
+        <Group justify="space-between" mt="md">
+          <Skeleton height={20} width={50} />
+          <Skeleton height={20} width={50} />
+          <Skeleton height={20} width={50} />
+          <Skeleton height={20} width={30} />
+        </Group>
+      </Stack>
+    </Card>
+  );
+
+  const FeedCard = ({ item }: { item: any }) => (
+    <Card withBorder radius="lg" p="lg" shadow="sm" style={{ height: "100%" }}>
+      <Stack gap="md" style={{ height: "100%" }}>
+        {/* Author Info */}
+        <Group gap="sm" align="center">
+          <Avatar
+            src={item.metadata.author.pfp_url}
+            alt={item.metadata.author.display_name}
+            radius="xl"
+            size="lg"
+          >
+            <IconUser size={24} />
+          </Avatar>
+          <Stack gap={2} style={{ flex: 1 }}>
+            <Text fw={600} size="sm" lineClamp={1}>
+              {item.metadata.author.display_name}
+            </Text>
+            <Text c="dimmed" size="xs">
+              @{item.metadata.author.username}
+            </Text>
+          </Stack>
+        </Group>
+
+        {/* Content */}
+        <Text size="sm" style={{ flex: 1, lineHeight: 1.5 }}>
+          {item.metadata.text}
+        </Text>
+
+        {/* Engagement Stats */}
+        <Group justify="space-between" mt="auto" pt="md">
+          <Group gap="xs" align="center">
+            <ActionIcon variant="subtle" color="blue" size="sm" radius="xl">
+              <IconMessageCircle size={14} />
+            </ActionIcon>
+            <Text size="xs" c="dimmed">
+              {item.metadata.comments_count || 0}
+            </Text>
+          </Group>
+          
+          <Group gap="xs" align="center">
+            <ActionIcon variant="subtle" color="green" size="sm" radius="xl">
+              <IconRepeat size={14} />
+            </ActionIcon>
+            <Text size="xs" c="dimmed">
+              {item.metadata.shares_count || 0}
+            </Text>
+          </Group>
+          
+          <Group gap="xs" align="center">
+            <ActionIcon variant="subtle" color="red" size="sm" radius="xl">
+              <IconHeart size={14} />
+            </ActionIcon>
+            <Text size="xs" c="dimmed">
+              {item.metadata.likes_count || 0}
+            </Text>
+          </Group>
+          
+          <ActionIcon variant="subtle" color="gray" size="sm" radius="xl">
+            <IconShare size={14} />
+          </ActionIcon>
+        </Group>
+      </Stack>
+    </Card>
+  );
+
   return (
-    <Container size="xs" p={isMobile ? "xs" : "md"}>
-      <Stack align="center" mt="md">
-        <Title order={2}>Embed Feed</Title>
-
-        {!isRunningOnFrame && (
-            <Alert title="Not in a Farcaster Frame" color="blue" mt="md">
-                Please run this app in a Farcaster frame to see your personalized feed. Defaulting to a generic feed for now.
-            </Alert>
-        )}
-
-        {isSDKLoaded && (
-          <Stack mt="md" gap="lg" w="100%">
-            <Title order={4} c="dimmed" style={{ textAlign: 'center' }}>
-              For You Feed for FID: {fidToUse}{" "}
-              {timestamp && (
-                <Badge variant="outline">Updated: {timestamp}</Badge>
-              )}
+    <Container size="xl" px="md" py="xl">
+      <Stack gap="xl">
+        {/* Header */}
+        <Paper p="md" radius="md" withBorder>
+          <Group justify="space-between" align="center">
+            <Title order={1} size="h2" c="blue">
+              📱 Feed Dashboard
             </Title>
+            {timestamp && (
+              <Badge variant="light" color="green" size="md">
+                Updated: {timestamp}
+              </Badge>
+            )}
+          </Group>
+          
+          {!isRunningOnFrame && (
+            <Alert 
+              title="Demo Mode" 
+              color="blue" 
+              mt="md"
+              variant="light"
+            >
+              This is a demo feed. Run in a Farcaster frame for personalized content.
+            </Alert>
+          )}
+        </Paper>
+
+        {/* Feed Content */}
+        {isSDKLoaded && (
+          <Stack gap="md">
+            <Group justify="space-between" align="center">
+              <Title order={3} c="dimmed">
+                For You Feed • FID: {fidToUse}
+              </Title>
+              {forYouLoading && <Loader size="sm" />}
+            </Group>
+
+            {/* Error State */}
             {forYouError && (
-              <Card shadow="sm" p={{ base: 'sm', sm: 'lg' }} withBorder>
-                <Text c="red">Error loading feed: {forYouError.message}</Text>
+              <Card withBorder p="xl" radius="md" bg="red.0">
+                <Center>
+                  <Stack align="center" gap="sm">
+                    <Text c="red" fw={500}>
+                      Error loading feed
+                    </Text>
+                    <Text c="red" size="sm">
+                      {forYouError.message}
+                    </Text>
+                  </Stack>
+                </Center>
               </Card>
             )}
-            
-                {forYouLoading &&
-                    Array.from({ length: 5 }).map((_, index) => (
-                    <Card shadow="sm" p={isMobile ? "sm" : "lg"} withBorder key={index} radius="md">
-                        <Group wrap="nowrap" align="flex-start">
-                            <Skeleton height={40} circle />
-                            <Stack gap="xs" w="100%">
-                                <Group>
-                                    <Skeleton height={16} width={120} />
-                                    <Skeleton height={14} width={80} />
-                                </Group>
-                                <Stack gap="xs" mt="sm">
-                                    <Skeleton height={14} />
-                                    <Skeleton height={14} width="90%" />
-                                </Stack>
-                                <Group mt="md" gap={isMobile ? "md" : "xl"}>
-                                    <Skeleton height={20} width={50}/>
-                                    <Skeleton height={20} width={50}/>
-                                    <Skeleton height={20} width={50}/>
-                                </Group>
-                            </Stack>
-                        </Group>
-                    </Card>
-                    ))}
 
-                {forYouData?.body?.map((item: any) => (
-                    <Card shadow="sm" p={isMobile ? "sm" : "lg"} withBorder key={item.item_id} radius="md">
-                        <Group wrap="nowrap" align="flex-start">
-                            <Avatar
-                                src={item.metadata.author.pfp_url}
-                                alt={item.metadata.author.display_name}
-                                radius="xl"
-                            />
-                            <Stack gap="xs">
-                                <Group gap="xs">
-                                    <Text fw={500}>
-                                    {item.metadata.author.display_name}
-                                    </Text>
-                                    <Text size="sm" c="dimmed">
-                                    @{item.metadata.author.username}
-                                    </Text>
-                                </Group>
-                                <Text size="sm" style={{ whiteSpace: 'pre-wrap' }}>
-                                    {item.metadata.text}
-                                </Text>
-                                <Group mt="md" gap={isMobile ? "md" : "xl"}>
-                                    <Group gap={4} align="center">
-                                        <IconMessageCircle size={18} color="var(--mantine-color-dimmed)" />
-                                        <Text size="sm" c="dimmed">{item.metadata.comments_count}</Text>
-                                    </Group>
-                                    <Group gap={4} align="center">
-                                        <IconHeart size={18} color="var(--mantine-color-dimmed)" />
-                                        <Text size="sm" c="dimmed">{item.metadata.likes_count}</Text>
-                                    </Group>
-                                    <Group gap={4} align="center">
-                                        <IconRepeat size={18} color="var(--mantine-color-dimmed)" />
-                                        <Text size="sm" c="dimmed">{item.metadata.shares_count}</Text>
-                                    </Group>
-                                </Group>
-                            </Stack>
-                        </Group>
-                    </Card>
+            {/* Loading State */}
+            {forYouLoading && (
+              <SimpleGrid
+                cols={{ base: 1, sm: 2, md: 3, lg: 4 }}
+                spacing="md"
+              >
+                {Array.from({ length: 8 }).map((_, index) => (
+                  <LoadingSkeleton key={index} />
                 ))}
+              </SimpleGrid>
+            )}
+
+            {/* Feed Cards */}
+            {forYouData?.body && forYouData.body.length > 0 && (
+              <SimpleGrid
+                cols={{ base: 1, sm: 2, md: 3, lg: 4 }}
+                spacing="md"
+              >
+                {forYouData.body.map((item: any) => (
+                  <FeedCard key={item.item_id} item={item} />
+                ))}
+              </SimpleGrid>
+            )}
+
+            {/* Empty State */}
+            {forYouData?.body && forYouData.body.length === 0 && (
+              <Card withBorder p="xl" radius="md">
+                <Center>
+                  <Stack align="center" gap="sm">
+                    <Text c="dimmed" fw={500}>
+                      No posts available
+                    </Text>
+                    <Text c="dimmed" size="sm">
+                      Check back later for new content
+                    </Text>
+                  </Stack>
+                </Center>
+              </Card>
+            )}
           </Stack>
         )}
       </Stack>
@@ -140,4 +239,4 @@ function App() {
   );
 }
 
-export default App;
+export default App; 

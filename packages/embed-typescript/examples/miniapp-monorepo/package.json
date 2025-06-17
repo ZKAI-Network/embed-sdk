@@ -8,7 +8,9 @@
   "scripts": {
     "dev:server": "bun --watch packages/server/src/index.ts",
     "dev:client": "cd packages/client && bun dev",
-    "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\""
+    "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\"",
+    "dev:backend": "bun --watch packages/server/src/index.ts",
+    "dev:frontend": "cd packages/client && bun dev"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

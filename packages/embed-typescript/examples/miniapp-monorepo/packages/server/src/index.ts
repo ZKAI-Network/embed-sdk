@@ -8,12 +8,23 @@ const app = new Hono()
 app.use(
   "*",
   cors({
-    origin: "*" // Allow any origin for now
+    origin: "*", // Allow any origin for now
+    credentials: true,
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization", "x-trpc-source"]
   })
 )
 
 app.get("/", (c: Context) => {
   return c.text("Hello Hono!")
+})
+
+app.get("/health", (c: Context) => {
+  return c.json({ 
+    status: "ok", 
+    timestamp: new Date().toISOString(),
+    hasApiKey: !!process.env.API_KEY_EMBED
+  })
 })
 
 app.use(
@@ -24,6 +35,9 @@ app.use(
       return {
         API_KEY_EMBED: process.env.API_KEY_EMBED,
       };
+    },
+    onError: ({ error, path }) => {
+      console.error(`tRPC Error on path: ${path}`, error);
     },
   })
 )

@@ -6,11 +6,9 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:server": "bun --watch packages/server/src/index.ts",
-    "dev:client": "cd packages/client && bun dev",
-    "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\"",
-    "dev:backend": "bun --watch packages/server/src/index.ts",
-    "dev:frontend": "cd packages/client && bun dev"
+    "dev:server": "bun --env-file=packages/server/.env --watch packages/server/src/index.ts",
+    "dev:client": "bun --env-file=packages/client/.env --cwd packages/client dev",
+    "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\""
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

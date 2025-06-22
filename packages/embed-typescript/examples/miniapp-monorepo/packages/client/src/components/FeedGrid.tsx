@@ -75,9 +75,14 @@ export function FeedGrid({
 
       {/* Loading More Indicator */}
       {isFetchingNextPage && (
-        <Group justify="center" py="md">
-          <Loader />
-        </Group>
+        <SimpleGrid
+          cols={{ base: 1, sm: 2, md: 3, lg: 4 }}
+          spacing="md"
+        >
+          {Array.from({ length: 4 }).map((_, index) => (
+            <LoadingSkeleton key={index} />
+          ))}
+        </SimpleGrid>
       )}
 
       {/* Empty State */}

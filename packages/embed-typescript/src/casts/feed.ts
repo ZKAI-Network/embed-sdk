@@ -13,11 +13,15 @@ export async function getForYouFeedByUserId(
   userId: string,
   options?: ForYouOptions
 ): Promise<ForYouResponse> {
+  const top_k = options?.top_k ?? 25
+  const impression_count = options?.impression_count ?? top_k
+
   const params: ForYouParams = {
     user_id: userId,
-    top_k: 25,
     return_metadata: true,
-    ...options
+    ...options,
+    top_k,
+    impression_count,
   }
 
   return httpClient.post("/v2/farcaster/casts/feed/for-you", params)
@@ -31,11 +35,15 @@ export async function getForYouFeedByWalletAddress(
   walletAddress: string,
   options?: ForYouOptions
 ): Promise<ForYouResponse> {
+  const top_k = options?.top_k ?? 25
+  const impression_count = options?.impression_count ?? top_k
+
   const params: ForYouParams = {
     wallet_address: walletAddress,
-    top_k: 25,
     return_metadata: true,
-    ...options
+    ...options,
+    top_k,
+    impression_count,
   }
 
   return httpClient.post("/v2/farcaster/casts/feed/for-you", params)

@@ -20,6 +20,8 @@ interface UseFeedDataReturn {
   fetchNextPage: () => void;
   isFetchingNextPage: boolean;
   hasNextPage: boolean;
+  refetch: () => Promise<any>;
+  isRefreshing: boolean;
 }
 
 export function useFeedData(): UseFeedDataReturn {
@@ -36,7 +38,8 @@ export function useFeedData(): UseFeedDataReturn {
     data: forYouData,
     isLoading: forYouLoading,
     error: forYouError,
-    refetch,
+    refetch: triggerQuery,
+    isRefetching: isRefreshing,
   } = trpc.forYouFeed.useQuery(
     { fid: fidToUse! },
     { enabled: !!fidToUse && isSDKLoaded && pages.length === 0 } // Only fetch automatically on first load
@@ -53,12 +56,11 @@ export function useFeedData(): UseFeedDataReturn {
   }, [forYouData, pages.length]);
 
   const fetchNextPage = useCallback(async () => {
-    if (isFetchingRef.current || !hasNextPage) return;
+    if (isFetchingNextPage || !hasNextPage) return;
 
-    isFetchingRef.current = true;
     setIsFetchingNextPage(true);
     try {
-      const nextPageData = await refetch();
+      const nextPageData = await triggerQuery();
       if (nextPageData.data) {
         setPages((prevPages) => [...prevPages, nextPageData.data]);
         if (nextPageData.data.body.length === 0) {
@@ -68,10 +70,19 @@ export function useFeedData(): UseFeedDataReturn {
     } catch (e) {
       console.error("Failed to fetch next page", e);
     } finally {
-      isFetchingRef.current = false;
       setIsFetchingNextPage(false);
     }
-  }, [hasNextPage, refetch]);
+  }, [isFetchingNextPage, hasNextPage, triggerQuery]);
+
+  const refetch = useCallback(async () => {
+    const result = await triggerQuery();
+    if (result.data) {
+      setPages([result.data]); // Reset pages with new data
+      setTimestamp(new Date().toLocaleTimeString());
+      setHasNextPage(result.data.body.length > 0);
+    }
+    return result;
+  }, [triggerQuery]);
 
   const flattenedData = pages.flatMap((page) => page.body as FeedItem[]);
 
@@ -94,5 +105,7 @@ export function useFeedData(): UseFeedDataReturn {
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
+    refetch,
+    isRefreshing,
   };
 } 

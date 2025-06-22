@@ -1,4 +1,4 @@
-import { SimpleGrid, Stack, Group, Title, Loader } from "@mantine/core";
+import { SimpleGrid, Stack, Group, Title, Loader, Button } from "@mantine/core";
 import { FeedCard, type FeedItem } from "./FeedCard";
 import { LoadingSkeleton } from "./LoadingSkeleton";
 import { ErrorState } from "./ErrorState";
@@ -14,6 +14,8 @@ interface FeedGridProps {
   fetchNextPage: () => void;
   isFetchingNextPage: boolean;
   hasNextPage: boolean;
+  onRefresh: () => void;
+  isRefreshing: boolean;
 }
 
 export function FeedGrid({
@@ -23,6 +25,8 @@ export function FeedGrid({
   fetchNextPage,
   isFetchingNextPage,
   hasNextPage,
+  onRefresh,
+  isRefreshing,
 }: FeedGridProps) {
   const { ref, inView } = useInView({
     threshold: 0,
@@ -40,7 +44,12 @@ export function FeedGrid({
         <Title order={3} c="dimmed">
           For You Feed
         </Title>
-        {isLoading && <Loader size="sm" />}
+        <Group>
+          <Button onClick={onRefresh} loading={isRefreshing} variant="light" size="xs">
+            Refresh
+          </Button>
+          {isLoading && <Loader size="sm" />}
+        </Group>
       </Group>
 
       {/* Error State */}

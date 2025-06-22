@@ -12,6 +12,9 @@ function App() {
     isRunningOnFrame,
     isSDKLoaded,
     userInfo,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
   } = useFeedData();
 
   return (
@@ -57,6 +60,9 @@ function App() {
             isLoading={isLoading}
             error={error}
             fidToUse={fidToUse}
+            fetchNextPage={fetchNextPage}
+            isFetchingNextPage={isFetchingNextPage}
+            hasNextPage={hasNextPage}
           />
         )}
       </Stack>

@@ -3,22 +3,44 @@ import { FeedCard, type FeedItem } from "./FeedCard";
 import { LoadingSkeleton } from "./LoadingSkeleton";
 import { ErrorState } from "./ErrorState";
 import { EmptyState } from "./EmptyState";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 
 interface FeedGridProps {
   data?: FeedItem[];
   isLoading: boolean;
   error?: { message: string } | null;
   fidToUse: number;
+  fetchNextPage: () => void;
+  isFetchingNextPage: boolean;
+  hasNextPage: boolean;
 }
 
-export function FeedGrid({ data, isLoading, error }: FeedGridProps) {
+export function FeedGrid({
+  data,
+  isLoading,
+  error,
+  fetchNextPage,
+  isFetchingNextPage,
+  hasNextPage,
+}: FeedGridProps) {
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   return (
     <Stack gap="md">
       <Group justify="space-between" align="center">
         <Title order={3} c="dimmed">
           For You Feed
         </Title>
-        {isLoading && <Loader size="sm" />}
+        {(isLoading || isFetchingNextPage) && <Loader size="sm" />}
       </Group>
 
       {/* Error State */}
@@ -48,8 +70,11 @@ export function FeedGrid({ data, isLoading, error }: FeedGridProps) {
         </SimpleGrid>
       )}
 
+      {/* Intersection Observer Trigger */}
+      <div ref={ref} />
+
       {/* Empty State */}
-      {data && data.length === 0 && <EmptyState />}
+      {data && data.length === 0 && !isLoading && <EmptyState />}
     </Stack>
   );
 } 

@@ -110,7 +110,8 @@ packages/
 
 ## Features
 
-- **Personalized Feed:** Shows personalized "For You" content when running in a Farcaster frame
-- **Demo Mode:** Falls back to demo content (FID 3) when not in a frame
-- **Real-time Updates:** Uses tRPC for type-safe real-time communication
-- **Responsive UI:** Built with Mantine UI components for a modern look
+- **Personalized Feed**: When running inside Farcaster, the app fetches a personalized "For You" feed for the current user.
+- **Demo Mode**: When opened outside of a Farcaster, the app falls back to a demo mode, showing a feed for a default user (FID 3).
+- **Infinite Scroll**: As you scroll to the bottom of the feed, new items are automatically fetched and appended to the list, providing a seamless browsing experience.
+- **Pull to Refresh**: On touch devices, you can pull down from the top of the feed to refresh the content with the latest items.
+- **Desktop Refresh**: A "Refresh" button is available on desktop for manually reloading the feed.

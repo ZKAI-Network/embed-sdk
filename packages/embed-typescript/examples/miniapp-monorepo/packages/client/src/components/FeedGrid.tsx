@@ -40,7 +40,7 @@ export function FeedGrid({
         <Title order={3} c="dimmed">
           For You Feed
         </Title>
-        {(isLoading || isFetchingNextPage) && <Loader size="sm" />}
+        {isLoading && <Loader size="sm" />}
       </Group>
 
       {/* Error State */}
@@ -70,8 +70,15 @@ export function FeedGrid({
         </SimpleGrid>
       )}
 
-      {/* Intersection Observer Trigger */}
-      <div ref={ref} />
+      {/* Intersection Observer Trigger: only rendered when we can fetch more */}
+      {hasNextPage && !isFetchingNextPage && <div ref={ref} />}
+
+      {/* Loading More Indicator */}
+      {isFetchingNextPage && (
+        <Group justify="center" py="md">
+          <Loader />
+        </Group>
+      )}
 
       {/* Empty State */}
       {data && data.length === 0 && !isLoading && <EmptyState />}

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useFrame } from "../FrameProvider";
 import { trpc } from "../trpc";
 import type { FeedItem } from "../components/FeedCard";
@@ -28,6 +28,7 @@ export function useFeedData(): UseFeedDataReturn {
   const [pages, setPages] = useState<any[]>([]);
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
+  const isFetchingRef = useRef(false);
 
   const fidToUse = (isRunningOnFrame && context?.user?.fid) || 3;
 
@@ -52,8 +53,9 @@ export function useFeedData(): UseFeedDataReturn {
   }, [forYouData, pages.length]);
 
   const fetchNextPage = useCallback(async () => {
-    if (isFetchingNextPage || !hasNextPage) return;
+    if (isFetchingRef.current || !hasNextPage) return;
 
+    isFetchingRef.current = true;
     setIsFetchingNextPage(true);
     try {
       const nextPageData = await refetch();
@@ -66,9 +68,10 @@ export function useFeedData(): UseFeedDataReturn {
     } catch (e) {
       console.error("Failed to fetch next page", e);
     } finally {
+      isFetchingRef.current = false;
       setIsFetchingNextPage(false);
     }
-  }, [isFetchingNextPage, hasNextPage, refetch]);
+  }, [hasNextPage, refetch]);
 
   const flattenedData = pages.flatMap((page) => page.body as FeedItem[]);
 

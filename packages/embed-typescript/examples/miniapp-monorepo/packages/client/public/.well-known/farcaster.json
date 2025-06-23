@@ -1,0 +1,17 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "frame": {
+    "name": "Embed Personalized Feed",
+    "iconUrl": "https://www.mbd.xyz/favicon.ico",
+    "homeUrl": "https://www.mbd.xyz",
+    "imageUrl": "https://www.mbd.xyz/og-image.png",
+    "buttonTitle": "Get Personalized Feed",
+    "splashImageUrl": "https://www.mbd.xyz/splash.png",
+    "splashBackgroundColor": "#f7fafc",
+    "webhookUrl": ""
+  }
+} 

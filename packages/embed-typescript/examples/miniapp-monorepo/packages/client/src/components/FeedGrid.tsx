@@ -7,10 +7,10 @@ import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 
 interface FeedGridProps {
+  title: string;
   data?: FeedItem[];
   isLoading: boolean;
   error?: { message: string } | null;
-  fidToUse: number;
   fetchNextPage: () => void;
   isFetchingNextPage: boolean;
   hasNextPage: boolean;
@@ -19,6 +19,7 @@ interface FeedGridProps {
 }
 
 export function FeedGrid({
+  title,
   data,
   isLoading,
   error,
@@ -42,7 +43,7 @@ export function FeedGrid({
     <Stack gap="md">
       <Group justify="space-between" align="center">
         <Title order={3} c="dimmed">
-          For You Feed
+          {title}
         </Title>
         <Group>
           <Button onClick={onRefresh} loading={isRefreshing} variant="light" size="xs">

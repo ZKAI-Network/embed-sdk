@@ -1,13 +1,15 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useFrame } from "../FrameProvider";
 import { trpc } from "../trpc";
 import type { FeedItem } from "../components/FeedCard";
 
-interface UseFeedDataReturn {
+export interface UseFeedDataReturn {
   data?: FeedItem[];
   isLoading: boolean;
   error?: { message: string } | null;
-  fidToUse: number;
+  fidToUse?: number;
+  customFid?: number;
+  setFid: (fid?: number) => void;
   timestamp: string;
   isRunningOnFrame: boolean;
   isSDKLoaded: boolean;
@@ -24,15 +26,22 @@ interface UseFeedDataReturn {
   isRefreshing: boolean;
 }
 
-export function useFeedData(): UseFeedDataReturn {
+export function useFeedData(
+  options: {
+    fetchDefault?: boolean;
+  } = { fetchDefault: true },
+): UseFeedDataReturn {
+  const { fetchDefault } = options;
   const { isSDKLoaded, isRunningOnFrame, context } = useFrame();
   const [timestamp, setTimestamp] = useState("");
   const [pages, setPages] = useState<any[]>([]);
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
-  const isFetchingRef = useRef(false);
+  const [customFid, setCustomFid] = useState<number>();
 
-  const fidToUse = (isRunningOnFrame && context?.user?.fid) || 3;
+  const fidToUse =
+    customFid ??
+    (fetchDefault ? (isRunningOnFrame && context?.user?.fid) || 3 : undefined);
 
   const {
     data: forYouData,
@@ -54,6 +63,12 @@ export function useFeedData(): UseFeedDataReturn {
       }
     }
   }, [forYouData, pages.length]);
+
+  const setFid = useCallback((fid?: number) => {
+    setCustomFid(fid);
+    setPages([]);
+    setHasNextPage(true);
+  }, []);
 
   const fetchNextPage = useCallback(async () => {
     if (isFetchingNextPage || !hasNextPage) return;
@@ -91,6 +106,8 @@ export function useFeedData(): UseFeedDataReturn {
     isLoading: forYouLoading && pages.length === 0,
     error: forYouError,
     fidToUse,
+    customFid,
+    setFid,
     timestamp,
     isRunningOnFrame,
     isSDKLoaded,

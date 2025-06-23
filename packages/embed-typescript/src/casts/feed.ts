@@ -19,9 +19,9 @@ export async function getForYouFeedByUserId(
   const params: ForYouParams = {
     user_id: userId,
     return_metadata: true,
-    ...options,
     top_k,
     impression_count,
+    ...options,
   }
 
   return httpClient.post("/v2/farcaster/casts/feed/for-you", params)
@@ -41,9 +41,9 @@ export async function getForYouFeedByWalletAddress(
   const params: ForYouParams = {
     wallet_address: walletAddress,
     return_metadata: true,
-    ...options,
     top_k,
     impression_count,
+    ...options,
   }
 
   return httpClient.post("/v2/farcaster/casts/feed/for-you", params)

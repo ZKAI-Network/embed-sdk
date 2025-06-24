@@ -11,7 +11,7 @@
       "name": "client",
       "version": "0.0.0",
       "dependencies": {
-        "@farcaster/frame-sdk": "^0.0.61",
+        "@farcaster/frame-sdk": "^0.0.64",
         "@mantine/core": "8.1.1",
         "@mantine/hooks": "8.1.1",
         "@shared/trpc": "workspace:*",
@@ -176,9 +176,9 @@
 
     "@eslint/plugin-kit": ["@eslint/plugin-kit@0.3.1", "", { "dependencies": { "@eslint/core": "^0.14.0", "levn": "^0.4.1" } }, "sha512-0J+zgWxHN+xXONWIyPWKFMgVuJoZuGiIFu8yxk7RJjxkzpGmyja5wRFqZIVtjDVOQpV+Rw0iOAjYPE2eQyjr0w=="],
 
-    "@farcaster/frame-core": ["@farcaster/frame-core@0.1.8", "", { "dependencies": { "@solana/web3.js": "^1.98.2", "ox": "^0.4.4", "zod": "^3.24.1" } }, "sha512-Y0JATQXa/iaqH3pCp8Dby4iCQbwqw7JJaGtfzUazdr7R+zs3EDP8DYQCkqJu6iGjE9gqgecB+b+DOZpnqMTDNw=="],
+    "@farcaster/frame-core": ["@farcaster/frame-core@0.2.0", "", { "dependencies": { "@solana/web3.js": "^1.98.2", "ox": "^0.4.4", "zod": "^3.24.1" } }, "sha512-HNxg7A4p5W/HqMMs6CKKJXbhHFpLYrlcOGlvc9k9tRiGBSo8JjAZhyjVUfaXqSIvN0ItCGBVmtB0ULzpktMpTA=="],
 
-    "@farcaster/frame-sdk": ["@farcaster/frame-sdk@0.0.61", "", { "dependencies": { "@farcaster/frame-core": "0.1.8", "@farcaster/quick-auth": "^0.0.6", "comlink": "^4.4.2", "eventemitter3": "^5.0.1", "ox": "^0.4.4" } }, "sha512-FvujZY/Xw7Ar6V4iFkZWK6b2s2oyuEWxB5Pb9KyNr5jSq8lGdF8HfsO+gWFBej+X13aEOQG1btm7nEvwhYrebQ=="],
+    "@farcaster/frame-sdk": ["@farcaster/frame-sdk@0.0.64", "", { "dependencies": { "@farcaster/frame-core": "0.2.0", "@farcaster/quick-auth": "^0.0.6", "comlink": "^4.4.2", "eventemitter3": "^5.0.1", "ox": "^0.4.4" } }, "sha512-mrFXmkRc5RR6/PDaN3Rho4YFEh2oI2s9eg5NA9pHUEN9oPt4Sd5ShdeX/0/uVxOk3/EbVL69lGIGce5hYbUyhw=="],
 
     "@farcaster/quick-auth": ["@farcaster/quick-auth@0.0.6", "", { "dependencies": { "jose": "^5.2.3", "zod": "^3.25.1" }, "peerDependencies": { "typescript": "5.8.3" } }, "sha512-tiZndhpfDtEhaKlkmS5cVDuS+A/tafqZT3y9I44rC69m3beJok6e8dIH2JhxVy3EvOWTyTBnrmNn6GOOh+qK6A=="],
 

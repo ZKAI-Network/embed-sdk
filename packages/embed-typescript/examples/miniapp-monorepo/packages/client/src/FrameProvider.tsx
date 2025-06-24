@@ -29,6 +29,7 @@ interface FrameContextType {
     composeCast: (params: {
       text?: string;
       embeds?: [] | [string] | [string, string];
+      parent?: { type: "cast"; hash: string };
     }) => Promise<{ cast: any | null } | undefined>;
   };
   frameInfo?: {
@@ -182,6 +183,7 @@ export default function FrameProvider({ children }: { children: ReactNode }) {
     async (params: {
       text?: string;
       embeds?: [] | [string] | [string, string];
+      parent?: { type: "cast"; hash: string };
     }) => {
       if (!isRunningOnFrame) {
         showToast({

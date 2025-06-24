@@ -39,8 +39,15 @@ export function FeedCard({ item }: FeedCardProps) {
 
   const handleShare = () => {
     composeCast({
-      text: "I found this interesting cast in the Embed Mini App",
+      text: `I found this interesting cast from @${author.username} in the Embed Mini App`,
       embeds: [`https://warpcast.com/${author.username}/${item.item_id}`],
+    });
+  };
+
+  const handleReply = () => {
+    composeCast({
+      text: "Interesting! By the way, I found your cast on Embed Mini App #shamelessPlug",
+      parent: { type: 'cast', hash: item.item_id },
     });
   };
 
@@ -74,7 +81,12 @@ export function FeedCard({ item }: FeedCardProps) {
 
         {/* Engagement Stats */}
         <Group justify="space-between" mt="auto" pt="md">
-          <Group gap="xs" align="center">
+          <Group
+            gap="xs"
+            align="center"
+            onClick={handleReply}
+            style={{ cursor: "pointer" }}
+          >
             <IconMessageCircle size={14} color="var(--mantine-color-blue-6)" />
             <Text size="xs" c="dimmed">
               {comments_count || 0}

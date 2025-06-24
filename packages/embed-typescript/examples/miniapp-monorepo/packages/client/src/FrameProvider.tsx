@@ -10,7 +10,8 @@ import sdk, {
   type FrameNotificationDetails,
   type Context,
 } from "@farcaster/frame-sdk";
-import { isMobileContext } from "./utils";
+import { isMobileContext } from "./utils/index";
+import { showToast } from "./components/generic/ToastHelper";
 
 interface FrameContextType {
   isSDKLoaded: boolean;
@@ -25,6 +26,10 @@ interface FrameContextType {
     close: () => void;
     addFrame: () => Promise<any>;
     viewProfile: (params: { fid: number }) => void;
+    composeCast: (params: {
+      text?: string;
+      embeds?: [] | [string] | [string, string];
+    }) => Promise<{ cast: any | null } | undefined>;
   };
   frameInfo?: {
     environment: "server" | "client";
@@ -43,6 +48,9 @@ const FrameContext = createContext<FrameContextType>({
     close: () => {},
     addFrame: async () => {},
     viewProfile: () => {},
+    composeCast: async () => {
+      return undefined;
+    },
   },
 });
 
@@ -170,11 +178,33 @@ export default function FrameProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const composeCast = useCallback(
+    async (params: {
+      text?: string;
+      embeds?: [] | [string] | [string, string];
+    }) => {
+      if (!isRunningOnFrame) {
+        showToast({
+          type: "error",
+          message: "You can only cast within a Farcaster client",
+        });
+        return;
+      }
+      try {
+        return await sdk.actions.composeCast(params);
+      } catch (error) {
+        console.error("Error composing cast:", error);
+      }
+    },
+    [isRunningOnFrame]
+  );
+
   const actions = {
     openUrl,
     close,
     addFrame,
     viewProfile,
+    composeCast,
   };
 
   return (

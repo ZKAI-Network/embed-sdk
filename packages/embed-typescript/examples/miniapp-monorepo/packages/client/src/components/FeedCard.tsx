@@ -6,6 +6,7 @@ import {
   IconShare,
   IconUser,
 } from "@tabler/icons-react";
+import { useFrame } from "../FrameProvider";
 
 interface Author {
   pfp_url: string;
@@ -32,6 +33,16 @@ interface FeedCardProps {
 
 export function FeedCard({ item }: FeedCardProps) {
   const { author, text, comments_count, shares_count, likes_count } = item.metadata;
+  const {
+    actions: { composeCast },
+  } = useFrame();
+
+  const handleShare = () => {
+    composeCast({
+      text: "I found this interesting cast in the Embed Mini App",
+      embeds: [`https://warpcast.com/${author.username}/${item.item_id}`],
+    });
+  };
 
   return (
     <Card withBorder radius="lg" p="lg" shadow="sm" style={{ height: "100%" }}>
@@ -84,7 +95,12 @@ export function FeedCard({ item }: FeedCardProps) {
             </Text>
           </Group>
           
-          <Group gap="xs" align="center">
+          <Group
+            gap="xs"
+            align="center"
+            onClick={handleShare}
+            style={{ cursor: "pointer" }}
+          >
             <IconShare size={14} color="var(--mantine-color-gray-6)" />
           </Group>
         </Group>

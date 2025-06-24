@@ -29,7 +29,7 @@ export function Navigation({ page, setPage, children }: NavigationProps) {
       <AppShell.Header>
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Text>Farcaster Feed</Text>
+          <Text>Embed Farcaster Feed</Text>
         </Group>
       </AppShell.Header>
 

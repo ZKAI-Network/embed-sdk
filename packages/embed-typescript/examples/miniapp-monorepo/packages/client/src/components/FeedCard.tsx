@@ -5,6 +5,7 @@ import {
   IconRepeat,
   IconShare,
   IconUser,
+  IconCoin,
 } from "@tabler/icons-react";
 import { useFrame } from "../FrameProvider";
 
@@ -35,7 +36,7 @@ interface FeedCardProps {
 export function FeedCard({ item }: FeedCardProps) {
   const { author, text, comments_count, shares_count, likes_count } = item.metadata;
   const {
-    actions: { composeCast, viewProfile },
+    actions: { composeCast, viewProfile, sendToken },
   } = useFrame();
 
   const handleShare = () => {
@@ -54,6 +55,14 @@ export function FeedCard({ item }: FeedCardProps) {
 
   const handleViewProfile = () => {
     viewProfile({ fid: author.fid });
+  };
+
+  const handleTip = () => {
+    sendToken({
+      token: "eip155:8453/erc20:0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      amount: "1000000",
+      recipientFid: author.fid,
+    });
   };
 
   return (
@@ -124,6 +133,15 @@ export function FeedCard({ item }: FeedCardProps) {
             style={{ cursor: "pointer" }}
           >
             <IconShare size={14} color="var(--mantine-color-gray-6)" />
+          </Group>
+
+          <Group
+            gap="xs"
+            align="center"
+            onClick={handleTip}
+            style={{ cursor: "pointer" }}
+          >
+            <IconCoin size={14} color="var(--mantine-color-yellow-6)" />
           </Group>
         </Group>
       </Stack>

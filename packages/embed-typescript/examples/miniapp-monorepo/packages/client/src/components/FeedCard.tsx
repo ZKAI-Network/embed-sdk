@@ -12,6 +12,7 @@ interface Author {
   pfp_url: string;
   display_name: string;
   username: string;
+  fid: number;
 }
 
 interface FeedItemMetadata {
@@ -34,7 +35,7 @@ interface FeedCardProps {
 export function FeedCard({ item }: FeedCardProps) {
   const { author, text, comments_count, shares_count, likes_count } = item.metadata;
   const {
-    actions: { composeCast },
+    actions: { composeCast, viewProfile },
   } = useFrame();
 
   const handleShare = () => {
@@ -47,15 +48,24 @@ export function FeedCard({ item }: FeedCardProps) {
   const handleReply = () => {
     composeCast({
       text: "Interesting! By the way, I found your cast on Embed Mini App #shamelessPlug",
-      parent: { type: 'cast', hash: item.item_id },
+      parent: { type: "cast", hash: item.item_id },
     });
+  };
+
+  const handleViewProfile = () => {
+    viewProfile({ fid: author.fid });
   };
 
   return (
     <Card withBorder radius="lg" p="lg" shadow="sm" style={{ height: "100%" }}>
       <Stack gap="md" style={{ height: "100%" }}>
         {/* Author Info */}
-        <Group gap="sm" align="center">
+        <Group
+          gap="sm"
+          align="center"
+          onClick={handleViewProfile}
+          style={{ cursor: "pointer" }}
+        >
           <Avatar
             src={author.pfp_url}
             alt={author.display_name}

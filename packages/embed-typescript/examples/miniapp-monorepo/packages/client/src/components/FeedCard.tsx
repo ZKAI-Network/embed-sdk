@@ -107,7 +107,8 @@ export function FeedCard({ item }: FeedCardProps) {
             {embed_items.map((embed, index) => {
               if (
                 /\.(jpeg|jpg|gif|png|webp)$/i.test(embed) ||
-                embed.includes("imagedelivery.net")
+                embed.includes("imagedelivery.net") ||
+                embed.includes("/ipfs/") // not all ipfs files are images, this is sample app only and these cases should be better supported
               ) {
                 return (
                   <Image
@@ -116,6 +117,20 @@ export function FeedCard({ item }: FeedCardProps) {
                     radius="md"
                     alt="embedded content"
                   />
+                );
+              }
+              if (embed.includes("stream.farcaster.xyz")) {
+                return (
+                  <Text
+                    key={index}
+                    size="sm"
+                    component="a"
+                    href={embed}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View media
+                  </Text>
                 );
               }
               return <UrlEmbed key={index} url={embed} />;

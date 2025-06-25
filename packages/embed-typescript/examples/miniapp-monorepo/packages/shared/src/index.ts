@@ -49,8 +49,10 @@ export const appRouter = t.router({
         };
         const { result } = await ogs(options);
         return result;
-      } catch (error) {
-        console.error("Error fetching OG data:", error);
+      } catch (error: any) {
+        // In a production app, you'd want to handle these errors more granularly
+        // or use a more robust OG data fetching solution. For this sample app,
+        // we'll just suppress the errors and let the frontend handle the fallback.
         return { success: false, error };
       }
     }),

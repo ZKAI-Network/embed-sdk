@@ -7,6 +7,7 @@ interface OgPreviewCardProps {
     ogImage?: { url: string }[];
     ogUrl?: string;
     requestUrl?: string;
+    [key: string]: any;
   };
 }
 

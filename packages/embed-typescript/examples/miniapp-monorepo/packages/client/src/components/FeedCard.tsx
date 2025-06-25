@@ -1,4 +1,4 @@
-import { Card, Stack, Group, Avatar, Text } from "@mantine/core";
+import { Card, Stack, Group, Avatar, Text, Image } from "@mantine/core";
 import {
   IconMessageCircle,
   IconHeart,
@@ -8,6 +8,7 @@ import {
   IconCoin,
 } from "@tabler/icons-react";
 import { useFrame } from "../FrameProvider";
+import { UrlEmbed } from "./UrlEmbed";
 
 interface Author {
   pfp_url: string;
@@ -22,6 +23,7 @@ interface FeedItemMetadata {
   comments_count?: number;
   shares_count?: number;
   likes_count?: number;
+  embed_items?: string[];
 }
 
 interface FeedItem {
@@ -34,7 +36,8 @@ interface FeedCardProps {
 }
 
 export function FeedCard({ item }: FeedCardProps) {
-  const { author, text, comments_count, shares_count, likes_count } = item.metadata;
+  const { author, text, comments_count, shares_count, likes_count, embed_items } =
+    item.metadata;
   const {
     actions: { composeCast, viewProfile, sendToken },
   } = useFrame();
@@ -97,6 +100,28 @@ export function FeedCard({ item }: FeedCardProps) {
         <Text size="sm" style={{ flex: 1, lineHeight: 1.5 }}>
           {text}
         </Text>
+
+        {/* Embeds */}
+        {embed_items && embed_items.length > 0 && (
+          <Stack gap="sm" pt="sm">
+            {embed_items.map((embed, index) => {
+              if (
+                /\.(jpeg|jpg|gif|png|webp)$/i.test(embed) ||
+                embed.includes("imagedelivery.net")
+              ) {
+                return (
+                  <Image
+                    key={index}
+                    src={embed}
+                    radius="md"
+                    alt="embedded content"
+                  />
+                );
+              }
+              return <UrlEmbed key={index} url={embed} />;
+            })}
+          </Stack>
+        )}
 
         {/* Engagement Stats */}
         <Group justify="space-between" mt="auto" pt="md">

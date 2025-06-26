@@ -6,7 +6,7 @@
   "description": "The core typescript package for embed APIs.",
   "repository": {
     "type": "git",
-    "url": "<PLACEHOLDER>",
+    "url": "https://github.com/ZKAI-Network/embed-sdk/",
     "directory": "packages/embed-typescript"
   },
   "publishConfig": {

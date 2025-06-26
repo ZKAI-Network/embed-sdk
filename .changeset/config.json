@@ -3,7 +3,7 @@
   "changelog": [
     "@changesets/changelog-github",
     {
-      "repo": "ZKAI-Network/embed-sdk/"
+      "repo": "ZKAI-Network/embed-sdk"
     }
   ],
   "commit": false,

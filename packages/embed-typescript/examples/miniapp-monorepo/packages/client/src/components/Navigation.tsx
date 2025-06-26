@@ -9,11 +9,11 @@ interface NavigationProps {
 }
 
 export function Navigation({ page, setPage, children }: NavigationProps) {
-  const [opened, { toggle }] = useDisclosure();
+  const [opened, { toggle, close }] = useDisclosure();
 
   const mainLinks = [
     { icon: <IconHome2 size="1rem" />, label: "Home", page: "home" },
-    { icon: <IconCompass size="1rem" />, label: "Explore", page: "explore" },
+    { icon: <IconCompass size="1rem" />, label: "View Someone's Feed", page: "explore" },
   ];
 
   return (
@@ -24,12 +24,12 @@ export function Navigation({ page, setPage, children }: NavigationProps) {
         breakpoint: "sm",
         collapsed: { mobile: !opened },
       }}
-      padding="md"
+      padding={{ base: "xs", sm: "md" }}
     >
       <AppShell.Header>
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Text>Farcaster Feed</Text>
+          <Text>Embed Farcaster Feed</Text>
         </Group>
       </AppShell.Header>
 
@@ -42,7 +42,7 @@ export function Navigation({ page, setPage, children }: NavigationProps) {
             leftSection={link.icon}
             onClick={() => {
               setPage(link.page);
-              toggle();
+              close();
             }}
           />
         ))}

@@ -3,4 +3,6 @@ export { FeedCard, type FeedItem, type FeedItemMetadata, type Author } from "./F
 export { LoadingSkeleton } from "./LoadingSkeleton";
 export { ErrorState } from "./ErrorState";
 export { EmptyState } from "./EmptyState";
-export { FeedGrid } from "./FeedGrid"; 
+export { FeedGrid } from "./FeedGrid";
+export { FidCard } from "./FidCard";
+export { FidSelector } from "./FidSelector"; 

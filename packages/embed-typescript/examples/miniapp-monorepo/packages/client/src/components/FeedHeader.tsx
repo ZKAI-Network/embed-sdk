@@ -7,9 +7,9 @@ interface FeedHeaderProps {
 export function FeedHeader({ timestamp }: FeedHeaderProps) {
   return (
     <Group justify="space-between" align="center">
-      <Title order={1} size="h2" c="blue">
+      {/* <Title order={1} size="h2" c="blue">
         Embed personalized feed
-      </Title>
+      </Title> */}
       {timestamp && (
         <Badge variant="light" color="green" size="md">
           Updated: {timestamp}

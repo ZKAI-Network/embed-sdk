@@ -5,6 +5,7 @@
   "types": "./src/index.ts",
   "dependencies": {
     "@trpc/server": "^11.3.1",
+    "open-graph-scraper": "^6.10.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

@@ -9,8 +9,10 @@ import {
 import sdk, {
   type FrameNotificationDetails,
   type Context,
+  type SendTokenResult,
 } from "@farcaster/frame-sdk";
-import { isMobileContext } from "./utils";
+import { isMobileContext } from "./utils/index";
+import { showToast } from "./components/generic/ToastHelper";
 
 interface FrameContextType {
   isSDKLoaded: boolean;
@@ -25,6 +27,16 @@ interface FrameContextType {
     close: () => void;
     addFrame: () => Promise<any>;
     viewProfile: (params: { fid: number }) => void;
+    composeCast: (params: {
+      text?: string;
+      embeds?: [] | [string] | [string, string];
+      parent?: { type: "cast"; hash: string };
+    }) => Promise<{ cast: any | null } | undefined>;
+    sendToken: (params: {
+      token: string;
+      amount: string;
+      recipientFid: number;
+    }) => Promise<SendTokenResult | undefined>;
   };
   frameInfo?: {
     environment: "server" | "client";
@@ -43,6 +55,12 @@ const FrameContext = createContext<FrameContextType>({
     close: () => {},
     addFrame: async () => {},
     viewProfile: () => {},
+    composeCast: async () => {
+      return undefined;
+    },
+    sendToken: async () => {
+      return undefined;
+    },
   },
 });
 
@@ -170,11 +188,57 @@ export default function FrameProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const composeCast = useCallback(
+    async (params: {
+      text?: string;
+      embeds?: [] | [string] | [string, string];
+      parent?: { type: "cast"; hash: string };
+    }) => {
+      if (!isRunningOnFrame) {
+        showToast({
+          type: "error",
+          message: "You can only cast within a Farcaster client",
+        });
+        return;
+      }
+      try {
+        return await sdk.actions.composeCast(params);
+      } catch (error) {
+        console.error("Error composing cast:", error);
+      }
+    },
+    [isRunningOnFrame]
+  );
+
+  const sendToken = useCallback(
+    async (params: {
+      token: string;
+      amount: string;
+      recipientFid: number;
+    }) => {
+      if (!isRunningOnFrame) {
+        showToast({
+          type: "error",
+          message: "You can only send tokens within a Farcaster client",
+        });
+        return;
+      }
+      try {
+        return await sdk.actions.sendToken(params);
+      } catch (error) {
+        console.error("Error sending token:", error);
+      }
+    },
+    [isRunningOnFrame]
+  );
+
   const actions = {
     openUrl,
     close,
     addFrame,
     viewProfile,
+    composeCast,
+    sendToken,
   };
 
   return (

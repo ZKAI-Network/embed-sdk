@@ -99,7 +99,18 @@ export function useFeedData(
     return result;
   }, [triggerQuery]);
 
-  const flattenedData = pages.flatMap((page) => page.body as FeedItem[]);
+  const flattenedData = pages.flatMap((page) =>
+    (page.body as any[]).map((item) => ({
+      ...item,
+      metadata: {
+        ...item.metadata,
+        author: {
+          ...item.metadata.author,
+          fid: item.metadata.author.user_id,
+        },
+      },
+    }))
+  );
 
   return {
     data: flattenedData,

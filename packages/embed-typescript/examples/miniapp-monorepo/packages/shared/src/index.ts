@@ -2,6 +2,7 @@
 import { initTRPC } from "@trpc/server";
 import { z } from "zod";
 import { getClient } from "embed-typescript/src/index.js";
+import ogs from "open-graph-scraper";
 
 const t = initTRPC.context<{ API_KEY_EMBED?: string }>().create();
 
@@ -30,6 +31,29 @@ export const appRouter = t.router({
       } catch (error) {
         console.error("Error fetching ForYou feed:", error);
         throw new Error("Failed to fetch ForYou feed.");
+      }
+    }),
+  getOgData: t.procedure
+    .input(z.object({ url: z.string().url() }))
+    .query(async ({ input }) => {
+      try {
+        // This is really a basic way of retrieving og data, not production level and not reliable
+        const options = {
+          url: input.url,
+          fetchOptions: {
+            headers: {
+              "user-agent":
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
+            },
+          },
+        };
+        const { result } = await ogs(options);
+        return result;
+      } catch (error: any) {
+        // In a production app, you'd want to handle these errors more granularly
+        // or use a more robust OG data fetching solution. For this sample app,
+        // we'll just suppress the errors and let the frontend handle the fallback.
+        return { success: false, error };
       }
     }),
 });

@@ -11,6 +11,9 @@ import App from "./App";
 import FrameProvider from "./FrameProvider";
 import "./index.css";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function Root() {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
@@ -29,6 +32,7 @@ function Root() {
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
           <MantineProvider>
+              <ToastContainer />
               <App />
           </MantineProvider>
         </QueryClientProvider>

@@ -6,8 +6,8 @@
   },
   "frame": {
     "version": "next",
-    "name": "Embed Personalized Feed", 
-    "iconUrl": "https://mbd-demo.dtech.vision/favicon.ico",
+    "name": "Embed - Personalized Feed",
+    "iconUrl": "https://mbd-demo.dtech.vision/icon.png",
     "homeUrl": "https://mbd-demo.dtech.vision",
     "imageUrl": "https://mbd-demo.dtech.vision/thumbnail.png",
     "buttonTitle": "Get Personalized Feed",

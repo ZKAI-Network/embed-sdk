@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "bun --watch src/index.ts"
+    "dev": "bun --watch src/index.ts",
+    "health": "curl -f http://localhost:3000/health || exit 1"
   },
   "dependencies": {
     "@hono/trpc-server": "^0.3.4",

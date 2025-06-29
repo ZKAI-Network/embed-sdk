@@ -1,0 +1,17 @@
+{ 
+  "accountAssociation": {
+  "header": "eyJmaWQiOjE2MDg1LCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4OWQxREIyOTkxY2ZiZWZDMDBiQWI0NEZFNkJmMzE5ZjcxQWM2MDBDZSJ9",
+  "payload": "eyJkb21haW4iOiJtYmQtZGVtby5kdGVjaC52aXNpb24ifQ",
+  "signature": "MHg0MjhhYjBiMDRkYTcxODc2MGRkYjYwYTA0NTliNjE3OWU3MzdjNDIxZGNlZTk1MDRmNjgzMzlhMzgyNGRhNDJhNGZlZDVlMzYzNzhiZjg1MDRhNWYwY2EyNjFkZTE3NWQyMTc2Njg2NmE0NTM4ZjBkZGFhZDAzOTQ3OWFlM2QxNDFi"
+  }, 
+  "frame": {
+    "version": "1",
+    "name": "Embed - Personalized Feed",
+    "iconUrl": "https://mbd-demo.dtech.vision/icon.png",
+    "homeUrl": "https://mbd-demo.dtech.vision",
+    "imageUrl": "https://mbd-demo.dtech.vision/thumbnail.jpg",
+    "buttonTitle": "See yours!",
+    "splashImageUrl": "https://mbd-demo.dtech.vision/splash.gif",
+    "splashBackgroundColor": "#eeccff"
+  }
+} 

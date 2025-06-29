@@ -5,6 +5,24 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Embed Personalized Feed</title>
+    
+    <!-- Frame metadata for Farcaster -->
+    <meta property="fc:frame" content='{
+      "version": "next",
+      "imageUrl": "https://mbd-demo.dtech.vision/thumbnail.png",
+      "button": {
+        "title": "See yours!",
+        "action": {
+          "type": "launch_frame", 
+          "name": "Embed - Personalized Feed",
+          "url": "https://mbd-demo.dtech.vision",
+          "splashImageUrl": "https://mbd-demo.dtech.vision/splash.gif",
+          "splashBackgroundColor": "#eeccff"
+        }
+      }
+    }' />
+    
+
   </head>
   <body>
     <div id="root"></div>

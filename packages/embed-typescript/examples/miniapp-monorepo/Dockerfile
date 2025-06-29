@@ -4,20 +4,22 @@ FROM oven/bun:1 as base
 # Set working directory
 WORKDIR /app
 
-# Copy package files for dependency installation
+# Copy only necessary files for the monorepo
 COPY package.json bun.lock ./
-COPY packages/server/package.json ./packages/server/
-COPY packages/client/package.json ./packages/client/
-COPY packages/shared/package.json ./packages/shared/
+COPY packages/ ./packages/
 
-# Install dependencies
+# Copy the pre-built embed-typescript package to the workspace root
+COPY ../../embed-typescript-built ./embed-typescript
+
+# Install dependencies for the entire workspace
 RUN bun install --frozen-lockfile
-
-# Copy source code
-COPY . .
 
 # Build stage for client
 FROM base as build
+
+# Accept build argument for API URL
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 
 # Build the client
 WORKDIR /app/packages/client
@@ -32,16 +34,15 @@ RUN apk add --no-cache dumb-init
 # Set working directory
 WORKDIR /app
 
-# Copy built client assets
-COPY --from=build --chown=bun:nodejs /app/packages/client/dist ./packages/client/dist
-
-# Copy server source and dependencies
+# Copy only necessary files for production
+COPY --from=build --chown=bun:nodejs /app/package.json ./
 COPY --from=build --chown=bun:nodejs /app/packages/server ./packages/server
 COPY --from=build --chown=bun:nodejs /app/packages/shared ./packages/shared
-COPY --from=build --chown=bun:nodejs /app/package.json /app/bun.lock ./
+COPY --from=build --chown=bun:nodejs /app/packages/client/dist ./packages/client/dist
+COPY --from=build --chown=bun:nodejs /app/embed-typescript ./embed-typescript
 
 # Install only production dependencies
-RUN bun install --frozen-lockfile --production
+RUN bun install --production
 
 # Switch to non-root user
 USER bun

@@ -5,6 +5,7 @@
   "types": "./src/index.ts",
   "dependencies": {
     "@trpc/server": "^11.3.1",
+    "embed-typescript": "workspace:*",
     "zod": "^3.23.8"
   },
   "devDependencies": {

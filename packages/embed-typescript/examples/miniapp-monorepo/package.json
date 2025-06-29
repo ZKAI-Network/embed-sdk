@@ -3,12 +3,17 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "embed-typescript"
   ],
   "scripts": {
     "dev:server": "bun --env-file=packages/server/.env --watch packages/server/src/index.ts",
     "dev:client": "bun --env-file=packages/client/.env --cwd packages/client dev",
-    "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\""
+    "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\"",
+    "generate-miniapp": "node scripts/generate-miniapp-files.js",
+    "build": "bun run generate-miniapp && bun run build:client && bun run build:server",
+    "build:client": "bun --cwd packages/client build",
+    "build:server": "bun --cwd packages/server build"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

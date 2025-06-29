@@ -1,7 +1,7 @@
 // This file is used to share the tRPC router type definition with the client.
 import { initTRPC } from "@trpc/server";
 import { z } from "zod";
-import { getClient } from "embed-typescript/src/index.js";
+import { getClient } from "embed-typescript";
 
 const t = initTRPC.context<{ API_KEY_EMBED?: string }>().create();
 

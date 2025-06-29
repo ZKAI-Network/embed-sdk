@@ -1,17 +1,17 @@
 {
   "accountAssociation": {
-    "header": "",
-    "payload": "",
-    "signature": ""
+    "header": "eyJmaWQiOjE2MDg1LCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4OWQxREIyOTkxY2ZiZWZDMDBiQWI0NEZFNkJmMzE5ZjcxQWM2MDBDZSJ9",
+    "payload": "eyJkb21haW4iOiJtYmQtZGVtby5kdGVjaC52aXNpb24ifQ",
+    "signature": "MHg0MjhhYjBiMDRkYTcxODc2MGRkYjYwYTA0NTliNjE3OWU3MzdjNDIxZGNlZTk1MDRmNjgzMzlhMzgyNGRhNDJhNGZlZDVlMzYzNzhiZjg1MDRhNWYwY2EyNjFkZTE3NWQyMTc2Njg2NmE0NTM4ZjBkZGFhZDAzOTQ3OWFlM2QxNDFi"
   },
   "frame": {
-    "name": "Embed Personalized Feed",
-    "iconUrl": "https://www.mbd.xyz/favicon.ico",
-    "homeUrl": "https://www.mbd.xyz",
-    "imageUrl": "https://www.mbd.xyz/og-image.png",
+    "version": "next",
+    "name": "Embed Personalized Feed", 
+    "iconUrl": "https://mbd-demo.dtech.vision/favicon.ico",
+    "homeUrl": "https://mbd-demo.dtech.vision",
+    "imageUrl": "https://mbd-demo.dtech.vision/thumbnail.png",
     "buttonTitle": "Get Personalized Feed",
-    "splashImageUrl": "https://www.mbd.xyz/splash.png",
-    "splashBackgroundColor": "#f7fafc",
-    "webhookUrl": ""
+    "splashImageUrl": "https://mbd-demo.dtech.vision/splash.gif",
+    "splashBackgroundColor": "#f7fafc"
   }
-} 
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useFrame } from "../FrameProvider";
 import { trpc } from "../trpc";
 import type { FeedItem } from "../components/FeedCard";
@@ -29,15 +29,26 @@ export interface UseFeedDataReturn {
 export function useFeedData(
   options: {
     fetchDefault?: boolean;
-  } = { fetchDefault: true },
+    feedId?: string;
+  } = {},
 ): UseFeedDataReturn {
-  const { fetchDefault } = options;
+  const { fetchDefault = true, feedId } = options;
   const { isSDKLoaded, isRunningOnFrame, context } = useFrame();
   const [timestamp, setTimestamp] = useState("");
   const [pages, setPages] = useState<any[]>([]);
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [customFid, setCustomFid] = useState<number>();
+  const prevFeedIdRef = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    // Reset pages when feedId changes
+    if (prevFeedIdRef.current !== feedId) {
+      setPages([]);
+      setHasNextPage(true);
+    }
+    prevFeedIdRef.current = feedId;
+  }, [feedId]);
 
   const fidToUse =
     customFid ??
@@ -50,8 +61,10 @@ export function useFeedData(
     refetch: triggerQuery,
     isRefetching: isRefreshing,
   } = trpc.forYouFeed.useQuery(
-    { fid: fidToUse! },
-    { enabled: !!fidToUse && isSDKLoaded && pages.length === 0 } // Only fetch automatically on first load
+    { fid: fidToUse!, ...(feedId && { feed_id: feedId }) },
+    {
+      enabled: !!fidToUse && isSDKLoaded && pages.length === 0,
+    } // Only fetch automatically on first load
   );
 
   useEffect(() => {
@@ -71,7 +84,7 @@ export function useFeedData(
   }, []);
 
   const fetchNextPage = useCallback(async () => {
-    if (isFetchingNextPage || !hasNextPage) return;
+    if (isFetchingNextPage || !hasNextPage || !fidToUse) return;
 
     setIsFetchingNextPage(true);
     try {
@@ -87,9 +100,10 @@ export function useFeedData(
     } finally {
       setIsFetchingNextPage(false);
     }
-  }, [isFetchingNextPage, hasNextPage, triggerQuery]);
+  }, [isFetchingNextPage, hasNextPage, triggerQuery, fidToUse]);
 
   const refetch = useCallback(async () => {
+    if (!fidToUse) return;
     const result = await triggerQuery();
     if (result.data) {
       setPages([result.data]); // Reset pages with new data
@@ -97,7 +111,7 @@ export function useFeedData(
       setHasNextPage(result.data.body.length > 0);
     }
     return result;
-  }, [triggerQuery]);
+  }, [triggerQuery, fidToUse]);
 
   const flattenedData = pages.flatMap((page) =>
     (page.body as any[]).map((item) => ({

@@ -32,10 +32,15 @@ export const appRouter = t.router({
         const client = getClient(ctx.API_KEY_EMBED);
         console.log("Fetching For You feed for fid:", input.fid);
         console.log("Fetching For You feed for feed_id:", input.feed_id);
-        const feed = await client.getForYouFeedByUserId(String(input.fid), {
+        const options = {
           top_k: 10,
           ...(input.feed_id && { feed_id: input.feed_id }),
-        });
+        };
+        console.log("For You feed options:", options);
+        const feed = await client.getForYouFeedByUserId(
+          String(input.fid),
+          options
+        );
         console.log("Successfully fetched feed:", feed);
         return feed;
       } catch (error) {

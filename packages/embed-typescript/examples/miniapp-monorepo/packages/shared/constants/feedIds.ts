@@ -1,12 +1,12 @@
 export const FEEDS = [
   {
     id: 'feed_274',
-    name: 'Music-related',
+    name: 'Music Related',
     description: 'A feed of music related content that is personalized to the user.',
   },
   {
     id: 'feed_276',
-    name: 'Science & Technology',
+    name: 'Science and Technology',
     description: 'A feed of high quality content related to tech & science.',
   },
   {
@@ -16,7 +16,7 @@ export const FEEDS = [
   },
   {
     id: 'feed_335',
-    name: 'Hello From Super',
+    name: 'Hello from Super',
     description: 'Filtering content posted from Super, a Farcaster client hosted at Super.sc.',
   },
   {

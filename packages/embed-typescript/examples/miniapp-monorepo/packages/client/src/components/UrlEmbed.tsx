@@ -1,6 +1,6 @@
 import { trpc } from "../trpc";
 import { OgPreviewCard } from "./OgPreviewCard";
-import { LoadingSkeleton } from "./LoadingSkeleton";
+import { EmbedSkeleton } from "./EmbedSkeleton";
 import { Card, CardContent } from "./ui/card";
 import { IconLink, IconExternalLink } from "@tabler/icons-react";
 
@@ -12,7 +12,7 @@ export function UrlEmbed({ url }: UrlEmbedProps) {
   const { data, isLoading, error } = trpc.getOgData.useQuery({ url });
 
   if (isLoading) {
-    return <LoadingSkeleton />;
+    return <EmbedSkeleton />;
   }
 
   if (error || !data || !data.success) {

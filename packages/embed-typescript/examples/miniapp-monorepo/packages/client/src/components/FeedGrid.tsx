@@ -65,19 +65,23 @@ export function FeedGrid({
 
       {/* Loading State */}
       {isLoading && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <LoadingSkeleton key={index} />
-          ))}
+        <div className="w-full sm:max-w-2xl sm:mx-auto">
+          <div className="grid grid-cols-1 gap-4">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <LoadingSkeleton key={index} />
+            ))}
+          </div>
         </div>
       )}
 
       {/* Feed Cards */}
       {data && data.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {data.map((item) => (
-            <FeedCard key={item.item_id} item={item} />
-          ))}
+        <div className="w-full sm:max-w-2xl sm:mx-auto">
+          <div className="grid grid-cols-1 gap-4">
+            {data.map((item) => (
+              <FeedCard key={item.item_id} item={item} />
+            ))}
+          </div>
         </div>
       )}
 
@@ -86,10 +90,12 @@ export function FeedGrid({
 
       {/* Loading More Indicator */}
       {isFetchingNextPage && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <LoadingSkeleton key={index} />
-          ))}
+        <div className="w-full sm:max-w-2xl sm:mx-auto">
+          <div className="grid grid-cols-1 gap-4">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <LoadingSkeleton key={index} />
+            ))}
+          </div>
         </div>
       )}
 

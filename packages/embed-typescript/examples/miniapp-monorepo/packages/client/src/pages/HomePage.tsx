@@ -57,13 +57,13 @@ export function HomePage(props: HomePageProps) {
             
             {/* User Profile Section */}
             {isRunningOnFrame && userInfo && (
-              <div className="flex items-center gap-4 p-4 border border-border rounded-lg">
-                <Avatar className="w-16 h-16">
+              <div className="flex items-center gap-4 p-4 border border-border rounded-lg bg-card">
+                <Avatar className="w-16 h-16 ring-2 ring-border">
                   <AvatarImage 
                     src={userInfo.pfpUrl} 
                     alt={userInfo.displayName || userInfo.username} 
                   />
-                  <AvatarFallback>
+                  <AvatarFallback className="bg-primary/10 text-primary">
                     <IconUser size={24} />
                   </AvatarFallback>
                 </Avatar>

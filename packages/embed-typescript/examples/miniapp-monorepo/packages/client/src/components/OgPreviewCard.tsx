@@ -1,4 +1,5 @@
 import { Card, CardContent } from "./ui/card";
+import { Image } from "./ui/image";
 
 interface OgPreviewCardProps {
   data: {
@@ -22,10 +23,12 @@ export function OgPreviewCard({ data }: OgPreviewCardProps) {
         <CardContent className="p-3">
           <div className="flex items-start gap-3">
             {imageUrl && (
-              <img 
-                src={imageUrl} 
-                className="w-20 h-20 rounded-sm object-cover flex-shrink-0" 
-                alt={ogTitle || "Preview image"} 
+              <Image
+                src={imageUrl}
+                alt={ogTitle || "Preview image"}
+                className="w-20 h-20 rounded-sm flex-shrink-0"
+                aspectRatio="square"
+                showSkeleton={true}
               />
             )}
             <div className="flex-1 min-w-0">

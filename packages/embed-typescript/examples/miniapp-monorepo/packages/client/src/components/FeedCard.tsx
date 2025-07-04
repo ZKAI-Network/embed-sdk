@@ -1,5 +1,6 @@
 import { Card, CardContent } from "./ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
+import { Image } from "./ui/image";
 import {
   IconMessageCircle,
   IconHeart,
@@ -7,9 +8,12 @@ import {
   IconShare,
   IconUser,
   IconCoin,
+  IconPlayerPlay as IconVideoPlay,
+  IconExternalLink,
 } from "@tabler/icons-react";
 import { useFrame } from "../FrameProvider";
 import { UrlEmbed } from "./UrlEmbed";
+import { LocationCard } from "./LocationCard";
 
 interface Author {
   pfp_url: string;
@@ -77,10 +81,10 @@ export function FeedCard({ item }: FeedCardProps) {
           className="flex items-center gap-3 cursor-pointer"
           onClick={handleViewProfile}
         >
-          <Avatar className="w-12 h-12">
+          <Avatar className="w-12 h-12 ring-1 ring-border">
             <AvatarImage src={author.pfp_url} alt={author.display_name} />
-            <AvatarFallback>
-              <IconUser size={24} />
+            <AvatarFallback className="bg-primary/10 text-primary font-medium">
+              {author.display_name ? author.display_name.charAt(0).toUpperCase() : <IconUser size={20} />}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
@@ -102,33 +106,55 @@ export function FeedCard({ item }: FeedCardProps) {
         {embed_items && embed_items.length > 0 && (
           <div className="space-y-3 pt-2">
             {embed_items.map((embed, index) => {
+              // Handle geographic location URLs
+              if (embed.startsWith("geo:")) {
+                return <LocationCard key={index} geoUrl={embed} />;
+              }
+              
+              // Handle image URLs
               if (
                 /\.(jpeg|jpg|gif|png|webp)$/i.test(embed) ||
                 embed.includes("imagedelivery.net") ||
                 embed.includes("/ipfs/") // not all ipfs files are images, this is sample app only and these cases should be better supported
               ) {
                 return (
-                  <img
+                  <Image
                     key={index}
                     src={embed}
-                    className="rounded-md w-full object-cover"
                     alt="embedded content"
+                    className="rounded-md w-full"
+                    aspectRatio="auto"
                   />
                 );
               }
+              
+              // Handle Farcaster stream content
               if (embed.includes("stream.farcaster.xyz")) {
                 return (
-                  <a
-                    key={index}
-                    href={embed}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-blue-600 hover:text-blue-800 underline"
-                  >
-                    View media
-                  </a>
+                  <Card key={index} className="border hover:bg-gray-50 transition-colors">
+                    <a href={embed} target="_blank" rel="noopener noreferrer" className="block">
+                      <CardContent className="p-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-md flex items-center justify-center">
+                            <IconVideoPlay size={20} className="text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium text-primary">
+                              View Media
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              Farcaster video content
+                            </p>
+                          </div>
+                          <IconExternalLink size={16} className="text-muted-foreground" />
+                        </div>
+                      </CardContent>
+                    </a>
+                  </Card>
                 );
               }
+              
+              // Handle all other URLs with OG preview
               return <UrlEmbed key={index} url={embed} />;
             })}
           </div>

@@ -1,4 +1,5 @@
-import { SimpleGrid, Stack, Group, Title, Loader, Button } from "@mantine/core";
+import { Button } from "./ui/button";
+import { Loader } from "./ui/loader";
 import { FeedCard, type FeedItem } from "./FeedCard";
 import { LoadingSkeleton } from "./LoadingSkeleton";
 import { ErrorState } from "./ErrorState";
@@ -40,44 +41,44 @@ export function FeedGrid({
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <Stack gap="md">
-      <Group justify="space-between" align="center">
-        <Title order={3} c="dimmed">
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg text-muted-foreground">
           {title}
-        </Title>
-        <Group>
-          <Button onClick={onRefresh} loading={isRefreshing} variant="light" size="xs">
+        </h3>
+        <div className="flex items-center gap-2">
+          <Button 
+            onClick={onRefresh} 
+            disabled={isRefreshing} 
+            variant="outline" 
+            size="sm"
+          >
+            {isRefreshing && <Loader size="sm" className="mr-2" />}
             Refresh
           </Button>
           {isLoading && <Loader size="sm" />}
-        </Group>
-      </Group>
+        </div>
+      </div>
 
       {/* Error State */}
       {error && <ErrorState message={error.message} />}
 
       {/* Loading State */}
       {isLoading && (
-        <SimpleGrid
-          cols={{ base: 1, sm: 2, md: 3, lg: 4 }}
-          spacing="md"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {Array.from({ length: 8 }).map((_, index) => (
             <LoadingSkeleton key={index} />
           ))}
-        </SimpleGrid>
+        </div>
       )}
 
       {/* Feed Cards */}
       {data && data.length > 0 && (
-        <SimpleGrid
-          cols={{ base: 1, sm: 2, md: 3, lg: 4 }}
-          spacing="md"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {data.map((item) => (
             <FeedCard key={item.item_id} item={item} />
           ))}
-        </SimpleGrid>
+        </div>
       )}
 
       {/* Intersection Observer Trigger: only rendered when we can fetch more */}
@@ -85,18 +86,15 @@ export function FeedGrid({
 
       {/* Loading More Indicator */}
       {isFetchingNextPage && (
-        <SimpleGrid
-          cols={{ base: 1, sm: 2, md: 3, lg: 4 }}
-          spacing="md"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, index) => (
             <LoadingSkeleton key={index} />
           ))}
-        </SimpleGrid>
+        </div>
       )}
 
       {/* Empty State */}
       {data && data.length === 0 && !isLoading && <EmptyState />}
-    </Stack>
+    </div>
   );
 } 

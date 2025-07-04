@@ -1,4 +1,4 @@
-import { Card, Center, Stack, Text } from "@mantine/core";
+import { Card, CardContent } from "./ui/card";
 
 interface ErrorStateProps {
   message: string;
@@ -6,17 +6,17 @@ interface ErrorStateProps {
 
 export function ErrorState({ message }: ErrorStateProps) {
   return (
-    <Card withBorder p="xl" radius="md" bg="red.0">
-      <Center>
-        <Stack align="center" gap="sm">
-          <Text c="red" fw={500}>
+    <Card className="border border-red-200 bg-red-50">
+      <CardContent className="flex flex-col items-center justify-center py-12 px-6">
+        <div className="text-center space-y-2">
+          <p className="text-red-600 font-medium">
             Error loading feed
-          </Text>
-          <Text c="red" size="sm">
+          </p>
+          <p className="text-red-600 text-sm">
             {message}
-          </Text>
-        </Stack>
-      </Center>
+          </p>
+        </div>
+      </CardContent>
     </Card>
   );
 } 

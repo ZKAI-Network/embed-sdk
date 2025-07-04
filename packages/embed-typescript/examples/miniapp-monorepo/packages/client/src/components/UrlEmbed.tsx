@@ -1,6 +1,5 @@
 import { trpc } from "../trpc";
 import { OgPreviewCard } from "./OgPreviewCard";
-import { Text } from "@mantine/core";
 import { LoadingSkeleton } from "./LoadingSkeleton";
 
 interface UrlEmbedProps {
@@ -17,9 +16,14 @@ export function UrlEmbed({ url }: UrlEmbedProps) {
   if (error || !data || !data.success) {
     // Fallback to a simple link if OG data fails
     return (
-      <Text size="sm" component="a" href={url} target="_blank" rel="noopener noreferrer">
+      <a 
+        href={url} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="text-sm text-blue-600 hover:text-blue-800 underline"
+      >
         {url}
-      </Text>
+      </a>
     );
   }
 

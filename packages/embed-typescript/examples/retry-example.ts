@@ -115,7 +115,7 @@ async function advancedEffectExample() {
   })
 
   // Handle errors using Effect's error handling capabilities
-  const program = Effect.gen(function* () {
+  const program = Effect.gen(function*() {
     const result = yield* Effect.catchTags(apiCall, {
       HttpRequestError: (error) => {
         console.log(`Handling HTTP error: ${error.status}`)
@@ -154,9 +154,7 @@ async function runExamples() {
 }
 
 // Export examples for use in other files
-export {
-  advancedEffectExample, basicExample, customRetryExample, errorHandlingExample, noRetryExample, runExamples
-}
+export { advancedEffectExample, basicExample, customRetryExample, errorHandlingExample, noRetryExample, runExamples }
 
 // Run examples if this file is executed directly
 if (import.meta.url === new URL(import.meta.resolve(import.meta.url)).href) {

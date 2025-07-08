@@ -61,6 +61,18 @@ export type HttpClientError = NetworkError | HttpRequestError | ParseError | Tim
 
 /**
  * Configuration for retry behavior
+ *
+ * @example
+ * ```typescript
+ * const client = getClient('your-api-key', {
+ *   retry: {
+ *     maxRetries: 5,
+ *     initialDelay: 1000,
+ *     exponentialBackoff: true,
+ *     timeoutMs: 30000
+ *   }
+ * })
+ * ```
  */
 export interface RetryConfig {
   /** Maximum number of retry attempts (default: 3) */
@@ -94,13 +106,29 @@ const DEFAULT_RETRY_CONFIG: Required<RetryConfig> = {
 // ============================================================================
 
 /**
- * Configuration for the embed API client
+ * Configuration for the Embed API client
+ *
+ * @example
+ * ```typescript
+ * const client = getClient('your-api-key', {
+ *   title: 'my-app',
+ *   retry: {
+ *     maxRetries: 3,
+ *     timeoutMs: 30000
+ *   }
+ * })
+ * ```
  */
 export interface mbdClientConfig {
+  /** Base URL for the API (default: https://api.mbd.xyz) */
   readonly baseUrl?: string
+  /** API token for authentication */
   readonly token?: string
+  /** HTTP referer header value */
   readonly referer?: string
+  /** Application title for tracking (default: embed_sdk_typescript) */
   readonly title?: string
+  /** Retry configuration */
   readonly retry?: RetryConfig
 }
 
@@ -358,7 +386,23 @@ class HttpClient implements IHttpClient {
 // ============================================================================
 
 /**
- * Main mbd API client - your complete SDK with Effect-based error handling
+ * Main Embed API client providing access to personalized feeds and feed management
+ *
+ * @example
+ * ```typescript
+ * import { getClient } from 'embed-typescript'
+ *
+ * const client = getClient('your-api-key')
+ *
+ * // Get personalized feed
+ * const feed = await client.getFeedByUserId('16085')
+ *
+ * // Create a custom feed
+ * const customFeed = await client.createFeed({
+ *   name: 'My Custom Feed',
+ *   description: 'A feed for my app'
+ * })
+ * ```
  */
 export class mbdClient {
   private http: HttpClient
@@ -382,6 +426,21 @@ export class mbdClient {
 
   /**
    * Get personalized "For You" feed by user ID
+   *
+   * @param userId - The Farcaster user ID to get personalized feed for
+   * @param options - Optional configuration for feed generation
+   * @returns Promise<ForYouFeedItem[]> - Array of personalized feed items
+   *
+   * @example
+   * ```typescript
+   * const client = getClient("your-api-key")
+   * const feed = await client.getFeedByUserId("16085", {
+   *   top_k: 10,
+   *   return_metadata: true
+   * })
+   * console.log(feed[0].metadata?.text) // Access cast text
+   * console.log(feed[0].metadata?.author.username) // Access author username
+   * ```
    */
   async getFeedByUserId(
     userId: string,
@@ -392,6 +451,20 @@ export class mbdClient {
 
   /**
    * Get personalized "For You" feed by wallet address
+   *
+   * @param walletAddress - The user's wallet address to get personalized feed for
+   * @param options - Optional configuration for feed generation
+   * @returns Promise<ForYouFeedItem[]> - Array of personalized feed items
+   *
+   * @example
+   * ```typescript
+   * const client = getClient("your-api-key")
+   * const feed = await client.getFeedByWalletAddress("0x1234...", {
+   *   top_k: 15,
+   * })
+   * console.log(feed[0].metadata?.author.username) // Access author username
+   * console.log(feed[0].score) // Access recommendation score
+   * ```
    */
   async getFeedByWalletAddress(
     walletAddress: string,
@@ -406,13 +479,44 @@ export class mbdClient {
 
   /**
    * Create a new feed configuration
+   *
+   * @param options - Feed creation options including name, description, and configuration
+   * @returns Promise<FeedConfigurationResponse> - The created feed configuration
+   *
+   * @example
+   * ```typescript
+   * const client = getClient("your-api-key")
+   * const feed = await client.createFeed({
+   *   name: "My Custom Feed",
+   *   description: "A personalized feed for my app",
+   *   visibility: "private",
+   *   config: {
+   *     filters: {
+   *       ai_labels: ["web3_nft", "web3_defi"],
+   *       start_timestamp: "days_ago:7"
+   *     }
+   *   }
+   * })
+   * console.log(feed.config_id) // Access the feed ID
+   * ```
    */
   async createFeed(options: CreateFeedOptions): Promise<FeedCreateUpdateResponse> {
     return createFeed(this.http, options)
   }
 
   /**
-   * Retrieve a feed configuration by ID
+   * Get a feed configuration by ID
+   *
+   * @param configId - The feed configuration ID
+   * @returns Promise<FeedConfigurationResponse> - The feed configuration details
+   *
+   * @example
+   * ```typescript
+   * const client = getClient("your-api-key")
+   * const feed = await client.getFeed("feed_123")
+   * console.log(feed.name) // Access feed name
+   * console.log(feed.config.filters) // Access feed filters
+   * ```
    */
   async getFeed(configId: string): Promise<FeedGetResponse> {
     return getFeed(this.http, configId)
@@ -420,6 +524,17 @@ export class mbdClient {
 
   /**
    * List all feed configurations for the account
+   *
+   * @param visibility - Filter by visibility (private/public), defaults to "private"
+   * @returns Promise<FeedConfigurationResponse[]> - Array of feed configurations
+   *
+   * @example
+   * ```typescript
+   * const client = getClient("your-api-key")
+   * const feeds = await client.listFeeds("private")
+   * console.log(`Found ${feeds.length} feeds`)
+   * feeds.forEach(feed => console.log(feed.name))
+   * ```
    */
   async listFeeds(visibility: "private" | "public" = "private"): Promise<ListFeedsResponse> {
     return listFeeds(this.http, visibility)
@@ -427,6 +542,24 @@ export class mbdClient {
 
   /**
    * Update an existing feed configuration
+   *
+   * @param options - Feed update options, must include config_id
+   * @returns Promise<FeedConfigurationResponse> - The updated feed configuration
+   *
+   * @example
+   * ```typescript
+   * const client = getClient("your-api-key")
+   * const updatedFeed = await client.updateFeed({
+   *   config_id: "feed_123",
+   *   name: "Updated Feed Name",
+   *   config: {
+   *     filters: {
+   *       ai_labels: ["web3_nft", "web3_defi", "web3_gaming"]
+   *     }
+   *   }
+   * })
+   * console.log(updatedFeed.name) // Access updated name
+   * ```
    */
   async updateFeed(options: UpdateFeedOptions): Promise<FeedCreateUpdateResponse> {
     return updateFeed(this.http, options)
@@ -434,7 +567,28 @@ export class mbdClient {
 }
 
 /**
- * Factory function to create client
+ * Get a new mbdClient instance
+ *
+ * @param token - API token required for authentication
+ * @param options - Optional client configuration
+ * @returns mbdClient instance
+ *
+ * @example
+ * ```typescript
+ * import { getClient } from 'embed-typescript'
+ *
+ * // Basic usage
+ * const client = getClient('your-api-key')
+ *
+ * // With configuration
+ * const client = getClient('your-api-key', {
+ *   baseUrl: 'https://api.mbd.xyz',
+ *   retry: {
+ *     maxRetries: 3,
+ *     timeoutMs: 30000
+ *   }
+ * })
+ * ```
  */
 export function getClient(token?: string, options?: mbdClientConfig): mbdClient {
   return new mbdClient(token, options)

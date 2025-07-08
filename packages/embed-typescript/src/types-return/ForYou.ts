@@ -61,8 +61,8 @@ export const ForYouFeedItem = S.Struct({
   metadata: S.optional(CastMetadata)
 })
 
-// Complete ForYou response
-export const ForYouResponse = S.Struct({
+// Raw API response (internal use only)
+export const ForYouApiResponse = S.Struct({
   status_code: pipe(S.Number, S.int()),
   body: S.Array(ForYouFeedItem)
 })
@@ -74,7 +74,8 @@ export type AILabels = S.Schema.Type<typeof AILabels>
 export type Author = S.Schema.Type<typeof Author>
 export type CastMetadata = S.Schema.Type<typeof CastMetadata>
 export type ForYouFeedItem = S.Schema.Type<typeof ForYouFeedItem>
-export type ForYouResponse = S.Schema.Type<typeof ForYouResponse>
+export type ForYouResponse = Array<ForYouFeedItem> // Unwrapped - direct array of feed items
+export type ForYouApiResponse = S.Schema.Type<typeof ForYouApiResponse> // Internal use only
 
 // Export encoded schemas
 export const SocialProofEntryEncoded = S.encodedSchema(SocialProofEntry)
@@ -83,7 +84,7 @@ export const AILabelsEncoded = S.encodedSchema(AILabels)
 export const AuthorEncoded = S.encodedSchema(Author)
 export const CastMetadataEncoded = S.encodedSchema(CastMetadata)
 export const ForYouFeedItemEncoded = S.encodedSchema(ForYouFeedItem)
-export const ForYouResponseEncoded = S.encodedSchema(ForYouResponse)
+export const ForYouApiResponseEncoded = S.encodedSchema(ForYouApiResponse)
 
 // Export encoded types
 export type SocialProofEntryEncoded = S.Schema.Encoded<typeof SocialProofEntry>
@@ -92,4 +93,4 @@ export type AILabelsEncoded = S.Schema.Encoded<typeof AILabels>
 export type AuthorEncoded = S.Schema.Encoded<typeof Author>
 export type CastMetadataEncoded = S.Schema.Encoded<typeof CastMetadata>
 export type ForYouFeedItemEncoded = S.Schema.Encoded<typeof ForYouFeedItem>
-export type ForYouResponseEncoded = S.Schema.Encoded<typeof ForYouResponse>
+export type ForYouApiResponseEncoded = S.Schema.Encoded<typeof ForYouApiResponse>

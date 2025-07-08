@@ -57,32 +57,17 @@ export interface FeedConfigurationResponse {
 }
 
 /**
- * Response wrapper for feed creation/update operations
+ * Unwrapped response types - direct access to data
  */
-export interface FeedCreateUpdateResponse {
-  message: string
-  data: FeedConfigurationResponse
-}
-
-/**
- * Response wrapper for getFeed operation (matches actual API response)
- */
-export interface FeedGetResponse {
-  data: FeedConfigurationResponse
-}
+export type FeedCreateUpdateResponse = FeedConfigurationResponse
+export type FeedGetResponse = FeedConfigurationResponse
+export type ListFeedsResponse = Array<FeedConfigurationResponse>
 
 /**
  * Request payload for listing feeds
  */
 export interface ListFeedsRequest {
   visibility: "private" | "public"
-}
-
-/**
- * Response from feed listing operation
- */
-export interface ListFeedsResponse {
-  data: Array<FeedConfigurationResponse>
 }
 
 /**

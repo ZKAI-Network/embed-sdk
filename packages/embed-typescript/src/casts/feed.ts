@@ -1,12 +1,9 @@
 import type { IHttpClient } from "../interfaces/index.js"
-import type { ForYouResponse } from "../types-return/ForYou.js"
+import type { ForYouApiResponse, ForYouResponse } from "../types-return/ForYou.js"
 import type { ForYou as ForYouParams } from "../types/ForYou.js"
 
 export type FeedOptions = Omit<ForYouParams, "wallet_address" | "user_id">
 
-/**
- * Get personalized "For You" feed by user ID
- */
 export async function getFeedByUserId(
   httpClient: IHttpClient,
   userId: string,
@@ -23,12 +20,10 @@ export async function getFeedByUserId(
     ...options
   }
 
-  return httpClient.post("/v2/farcaster/casts/feed/for-you", params)
+  const response = await httpClient.post<ForYouApiResponse>("/v2/farcaster/casts/feed/for-you", params)
+  return [...response.body]
 }
 
-/**
- * Get personalized "For You" feed by wallet address
- */
 export async function getFeedByWalletAddress(
   httpClient: IHttpClient,
   walletAddress: string,
@@ -45,5 +40,6 @@ export async function getFeedByWalletAddress(
     ...options
   }
 
-  return httpClient.post("/v2/farcaster/casts/feed/for-you", params)
+  const response = await httpClient.post<ForYouApiResponse>("/v2/farcaster/casts/feed/for-you", params)
+  return [...response.body]
 }

@@ -33,27 +33,27 @@ async function feedManagementExample() {
       feed_image_url: "https://d138qfh819yqwb.cloudfront.net/images/console/feed-defaults/28.jpg"
     })
 
-    console.log("Created feed:", newFeed.data.config_id)
+    console.log("Created feed:", newFeed.config_id)
 
     // 2. List all feeds
     console.log("\nListing all feeds...")
     const feeds = await client.listFeeds("private")
-    console.log(`Found ${feeds.data.length} feeds`)
+    console.log(`Found ${feeds.length} feeds`)
 
     // 3. Get a specific feed
     console.log("\nRetrieving feed details...")
-    const feedDetails = await client.getFeed(newFeed.data.config_id)
+    const feedDetails = await client.getFeed(newFeed.config_id)
 
     // 4. Update the feed
     console.log("\nUpdating feed...")
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const updatedFeed = await client.updateFeed({
-      config_id: newFeed.data.config_id,
+      config_id: newFeed.config_id,
       name: "Best Feed Ever",
       description: "This feed gets the most interesting content in web3",
       config: {
         filters: {
-          ...feedDetails.data.config.filters,
+          ...feedDetails.config.filters,
           geo_locations: ["34.05,-118.24", "35.88,-106.30"],
           ai_labels: ["web3_nft", "web3_consumer", "web3_defi"],
           start_timestamp: "days_ago:30"

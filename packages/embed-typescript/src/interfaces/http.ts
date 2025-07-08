@@ -10,6 +10,7 @@ export interface IHttpClient {
     baseUrl: string,
     endpoint: string,
     body?: unknown,
-    queryParams?: Record<string, string>
+    queryParams?: Record<string, string>,
+    useBasicAuth?: boolean
   ): Promise<TResponse>
 }

@@ -6,7 +6,8 @@ import type { IHttpClient } from "./interfaces/index.js"
 import type { ForYouResponse } from "./types-return/ForYou.js"
 import type {
   CreateFeedOptions,
-  FeedConfigurationResponse,
+  FeedCreateUpdateResponse,
+  FeedGetResponse,
   ListFeedsResponse,
   UpdateFeedOptions
 } from "./types/FeedManagement.js"
@@ -180,7 +181,8 @@ class HttpClient implements IHttpClient {
     method: "GET" | "POST" | "PATCH",
     baseUrl?: string,
     body?: unknown,
-    queryParams?: Record<string, string>
+    queryParams?: Record<string, string>,
+    useBasicAuth?: boolean
   ): Effect.Effect<TResponse, HttpClientError> {
     const url = this.buildUrl(endpoint, baseUrl, queryParams)
 
@@ -189,7 +191,7 @@ class HttpClient implements IHttpClient {
         const requestOptions: RequestInit = {
           method,
           headers: {
-            "Authorization": `Bearer ${this.config.token}`,
+            "Authorization": useBasicAuth ? `Basic ${this.config.token}` : `Bearer ${this.config.token}`,
             "Accept": "application/json",
             "HTTP-Referer": this.config.referer,
             "X-Title": this.config.title
@@ -292,9 +294,10 @@ class HttpClient implements IHttpClient {
     method: "GET" | "POST" | "PATCH",
     baseUrl?: string,
     body?: unknown,
-    queryParams?: Record<string, string>
+    queryParams?: Record<string, string>,
+    useBasicAuth?: boolean
   ): Effect.Effect<TResponse, HttpClientError> {
-    const fetchEffect = this.performFetch<TResponse>(endpoint, method, baseUrl, body, queryParams)
+    const fetchEffect = this.performFetch<TResponse>(endpoint, method, baseUrl, body, queryParams, useBasicAuth)
     const timeoutEffect = this.createTimeoutEffect(this.config.retry.timeoutMs)
 
     // Race fetch against timeout
@@ -342,9 +345,10 @@ class HttpClient implements IHttpClient {
     baseUrl: string,
     endpoint: string,
     body?: unknown,
-    queryParams?: Record<string, string>
+    queryParams?: Record<string, string>,
+    useBasicAuth?: boolean
   ): Promise<TResponse> {
-    const effect = this.executeRequestWithRetries<TResponse>(endpoint, method, baseUrl, body, queryParams)
+    const effect = this.executeRequestWithRetries<TResponse>(endpoint, method, baseUrl, body, queryParams, useBasicAuth)
     return Effect.runPromise(effect)
   }
 }
@@ -403,14 +407,14 @@ export class mbdClient {
   /**
    * Create a new feed configuration
    */
-  async createFeed(options: CreateFeedOptions): Promise<FeedConfigurationResponse> {
+  async createFeed(options: CreateFeedOptions): Promise<FeedCreateUpdateResponse> {
     return createFeed(this.http, options)
   }
 
   /**
    * Retrieve a feed configuration by ID
    */
-  async getFeed(configId: string): Promise<FeedConfigurationResponse> {
+  async getFeed(configId: string): Promise<FeedGetResponse> {
     return getFeed(this.http, configId)
   }
 
@@ -424,7 +428,7 @@ export class mbdClient {
   /**
    * Update an existing feed configuration
    */
-  async updateFeed(options: UpdateFeedOptions): Promise<FeedConfigurationResponse> {
+  async updateFeed(options: UpdateFeedOptions): Promise<FeedCreateUpdateResponse> {
     return updateFeed(this.http, options)
   }
 }

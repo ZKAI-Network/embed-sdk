@@ -2,7 +2,8 @@ import type { IHttpClient } from "../interfaces/index.js"
 import type {
   CreateFeedOptions,
   FeedConfiguration,
-  FeedConfigurationResponse,
+  FeedCreateUpdateResponse,
+  FeedGetResponse,
   ListFeedsRequest,
   ListFeedsResponse,
   UpdateFeedOptions
@@ -16,7 +17,7 @@ const CONSOLE_API_BASE_URL = "https://console-api-us-west-2.mbd.xyz"
 export async function createFeed(
   httpClient: IHttpClient,
   options: CreateFeedOptions
-): Promise<FeedConfigurationResponse> {
+): Promise<FeedCreateUpdateResponse> {
   const feedConfig: FeedConfiguration = {
     name: options.name,
     description: options.description,
@@ -45,11 +46,13 @@ export async function createFeed(
     short_name: options.short_name ?? null
   }
 
-  return httpClient.requestWithCustomBaseUrl<FeedConfigurationResponse>(
+  return httpClient.requestWithCustomBaseUrl<FeedCreateUpdateResponse>(
     "POST",
     CONSOLE_API_BASE_URL,
     "/api/feed/config",
-    feedConfig
+    feedConfig,
+    undefined,
+    true // Use Basic auth
   )
 }
 
@@ -59,13 +62,14 @@ export async function createFeed(
 export async function getFeed(
   httpClient: IHttpClient,
   configId: string
-): Promise<FeedConfigurationResponse> {
-  return httpClient.requestWithCustomBaseUrl<FeedConfigurationResponse>(
+): Promise<FeedGetResponse> {
+  return httpClient.requestWithCustomBaseUrl<FeedGetResponse>(
     "GET",
     CONSOLE_API_BASE_URL,
     "/api/feed/config",
     undefined,
-    { config_id: configId }
+    { config_id: configId },
+    true // Use Basic auth
   )
 }
 
@@ -82,7 +86,9 @@ export async function listFeeds(
     "POST",
     CONSOLE_API_BASE_URL,
     "/api/feed/configs",
-    request
+    request,
+    undefined,
+    true // Use Basic auth
   )
 }
 
@@ -92,9 +98,10 @@ export async function listFeeds(
 export async function updateFeed(
   httpClient: IHttpClient,
   options: UpdateFeedOptions
-): Promise<FeedConfigurationResponse> {
+): Promise<FeedCreateUpdateResponse> {
   // First get the current feed configuration
-  const currentFeed = await getFeed(httpClient, options.config_id)
+  const currentFeedResponse = await getFeed(httpClient, options.config_id)
+  const currentFeed = currentFeedResponse.data
 
   // Merge the current configuration with the updates
   const updatedConfig: FeedConfiguration = {
@@ -106,10 +113,12 @@ export async function updateFeed(
     }
   }
 
-  return httpClient.requestWithCustomBaseUrl<FeedConfigurationResponse>(
+  return httpClient.requestWithCustomBaseUrl<FeedCreateUpdateResponse>(
     "PATCH",
     CONSOLE_API_BASE_URL,
     "/api/feed/config",
-    updatedConfig
+    updatedConfig,
+    undefined,
+    true // Use Basic auth
   )
 }

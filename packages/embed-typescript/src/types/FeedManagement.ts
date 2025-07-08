@@ -52,8 +52,23 @@ export interface FeedConfigurationResponse {
   config: FeedConfig
   feed_image_url?: string
   short_name?: string | null
-  created_at?: string
-  updated_at?: string
+  priority?: number | null
+  short_description?: string | null
+}
+
+/**
+ * Response wrapper for feed creation/update operations
+ */
+export interface FeedCreateUpdateResponse {
+  message: string
+  data: FeedConfigurationResponse
+}
+
+/**
+ * Response wrapper for getFeed operation (matches actual API response)
+ */
+export interface FeedGetResponse {
+  data: FeedConfigurationResponse
 }
 
 /**
@@ -67,7 +82,7 @@ export interface ListFeedsRequest {
  * Response from feed listing operation
  */
 export interface ListFeedsResponse {
-  feeds: Array<FeedConfigurationResponse>
+  data: Array<FeedConfigurationResponse>
 }
 
 /**

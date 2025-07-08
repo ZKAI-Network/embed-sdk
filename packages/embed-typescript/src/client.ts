@@ -1,7 +1,7 @@
 import { Data, Effect, pipe, Schedule } from "effect"
 import type { FeedOptions } from "./casts/feed.js"
 import { getFeedByUserId, getFeedByWalletAddress } from "./casts/feed.js"
-import { createFeed, getFeed, listFeeds, updateFeed } from "./feeds/management.js"
+import { createFeedConfig, getFeedConfig, listFeedConfigs, updateFeedConfig } from "./feeds/management.js"
 import type { IHttpClient } from "./interfaces/index.js"
 import type { ForYouResponse } from "./types-return/ForYou.js"
 import type {
@@ -486,7 +486,7 @@ export class mbdClient {
    * @example
    * ```typescript
    * const client = getClient("your-api-key")
-   * const feed = await client.createFeed({
+   * const feed = await client.createFeedConfig({
    *   name: "My Custom Feed",
    *   description: "A personalized feed for my app",
    *   visibility: "private",
@@ -500,8 +500,8 @@ export class mbdClient {
    * console.log(feed.config_id) // Access the feed ID
    * ```
    */
-  async createFeed(options: CreateFeedOptions): Promise<FeedCreateUpdateResponse> {
-    return createFeed(this.http, options)
+  async createFeedConfig(options: CreateFeedOptions): Promise<FeedCreateUpdateResponse> {
+    return createFeedConfig(this.http, options)
   }
 
   /**
@@ -513,13 +513,13 @@ export class mbdClient {
    * @example
    * ```typescript
    * const client = getClient("your-api-key")
-   * const feed = await client.getFeed("feed_123")
+   * const feed = await client.getFeedConfig("feed_123")
    * console.log(feed.name) // Access feed name
    * console.log(feed.config.filters) // Access feed filters
    * ```
    */
-  async getFeed(configId: string): Promise<FeedGetResponse> {
-    return getFeed(this.http, configId)
+  async getFeedConfig(configId: string): Promise<FeedGetResponse> {
+    return getFeedConfig(this.http, configId)
   }
 
   /**
@@ -531,25 +531,25 @@ export class mbdClient {
    * @example
    * ```typescript
    * const client = getClient("your-api-key")
-   * const feeds = await client.listFeeds("private")
+   * const feeds = await client.listFeedConfigs("private")
    * console.log(`Found ${feeds.length} feeds`)
    * feeds.forEach(feed => console.log(feed.name))
    * ```
    */
-  async listFeeds(visibility: "private" | "public" = "private"): Promise<ListFeedsResponse> {
-    return listFeeds(this.http, visibility)
+  async listFeedConfigs(visibility: "private" | "public" = "private"): Promise<ListFeedsResponse> {
+    return listFeedConfigs(this.http, visibility)
   }
 
   /**
    * Update an existing feed configuration
    *
    * @param options - Feed update options, must include config_id
-   * @returns Promise<FeedConfigurationResponse> - The updated feed configuration
+   * @returns Promise<void> - Resolves when the feed is successfully updated
    *
    * @example
    * ```typescript
    * const client = getClient("your-api-key")
-   * const updatedFeed = await client.updateFeed({
+   * await client.updateFeedConfig({
    *   config_id: "feed_123",
    *   name: "Updated Feed Name",
    *   config: {
@@ -558,20 +558,20 @@ export class mbdClient {
    *     }
    *   }
    * })
-   * console.log(updatedFeed.name) // Access updated name
+   * console.log("Feed updated successfully")
    * ```
    */
-  async updateFeed(options: UpdateFeedOptions): Promise<FeedCreateUpdateResponse> {
-    return updateFeed(this.http, options)
+  async updateFeedConfig(options: UpdateFeedOptions): Promise<void> {
+    return updateFeedConfig(this.http, options)
   }
 }
 
 /**
- * Get a new mbdClient instance
+ * Get a new Embed Client instance
  *
  * @param token - API token required for authentication
  * @param options - Optional client configuration
- * @returns mbdClient instance
+ * @returns Embed Client instance
  *
  * @example
  * ```typescript
@@ -582,7 +582,6 @@ export class mbdClient {
  *
  * // With configuration
  * const client = getClient('your-api-key', {
- *   baseUrl: 'https://api.mbd.xyz',
  *   retry: {
  *     maxRetries: 3,
  *     timeoutMs: 30000

@@ -11,7 +11,7 @@ import type {
 
 const CONSOLE_API_BASE_URL = "https://console-api-us-west-2.mbd.xyz"
 
-export async function createFeed(
+export async function createFeedConfig(
   httpClient: IHttpClient,
   options: CreateFeedOptions
 ): Promise<FeedCreateUpdateResponse> {
@@ -54,7 +54,7 @@ export async function createFeed(
   return response.data
 }
 
-export async function getFeed(
+export async function getFeedConfig(
   httpClient: IHttpClient,
   configId: string
 ): Promise<FeedGetResponse> {
@@ -69,7 +69,7 @@ export async function getFeed(
   return response.data
 }
 
-export async function listFeeds(
+export async function listFeedConfigs(
   httpClient: IHttpClient,
   visibility: "private" | "public" = "private"
 ): Promise<ListFeedsResponse> {
@@ -86,24 +86,26 @@ export async function listFeeds(
   return [...response.data]
 }
 
-export async function updateFeed(
+export async function updateFeedConfig(
   httpClient: IHttpClient,
   options: UpdateFeedOptions
-): Promise<FeedCreateUpdateResponse> {
+): Promise<void> {
   // First get the current feed configuration
-  const currentFeed = await getFeed(httpClient, options.config_id)
+  const currentFeed = await getFeedConfig(httpClient, options.config_id)
+
+  const { config_id: _config_id, ...updateOptions } = options
 
   // Merge the current configuration with the updates
   const updatedConfig: FeedConfiguration = {
     ...currentFeed,
-    ...options,
+    ...updateOptions,
     config: {
       ...currentFeed.config,
-      ...options.config
+      ...updateOptions.config
     }
   }
 
-  const response = await httpClient.requestWithCustomBaseUrl<{ data: FeedCreateUpdateResponse }>(
+  await httpClient.requestWithCustomBaseUrl<{ message: string }>(
     "PATCH",
     CONSOLE_API_BASE_URL,
     "/api/feed/config",
@@ -111,5 +113,6 @@ export async function updateFeed(
     undefined,
     true // Use Basic auth
   )
-  return response.data
+  // endpoint only returns a success message, not the updated feed data
+  // So we don't return anything
 }

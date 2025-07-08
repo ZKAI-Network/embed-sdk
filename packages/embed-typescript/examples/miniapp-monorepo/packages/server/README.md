@@ -70,7 +70,7 @@ src/
 This server demonstrates how to:
 
 1. **Initialize the Embed client** with your API key
-2. **Fetch personalized feeds** using `getForYouFeedByUserId()`
+2. **Fetch personalized feeds** using `getFeedByUserId()`
 3. **Handle API errors** gracefully
 4. **Log API calls** for debugging
 5. **Serve data** to the frontend via tRPC

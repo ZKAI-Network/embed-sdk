@@ -12,7 +12,7 @@ async function basicExample() {
   })
 
   try {
-    const feed = await client.getForYouFeedByUserId("16085")
+    const feed = await client.getFeedByUserId("16085")
     console.log("Success:", feed)
   } catch (error) {
     console.error("Error:", error)
@@ -38,7 +38,7 @@ async function customRetryExample() {
   })
 
   try {
-    const feed = await client.getForYouFeedByWalletAddress("0x09CEdb7bb69f9F6DF646dBa107D2bAACda93D6C9")
+    const feed = await client.getFeedByWalletAddress("0x09CEdb7bb69f9F6DF646dBa107D2bAACda93D6C9")
     console.log("Success with custom retry config:", feed)
   } catch (error) {
     console.error("Error after custom retries:", error)
@@ -60,7 +60,7 @@ async function noRetryExample() {
   })
 
   try {
-    const feed = await client.getForYouFeedByUserId("16085")
+    const feed = await client.getFeedByUserId("16085")
     console.log("Success without retries:", feed)
   } catch (error) {
     console.error("Immediate failure:", error)
@@ -78,7 +78,7 @@ async function errorHandlingExample() {
   })
 
   try {
-    const feed = await client.getForYouFeedByUserId("16085")
+    const feed = await client.getFeedByUserId("16085")
     console.log("Unexpected success:", feed)
   } catch (error) {
     // Handle specific error types
@@ -110,7 +110,7 @@ async function advancedEffectExample() {
 
   // Create an Effect that wraps the API call
   const apiCall = Effect.tryPromise({
-    try: () => client.getForYouFeedByUserId("16085"),
+    try: () => client.getFeedByUserId("16085"),
     catch: (error) => error
   })
 

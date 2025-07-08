@@ -25,7 +25,7 @@ export const appRouter = t.router({
         console.log("Creating Embed client...");
         const client = getClient(ctx.API_KEY_EMBED);
         console.log("Fetching For You feed for fid:", input.fid);
-        const feed = await client.getForYouFeedByUserId(String(input.fid), { top_k: 10 });
+        const feed = await client.getFeedByUserId(String(input.fid), { top_k: 10 });
         console.log("Successfully fetched feed:", feed);
         return feed;
       } catch (error) {

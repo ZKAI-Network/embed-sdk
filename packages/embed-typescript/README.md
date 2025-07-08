@@ -24,7 +24,7 @@ import { mbdClient } from "embed-typescript"
 const client = new mbdClient(process.env.API_KEY_EMBED)
 
 try {
-  const feed = await client.getForYouFeedByUserId("16085")
+  const feed = await client.getFeedByUserId("16085")
   console.log("Success:", feed)
 } catch (error) {
   console.error("Error:", error)
@@ -56,7 +56,7 @@ const client = new mbdClient(process.env.API_KEY_EMBED, {
   }
 })
 
-const feed = await client.getForYouFeedByWalletAddress("0x123...")
+const feed = await client.getFeedByWalletAddress("0x123...")
 ```
 
 ## Error Handling
@@ -75,7 +75,7 @@ import {
 const client = new mbdClient("your-token")
 
 try {
-  const feed = await client.getForYouFeedByUserId("16085")
+  const feed = await client.getFeedByUserId("16085")
 } catch (error) {
   if (error instanceof HttpRequestError) {
     console.error(`HTTP Error: ${error.status} ${error.statusText}`)
@@ -96,10 +96,10 @@ try {
 
 ```typescript
 // Get personalized "For You" feed by user ID
-await client.getForYouFeedByUserId(userId: string, options?: ForYouOptions)
+await client.getFeedByUserId(userId: string, options?: ForYouOptions)
 
 // Get personalized "For You" feed by wallet address
-await client.getForYouFeedByWalletAddress(walletAddress: string, options?: ForYouOptions)
+await client.getFeedByWalletAddress(walletAddress: string, options?: ForYouOptions)
 ```
 
 ### Factory Function

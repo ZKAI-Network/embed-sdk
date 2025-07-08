@@ -1,8 +1,15 @@
 import { Data, Effect, pipe, Schedule } from "effect"
-import type { ForYouOptions } from "./casts/feed.js"
-import { getForYouFeedByUserId, getForYouFeedByWalletAddress } from "./casts/feed.js"
+import type { FeedOptions } from "./casts/feed.js"
+import { getFeedByUserId, getFeedByWalletAddress } from "./casts/feed.js"
+import { createFeed, getFeed, listFeeds, updateFeed } from "./feeds/management.js"
 import type { IHttpClient } from "./interfaces/index.js"
 import type { ForYouResponse } from "./types-return/ForYou.js"
+import type {
+  CreateFeedOptions,
+  FeedConfigurationResponse,
+  ListFeedsResponse,
+  UpdateFeedOptions
+} from "./types/FeedManagement.js"
 
 // ============================================================================
 // ERROR TYPES
@@ -145,27 +152,60 @@ class HttpClient implements IHttpClient {
   }
 
   /**
+   * Build URL with query parameters
+   */
+  private buildUrl(endpoint: string, baseUrl?: string, queryParams?: Record<string, string>): string {
+    const url = `${baseUrl ?? this.config.baseUrl}${endpoint}`
+
+    if (!queryParams || Object.keys(queryParams).length === 0) {
+      return url
+    }
+
+    const searchParams = new URLSearchParams()
+    for (const [key, value] of Object.entries(queryParams)) {
+      if (value !== undefined && value !== null) {
+        searchParams.append(key, value)
+      }
+    }
+
+    const queryString = searchParams.toString()
+    return queryString ? `${url}?${queryString}` : url
+  }
+
+  /**
    * Perform the actual fetch request wrapped in an Effect
    */
   private performFetch<TResponse = unknown>(
     endpoint: string,
-    body?: unknown
+    method: "GET" | "POST" | "PATCH",
+    baseUrl?: string,
+    body?: unknown,
+    queryParams?: Record<string, string>
   ): Effect.Effect<TResponse, HttpClientError> {
-    const url = `${this.config.baseUrl}${endpoint}`
+    const url = this.buildUrl(endpoint, baseUrl, queryParams)
 
     return Effect.tryPromise({
       try: async () => {
-        const response = await fetch(url, {
-          method: "POST",
+        const requestOptions: RequestInit = {
+          method,
           headers: {
             "Authorization": `Bearer ${this.config.token}`,
-            "Content-Type": "application/json",
             "Accept": "application/json",
             "HTTP-Referer": this.config.referer,
             "X-Title": this.config.title
-          },
-          body: body ? JSON.stringify(body) : null
-        })
+          }
+        }
+
+        // Add Content-Type and body for POST/PATCH requests
+        if (method !== "GET" && body) {
+          requestOptions.headers = {
+            ...requestOptions.headers,
+            "Content-Type": "application/json"
+          }
+          requestOptions.body = JSON.stringify(body)
+        }
+
+        const response = await fetch(url, requestOptions)
 
         // Check if response is ok
         if (!response.ok) {
@@ -249,9 +289,12 @@ class HttpClient implements IHttpClient {
    */
   private executeRequestWithRetries<TResponse = unknown>(
     endpoint: string,
-    body?: unknown
+    method: "GET" | "POST" | "PATCH",
+    baseUrl?: string,
+    body?: unknown,
+    queryParams?: Record<string, string>
   ): Effect.Effect<TResponse, HttpClientError> {
-    const fetchEffect = this.performFetch<TResponse>(endpoint, body)
+    const fetchEffect = this.performFetch<TResponse>(endpoint, method, baseUrl, body, queryParams)
     const timeoutEffect = this.createTimeoutEffect(this.config.retry.timeoutMs)
 
     // Race fetch against timeout
@@ -271,8 +314,37 @@ class HttpClient implements IHttpClient {
    * Make a POST request to the API with Effect-based error handling and retries
    */
   async post<TResponse = unknown>(endpoint: string, body?: unknown): Promise<TResponse> {
-    const effect = this.executeRequestWithRetries<TResponse>(endpoint, body)
+    const effect = this.executeRequestWithRetries<TResponse>(endpoint, "POST", undefined, body)
+    return Effect.runPromise(effect)
+  }
 
+  /**
+   * Make a GET request to the API with Effect-based error handling and retries
+   */
+  async get<TResponse = unknown>(endpoint: string, queryParams?: Record<string, string>): Promise<TResponse> {
+    const effect = this.executeRequestWithRetries<TResponse>(endpoint, "GET", undefined, undefined, queryParams)
+    return Effect.runPromise(effect)
+  }
+
+  /**
+   * Make a PATCH request to the API with Effect-based error handling and retries
+   */
+  async patch<TResponse = unknown>(endpoint: string, body?: unknown): Promise<TResponse> {
+    const effect = this.executeRequestWithRetries<TResponse>(endpoint, "PATCH", undefined, body)
+    return Effect.runPromise(effect)
+  }
+
+  /**
+   * Make a request to a custom base URL
+   */
+  async requestWithCustomBaseUrl<TResponse = unknown>(
+    method: "GET" | "POST" | "PATCH",
+    baseUrl: string,
+    endpoint: string,
+    body?: unknown,
+    queryParams?: Record<string, string>
+  ): Promise<TResponse> {
+    const effect = this.executeRequestWithRetries<TResponse>(endpoint, method, baseUrl, body, queryParams)
     return Effect.runPromise(effect)
   }
 }
@@ -301,27 +373,59 @@ export class mbdClient {
   }
 
   // ============================================================================
-  // FOR YOU FEED METHODS
+  // FEED GATHERING METHODS
   // ============================================================================
 
   /**
    * Get personalized "For You" feed by user ID
    */
-  async getForYouFeedByUserId(
+  async getFeedByUserId(
     userId: string,
-    options?: ForYouOptions
+    options?: FeedOptions
   ): Promise<ForYouResponse> {
-    return getForYouFeedByUserId(this.http, userId, options)
+    return getFeedByUserId(this.http, userId, options)
   }
 
   /**
    * Get personalized "For You" feed by wallet address
    */
-  async getForYouFeedByWalletAddress(
+  async getFeedByWalletAddress(
     walletAddress: string,
-    options?: ForYouOptions
+    options?: FeedOptions
   ): Promise<ForYouResponse> {
-    return getForYouFeedByWalletAddress(this.http, walletAddress, options)
+    return getFeedByWalletAddress(this.http, walletAddress, options)
+  }
+
+  // ============================================================================
+  // FEED MANAGEMENT METHODS
+  // ============================================================================
+
+  /**
+   * Create a new feed configuration
+   */
+  async createFeed(options: CreateFeedOptions): Promise<FeedConfigurationResponse> {
+    return createFeed(this.http, options)
+  }
+
+  /**
+   * Retrieve a feed configuration by ID
+   */
+  async getFeed(configId: string): Promise<FeedConfigurationResponse> {
+    return getFeed(this.http, configId)
+  }
+
+  /**
+   * List all feed configurations for the account
+   */
+  async listFeeds(visibility: "private" | "public" = "private"): Promise<ListFeedsResponse> {
+    return listFeeds(this.http, visibility)
+  }
+
+  /**
+   * Update an existing feed configuration
+   */
+  async updateFeed(options: UpdateFeedOptions): Promise<FeedConfigurationResponse> {
+    return updateFeed(this.http, options)
   }
 }
 

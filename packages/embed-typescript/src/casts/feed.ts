@@ -2,16 +2,15 @@ import type { IHttpClient } from "../interfaces/index.js"
 import type { ForYouResponse } from "../types-return/ForYou.js"
 import type { ForYou as ForYouParams } from "../types/ForYou.js"
 
-
-export type ForYouOptions = Omit<ForYouParams, "wallet_address" | "user_id">
+export type FeedOptions = Omit<ForYouParams, "wallet_address" | "user_id">
 
 /**
  * Get personalized "For You" feed by user ID
  */
-export async function getForYouFeedByUserId(
+export async function getFeedByUserId(
   httpClient: IHttpClient,
   userId: string,
-  options?: ForYouOptions
+  options?: FeedOptions
 ): Promise<ForYouResponse> {
   const top_k = options?.top_k ?? 25
   const impression_count = options?.impression_count ?? top_k
@@ -21,7 +20,7 @@ export async function getForYouFeedByUserId(
     return_metadata: true,
     top_k,
     impression_count,
-    ...options,
+    ...options
   }
 
   return httpClient.post("/v2/farcaster/casts/feed/for-you", params)
@@ -30,10 +29,10 @@ export async function getForYouFeedByUserId(
 /**
  * Get personalized "For You" feed by wallet address
  */
-export async function getForYouFeedByWalletAddress(
+export async function getFeedByWalletAddress(
   httpClient: IHttpClient,
   walletAddress: string,
-  options?: ForYouOptions
+  options?: FeedOptions
 ): Promise<ForYouResponse> {
   const top_k = options?.top_k ?? 25
   const impression_count = options?.impression_count ?? top_k
@@ -43,7 +42,7 @@ export async function getForYouFeedByWalletAddress(
     return_metadata: true,
     top_k,
     impression_count,
-    ...options,
+    ...options
   }
 
   return httpClient.post("/v2/farcaster/casts/feed/for-you", params)

@@ -3,8 +3,8 @@ import { Navigation } from "./components/Navigation";
 import { HomePage } from "./pages/HomePage";
 import { ExplorePage } from "./pages/ExplorePage";
 import { useFeedData } from "./hooks";
-import { DEFAULT_FEED_ID } from "../../shared/constants/feedIds";
-import type { FeedId } from "../../shared/constants/feedIds";
+import { DEFAULT_FEED_ID } from "@shared/trpc/constants/feedIds";
+import type { FeedId } from "@shared/trpc/constants/feedIds";
 
 function App() {
   const [page, setPage] = useState("home");

@@ -1,4 +1,4 @@
-import { HttpRequestError, mbdClient, NetworkError, TimeoutError } from "@embed-ai/sdk"
+import { getClient, HttpRequestError, mbdClient, NetworkError, TimeoutError } from "@embed-ai/sdk"
 import { Effect } from "effect"
 
 /**

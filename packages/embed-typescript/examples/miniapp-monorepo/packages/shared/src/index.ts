@@ -3,6 +3,7 @@ import { initTRPC } from "@trpc/server";
 import { z } from "zod";
 import { getClient } from "embed-typescript/src/index.js";
 import ogs from "open-graph-scraper";
+import { ALL_FEED_IDS } from "../constants/feedIds.js";
 
 const t = initTRPC.context<{ API_KEY_EMBED?: string }>().create();
 
@@ -13,7 +14,12 @@ export const appRouter = t.router({
       return `Hello, ${input?.name ?? "World"}! from tRPC`;
     }),
   forYouFeed: t.procedure
-    .input(z.object({ fid: z.number() }))
+    .input(
+      z.object({
+        fid: z.number(),
+        feed_id: z.enum(ALL_FEED_IDS as [string, ...string[]]).optional(),
+      })
+    )
     .query(async ({ input, ctx }) => {
       console.log("Executing forYouFeed procedure with input:", input);
 
@@ -25,7 +31,16 @@ export const appRouter = t.router({
         console.log("Creating Embed client...");
         const client = getClient(ctx.API_KEY_EMBED);
         console.log("Fetching For You feed for fid:", input.fid);
-        const feed = await client.getForYouFeedByUserId(String(input.fid), { top_k: 10 });
+        console.log("Fetching For You feed for feed_id:", input.feed_id);
+        const options = {
+          top_k: 10,
+          ...(input.feed_id && { feed_id: input.feed_id }),
+        };
+        console.log("For You feed options:", options);
+        const feed = await client.getForYouFeedByUserId(
+          String(input.fid),
+          options
+        );
         console.log("Successfully fetched feed:", feed);
         return feed;
       } catch (error) {

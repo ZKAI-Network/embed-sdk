@@ -1,9 +1,17 @@
-import { Alert, Stack, Container, Group, Avatar, Text, Loader } from "@mantine/core";
+import { Alert, Stack, Container, Group, Avatar, Text, Loader, Select } from "@mantine/core";
 import { FeedHeader, FeedGrid } from "../components";
 import { usePullToRefresh } from "../hooks/usePullToRefresh";
 import type { UseFeedDataReturn } from "../hooks/useFeedData";
+import { FEEDS } from "../../../shared/constants/feedIds";
+import type { FeedId } from "../../../shared/constants/feedIds";
+import type { Dispatch, SetStateAction } from "react";
 
-export function HomePage(props: UseFeedDataReturn) {
+type HomePageProps = UseFeedDataReturn & {
+  selectedFeed: FeedId;
+  setSelectedFeed: Dispatch<SetStateAction<FeedId>>;
+};
+
+export function HomePage(props: HomePageProps) {
   const {
     data,
     isLoading,
@@ -17,6 +25,8 @@ export function HomePage(props: UseFeedDataReturn) {
     hasNextPage,
     refetch,
     isRefreshing: isDataRefreshing,
+    selectedFeed,
+    setSelectedFeed,
   } = props;
 
   const handleRefresh = async () => {
@@ -70,6 +80,21 @@ export function HomePage(props: UseFeedDataReturn) {
                 This is a demo feed. Run in a Farcaster frame for personalized content.
               </Alert>
             )}
+
+            <Select
+              label="Select a feed"
+              placeholder="Pick a feed"
+              value={selectedFeed}
+              onChange={(value) => {
+                if (value) {
+                  setSelectedFeed(value as FeedId);
+                }
+              }}
+              data={FEEDS.map((feed) => ({
+                value: feed.id,
+                label: feed.name,
+              }))}
+            />
 
             {/* Feed Content */}
             {isSDKLoaded && (

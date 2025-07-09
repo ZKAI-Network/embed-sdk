@@ -4,5 +4,7 @@
   "references": [
     { "path": "packages/types" },
     { "path": "packages/sdk" }
-  ]
+  ],
+  "files": [],
+  "exclude": ["examples/**"]
 }

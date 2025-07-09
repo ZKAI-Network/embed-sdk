@@ -17,7 +17,7 @@
     "check-recursive": "bun run --filter='@embed-ai/*' check",
     "lint": "eslint \"**/{src,test,examples,scripts,dtslint}/**/*.{ts,mjs}\"",
     "lint-fix": "bun run lint --fix",
-    "test": "bun run --filter='@embed-ai/*' test",
+    "test": "bun run --filter='@embed-ai/*' test --if-present",
     "coverage": "bun run --filter='@embed-ai/*' test --coverage",
     "changeset-version": "changeset version && node scripts/version.mjs",
     "changeset-publish": "bun run build:packages && TEST_DIST= bun run test && changeset publish"

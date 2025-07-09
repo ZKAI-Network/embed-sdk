@@ -28,6 +28,9 @@ jobs:
         with:
           bun-version: latest
       
+      - name: Fetch master branch
+        run: git fetch origin master:master
+      
       - name: Install dependencies
         run: bun install --frozen-lockfile
       

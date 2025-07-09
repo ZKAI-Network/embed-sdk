@@ -63,6 +63,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install dependencies
         uses: ./.github/actions/setup
-      - run: bun test
+      - run: bun run test
         env:
           NODE_OPTIONS: --max_old_space_size=8192

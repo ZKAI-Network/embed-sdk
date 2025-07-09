@@ -9,8 +9,9 @@
   "scripts": {
     "clean": "node scripts/clean.mjs",
     "codegen": "bun run --filter='*' codegen",
-    "build": "bun run build:types && bun run --filter='*' build",
-    "build:types": "tsc -b tsconfig.build.json",
+    "build": "bun run build:types && bun run build:sdk",
+    "build:types": "cd packages/types && bun run build",
+    "build:sdk": "cd packages/sdk && bun run build",
     "check": "tsc -b tsconfig.json",
     "check-recursive": "bun run --filter='*' check",
     "lint": "eslint \"**/{src,test,examples,scripts,dtslint}/**/*.{ts,mjs}\"",
@@ -21,8 +22,6 @@
     "changeset-publish": "bun run build && TEST_DIST= bun test && changeset publish"
   },
   "devDependencies": {
-    "@embed-ai/types": "workspace:*",
-    "@embed-ai/sdk": "workspace:*",
     "@babel/cli": "^7.25.9",
     "@babel/core": "^7.26.0",
     "@babel/plugin-transform-export-namespace-from": "^7.25.9",
@@ -52,6 +51,10 @@
     "prettier-plugin-jsdoc": "1.3.2",
     "typescript": "^5.6.3",
     "vitest": "^2.1.4"
+  },
+  "dependencies": {
+    "@embed-ai/types": "workspace:*",
+    "@embed-ai/sdk": "workspace:*"
   },
   "trustedDependencies": [
     "@effect/build-utils"

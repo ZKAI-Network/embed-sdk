@@ -1,0 +1,27 @@
+# Source files
+src/
+examples/
+test/
+tsconfig*.json
+vitest.config.ts
+*.tsbuildinfo
+
+# Development files
+*.log
+.DS_Store
+node_modules/
+.env
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build artifacts (keep dist/ but exclude build info)
+build/
+*.tsbuildinfo
+
+# Development dependencies
+.eslintrc*
+.prettierrc* 

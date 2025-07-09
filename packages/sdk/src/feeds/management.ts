@@ -1,4 +1,3 @@
-import type { IHttpClient } from "../interfaces/index.js"
 import type {
   CreateFeedOptions,
   FeedConfiguration,
@@ -7,7 +6,8 @@ import type {
   ListFeedsRequest,
   ListFeedsResponse,
   UpdateFeedOptions
-} from "../types/FeedManagement.js"
+} from "@embed-ai/types"
+import type { IHttpClient } from "../interfaces/index.js"
 
 const CONSOLE_API_BASE_URL = "https://console-api-us-west-2.mbd.xyz"
 

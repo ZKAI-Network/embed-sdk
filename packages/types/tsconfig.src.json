@@ -3,9 +3,7 @@
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts"],
   "compilerOptions": {
-    "outDir": "dist"
-  },
-  "references": [
-    { "path": "../types" }
-  ]
-}
+    "outDir": "dist",
+    "rootDir": "src"
+  }
+} 

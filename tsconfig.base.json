@@ -37,10 +37,16 @@
     "removeComments": false,
     "plugins": [{ "name": "@effect/language-service" }],
     "paths": {
+      "@embed-ai/types": [
+        "./packages/types/dist/index.d.ts",
+        "./packages/types/dist/index.js"
+      ],
+      "@embed-ai/types/*": [
+        "./packages/types/dist/*.d.ts",
+        "./packages/types/dist/*.js"
+      ],
       "@embed-ai/sdk": ["./packages/sdk/src/index.ts"],
-      "@embed-ai/sdk/*": ["./packages/sdk/src/*.ts"],
-      "@embed-ai/types": ["./packages/types/src/index.ts"],
-      "@embed-ai/types/*": ["./packages/types/src/*.ts"]
+      "@embed-ai/sdk/*": ["./packages/sdk/src/*.ts"]
     }
   }
 }

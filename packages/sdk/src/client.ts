@@ -1,16 +1,16 @@
+import type {
+  CreateFeedOptions,
+  FeedCreateUpdateResponse,
+  FeedGetResponse,
+  ForYouResponse,
+  ListFeedsResponse,
+  UpdateFeedOptions
+} from "@embed-ai/types"
 import { Data, Effect, pipe, Schedule } from "effect"
 import type { FeedOptions } from "./casts/feed.js"
 import { getFeedByUserId, getFeedByWalletAddress } from "./casts/feed.js"
 import { createFeedConfig, getFeedConfig, listFeedConfigs, updateFeedConfig } from "./feeds/management.js"
 import type { IHttpClient } from "./interfaces/index.js"
-import type { ForYouResponse } from "./types-return/ForYou.js"
-import type {
-  CreateFeedOptions,
-  FeedCreateUpdateResponse,
-  FeedGetResponse,
-  ListFeedsResponse,
-  UpdateFeedOptions
-} from "./types/FeedManagement.js"
 
 // ============================================================================
 // ERROR TYPES

@@ -1,13 +1,8 @@
-export * as feed from "./casts/feed.js"
+// Export the main client factory function
+export { getClient, mbdClient } from "./client.js"
 
-/**
- * Network-related errors (connection issues, DNS failures, etc.)
- */
-export * as client from "./client.js"
+// Export error types for error handling
+export { type HttpClientError, HttpRequestError, NetworkError, ParseError, TimeoutError } from "./client.js"
 
-export * as management from "./feeds/management.js"
-
-/**
- * HTTP client interface for making API requests
- */
-export * as http from "./interfaces/http.js"
+// Export configuration types
+export type { mbdClientConfig, RetryConfig } from "./client.js"

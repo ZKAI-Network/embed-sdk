@@ -14,8 +14,7 @@
     "directory": "dist"
   },
   "scripts": {
-    "codegen": "build-utils prepare-v2 && cd ../.. && bun run lint-fix",
-    "build": "bun run build-esm && bun run build-annotate && bun run build-cjs && build-utils pack-v2 && bun run fix-deps",
+    "build": "bun run build-esm && bun run build-annotate && bun run build-cjs && bun run fix-deps",
     "build-esm": "tsc --project tsconfig.build.json --noEmit && tsc --project tsconfig.src.json",
     "build-cjs": "babel dist --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir dist --source-maps",
     "build-annotate": "babel dist --plugins annotate-pure-calls --out-dir dist --source-maps",
@@ -27,17 +26,5 @@
   "dependencies": {
     "@embed-ai/types": "workspace:*",
     "effect": "latest"
-  },
-  "effect": {
-    "generateExports": {
-      "include": [
-        "**/*.ts"
-      ]
-    },
-    "generateIndex": {
-      "include": [
-        "**/*.ts"
-      ]
-    }
   }
 }

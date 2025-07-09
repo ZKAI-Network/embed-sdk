@@ -2,6 +2,21 @@
 
 Built on top of [Effect](https://effect.website/)
 
+## Publishing
+
+**To release packages:**
+
+1. **Create changeset:** `bunx changeset` (select packages, describe changes)
+2. **Commit & push:** `git add . && git commit -m "add changeset" && git push`
+3. **Merge to master:** Create PR, merge to `master`
+4. **Auto-publish:** GitHub Actions will create release PR, merge it to publish
+
+**Manual publish (if needed):**
+```sh
+bun run build
+bunx changeset publish
+```
+
 ## Getting Started
 
 This template uses [Bun](https://bun.sh) as the package manager and runtime, which provides native TypeScript support without requiring additional transpilation for development.

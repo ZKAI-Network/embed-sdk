@@ -1,4 +1,6 @@
-import { Card, Stack, Group, Avatar, Text, Image } from "@mantine/core";
+import { Card, CardContent } from "./ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
+import ImageGallery from "./ImageGallery";
 import {
   IconMessageCircle,
   IconHeart,
@@ -6,9 +8,12 @@ import {
   IconShare,
   IconUser,
   IconCoin,
+  IconPlayerPlay as IconVideoPlay,
+  IconExternalLink,
 } from "@tabler/icons-react";
 import { useFrame } from "../FrameProvider";
 import { UrlEmbed } from "./UrlEmbed";
+import { LocationCard } from "./LocationCard";
 
 interface Author {
   pfp_url: string;
@@ -69,122 +74,140 @@ export function FeedCard({ item }: FeedCardProps) {
   };
 
   return (
-    <Card withBorder radius="lg" p="lg" shadow="sm" style={{ height: "100%" }}>
-      <Stack gap="md" style={{ height: "100%" }}>
+    <Card className="border rounded-lg shadow-sm h-full">
+      <CardContent className="p-6 flex flex-col h-full space-y-4">
         {/* Author Info */}
-        <Group
-          gap="sm"
-          align="center"
+        <div
+          className="flex items-center gap-3 cursor-pointer"
           onClick={handleViewProfile}
-          style={{ cursor: "pointer" }}
         >
-          <Avatar
-            src={author.pfp_url}
-            alt={author.display_name}
-            radius="xl"
-            size="lg"
-          >
-            <IconUser size={24} />
+          <Avatar className="w-12 h-12 ring-1 ring-border">
+            <AvatarImage src={author.pfp_url} alt={author.display_name} />
+            <AvatarFallback className="bg-primary/10 text-primary font-medium">
+              {author.display_name ? author.display_name.charAt(0).toUpperCase() : <IconUser size={20} />}
+            </AvatarFallback>
           </Avatar>
-          <Stack gap={2} style={{ flex: 1 }}>
-            <Text fw={600} size="sm" lineClamp={1}>
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-sm line-clamp-1">
               {author.display_name}
-            </Text>
-            <Text c="dimmed" size="xs">
+            </p>
+            <p className="text-muted-foreground text-xs">
               @{author.username}
-            </Text>
-          </Stack>
-        </Group>
+            </p>
+          </div>
+        </div>
 
         {/* Content */}
-        <Text size="sm" style={{ flex: 1, lineHeight: 1.5 }}>
+        <p className="text-sm flex-1 leading-6">
           {text}
-        </Text>
+        </p>
 
         {/* Embeds */}
-        {embed_items && embed_items.length > 0 && (
-          <Stack gap="sm" pt="sm">
-            {embed_items.map((embed, index) => {
-              if (
-                /\.(jpeg|jpg|gif|png|webp)$/i.test(embed) ||
-                embed.includes("imagedelivery.net") ||
-                embed.includes("/ipfs/") // not all ipfs files are images, this is sample app only and these cases should be better supported
-              ) {
-                return (
-                  <Image
-                    key={index}
-                    src={embed}
-                    radius="md"
-                    alt="embedded content"
-                  />
-                );
-              }
-              if (embed.includes("stream.farcaster.xyz")) {
-                return (
-                  <Text
-                    key={index}
-                    size="sm"
-                    component="a"
-                    href={embed}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View media
-                  </Text>
-                );
-              }
-              return <UrlEmbed key={index} url={embed} />;
-            })}
-          </Stack>
-        )}
+        {embed_items && embed_items.length > 0 && (() => {
+          // Separate images from other embeds
+          const images: string[] = [];
+          const otherEmbeds: string[] = [];
+
+          embed_items.forEach((embed) => {
+            if (
+              /\.(jpeg|jpg|gif|png|webp)$/i.test(embed) ||
+              embed.includes("imagedelivery.net") ||
+              embed.includes("/ipfs/") // not all ipfs files are images, this is sample app only and these cases should be better supported
+            ) {
+              images.push(embed);
+            } else {
+              otherEmbeds.push(embed);
+            }
+          });
+
+          return (
+            <div className="space-y-3 pt-2">
+              {/* Render image gallery if there are images */}
+              {images.length > 0 && (
+                <ImageGallery images={images} className="w-full" />
+              )}
+
+              {/* Render other embeds */}
+              {otherEmbeds.map((embed, index) => {
+                // Handle geographic location URLs
+                if (embed.startsWith("geo:")) {
+                  return <LocationCard key={index} geoUrl={embed} />;
+                }
+                
+                // Handle Farcaster stream content
+                if (embed.includes("stream.farcaster.xyz")) {
+                  return (
+                    <Card key={index} className="border hover:bg-gray-50 transition-colors">
+                      <a href={embed} target="_blank" rel="noopener noreferrer" className="block">
+                        <CardContent className="p-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-md flex items-center justify-center">
+                              <IconVideoPlay size={20} className="text-white" />
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-primary">
+                                View Media
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                Farcaster video content
+                              </p>
+                            </div>
+                            <IconExternalLink size={16} className="text-muted-foreground" />
+                          </div>
+                        </CardContent>
+                      </a>
+                    </Card>
+                  );
+                }
+                
+                // Handle all other URLs with OG preview
+                return <UrlEmbed key={index} url={embed} />;
+              })}
+            </div>
+          );
+        })()}
 
         {/* Engagement Stats */}
-        <Group justify="space-between" mt="auto" pt="md">
-          <Group
-            gap="xs"
-            align="center"
+        <div className="flex justify-between items-center mt-auto pt-4">
+          <div
+            className="flex items-center gap-1 cursor-pointer"
             onClick={handleReply}
-            style={{ cursor: "pointer" }}
           >
-            <IconMessageCircle size={14} color="var(--mantine-color-blue-6)" />
-            <Text size="xs" c="dimmed">
+            <IconMessageCircle size={14} color="#2563eb" />
+            <span className="text-xs text-muted-foreground">
               {comments_count || 0}
-            </Text>
-          </Group>
+            </span>
+          </div>
           
-          <Group gap="xs" align="center">
-            <IconRepeat size={14} color="var(--mantine-color-green-6)" />
-            <Text size="xs" c="dimmed">
+          <div className="flex items-center gap-1">
+            <IconRepeat size={14} color="#16a34a" />
+            <span className="text-xs text-muted-foreground">
               {shares_count || 0}
-            </Text>
-          </Group>
+            </span>
+          </div>
           
-          <Group gap="xs" align="center">
-            <IconHeart size={14} color="var(--mantine-color-red-6)" />
-            <Text size="xs" c="dimmed">
+          <div className="flex items-center gap-1">
+            <IconHeart size={14} color="#dc2626" />
+            <span className="text-xs text-muted-foreground">
               {likes_count || 0}
-            </Text>
-          </Group>
+            </span>
+          </div>
           
-          <Group
-            gap="xs"
-            align="center"
+          <div
+            className="flex items-center gap-1 cursor-pointer"
             onClick={handleShare}
-            style={{ cursor: "pointer" }}
           >
-            <IconShare size={14} color="var(--mantine-color-gray-6)" />
-          </Group>
+            <IconShare size={14} color="#6b7280" />
+          </div>
 
-          <Group
-            gap="xs"
-            align="center"
+          <div
+            className="flex items-center gap-1 cursor-pointer"
             onClick={handleTip}
-            style={{ cursor: "pointer" }}
           >
-            <IconCoin size={14} color="var(--mantine-color-yellow-6)" />
-          </Group>
-        </Group>
-      </Stack>
+            <IconCoin size={14} color="#eab308" />
+          </div>
+        </div>
+      </CardContent>
     </Card>
   );
 }

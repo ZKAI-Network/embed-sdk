@@ -1,6 +1,7 @@
-import { AppShell, Burger, Group, NavLink, Text } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconHome2, IconCompass } from "@tabler/icons-react";
+import { useState } from "react";
+import { IconHome2, IconCompass, IconMenu, IconX } from "@tabler/icons-react";
+import { Button } from "./ui/button";
+import { cn } from "../lib/utils";
 
 interface NavigationProps {
   page: string;
@@ -9,46 +10,71 @@ interface NavigationProps {
 }
 
 export function Navigation({ page, setPage, children }: NavigationProps) {
-  const [opened, { toggle, close }] = useDisclosure();
+  const [opened, setOpened] = useState(false);
 
   const mainLinks = [
     { icon: <IconHome2 size="1rem" />, label: "Home", page: "home" },
     { icon: <IconCompass size="1rem" />, label: "View Someone's Feed", page: "explore" },
   ];
 
+  const close = () => setOpened(false);
+  const toggle = () => setOpened(!opened);
+
   return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{
-        width: 300,
-        breakpoint: "sm",
-        collapsed: { mobile: !opened },
-      }}
-      padding={{ base: "xs", sm: "md" }}
-    >
-      <AppShell.Header>
-        <Group h="100%" px="md">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Text>Embed Farcaster Feed</Text>
-        </Group>
-      </AppShell.Header>
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="h-15 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="flex h-14 items-center px-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="sm:hidden"
+            onClick={toggle}
+          >
+            {opened ? <IconX size={20} /> : <IconMenu size={20} />}
+          </Button>
+          <h1 className="font-semibold">Embed Farcaster Feed</h1>
+        </div>
+      </header>
 
-      <AppShell.Navbar p="md">
-        {mainLinks.map((link) => (
-          <NavLink
-            key={link.label}
-            active={page === link.page}
-            label={link.label}
-            leftSection={link.icon}
-            onClick={() => {
-              setPage(link.page);
-              close();
-            }}
+      <div className="flex">
+        {/* Sidebar */}
+        <aside className={cn(
+          "w-72 border-r bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-transform duration-300 ease-in-out",
+          "sm:translate-x-0 sm:static sm:h-[calc(100vh-3.5rem)]",
+          opened ? "translate-x-0 absolute inset-y-0 z-50 h-full" : "-translate-x-full absolute"
+        )}>
+          <nav className="space-y-2 p-4">
+            {mainLinks.map((link) => (
+              <Button
+                key={link.label}
+                variant={page === link.page ? "secondary" : "ghost"}
+                className="w-full justify-start gap-2"
+                onClick={() => {
+                  setPage(link.page);
+                  close();
+                }}
+              >
+                {link.icon}
+                {link.label}
+              </Button>
+            ))}
+          </nav>
+        </aside>
+
+        {/* Overlay for mobile */}
+        {opened && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-40 sm:hidden" 
+            onClick={close}
           />
-        ))}
-      </AppShell.Navbar>
+        )}
 
-      <AppShell.Main>{children}</AppShell.Main>
-    </AppShell>
+        {/* Main Content */}
+        <main className="flex-1 p-4 sm:p-6">
+          {children}
+        </main>
+      </div>
+    </div>
   );
 } 

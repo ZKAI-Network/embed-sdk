@@ -1,4 +1,4 @@
-import { Group, Title, Badge } from "@mantine/core";
+import { Badge } from "./ui/badge";
 
 interface FeedHeaderProps {
   timestamp?: string;
@@ -6,15 +6,15 @@ interface FeedHeaderProps {
 
 export function FeedHeader({ timestamp }: FeedHeaderProps) {
   return (
-    <Group justify="space-between" align="center">
-      {/* <Title order={1} size="h2" c="blue">
+    <div className="flex justify-between items-center">
+      {/* <h1 className="text-2xl font-bold text-blue-600">
         Embed personalized feed
-      </Title> */}
+      </h1> */}
       {timestamp && (
-        <Badge variant="light" color="green" size="md">
+        <Badge variant="secondary" className="bg-green-100 text-green-800">
           Updated: {timestamp}
         </Badge>
       )}
-    </Group>
+    </div>
   );
 } 

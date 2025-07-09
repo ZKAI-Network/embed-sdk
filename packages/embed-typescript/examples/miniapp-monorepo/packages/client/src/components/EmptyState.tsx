@@ -1,18 +1,18 @@
-import { Card, Center, Stack, Text } from "@mantine/core";
+import { Card, CardContent } from "./ui/card";
 
 export function EmptyState() {
   return (
-    <Card withBorder p="xl" radius="md">
-      <Center>
-        <Stack align="center" gap="sm">
-          <Text c="dimmed" fw={500}>
+    <Card className="border">
+      <CardContent className="flex flex-col items-center justify-center py-12 px-6">
+        <div className="text-center space-y-2">
+          <p className="text-muted-foreground font-medium">
             No posts available
-          </Text>
-          <Text c="dimmed" size="sm">
+          </p>
+          <p className="text-muted-foreground text-sm">
             Check back later for new content
-          </Text>
-        </Stack>
-      </Center>
+          </p>
+        </div>
+      </CardContent>
     </Card>
   );
 } 

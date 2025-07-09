@@ -1,4 +1,5 @@
-import { Card, Text, Image, Group } from "@mantine/core";
+import { Card, CardContent } from "./ui/card";
+import { Image } from "./ui/image";
 
 interface OgPreviewCardProps {
   data: {
@@ -17,23 +18,33 @@ export function OgPreviewCard({ data }: OgPreviewCardProps) {
   const displayUrl = ogUrl || requestUrl;
 
   return (
-    <Card withBorder radius="md" p="sm" component="a" href={displayUrl} target="_blank" rel="noopener noreferrer">
-      <Group wrap="nowrap">
-        {imageUrl && (
-          <Image src={imageUrl} height={80} width={80} radius="sm" alt={ogTitle || "Preview image"} />
-        )}
-        <div style={{ flex: 1 }}>
-          <Text size="sm" fw={500} lineClamp={1}>
-            {ogTitle || "No title available"}
-          </Text>
-          <Text size="xs" c="dimmed" lineClamp={2} mt={4}>
-            {ogDescription || "No description available"}
-          </Text>
-          <Text size="xs" c="dimmed" lineClamp={1} mt={4}>
-            {displayUrl}
-          </Text>
-        </div>
-      </Group>
+    <Card className="border rounded-md hover:bg-gray-50 transition-colors">
+      <a href={displayUrl} target="_blank" rel="noopener noreferrer" className="block">
+        <CardContent className="p-3">
+          <div className="flex items-start gap-3">
+            {imageUrl && (
+              <Image
+                src={imageUrl}
+                alt={ogTitle || "Preview image"}
+                className="w-20 h-20 rounded-sm flex-shrink-0"
+                aspectRatio="square"
+                showSkeleton={true}
+              />
+            )}
+            <div className="flex-1 min-w-0">
+              <h4 className="text-sm font-medium line-clamp-1">
+                {ogTitle || "No title available"}
+              </h4>
+              <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
+                {ogDescription || "No description available"}
+              </p>
+              <p className="text-xs text-muted-foreground line-clamp-1 mt-1">
+                {displayUrl}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </a>
     </Card>
   );
 } 

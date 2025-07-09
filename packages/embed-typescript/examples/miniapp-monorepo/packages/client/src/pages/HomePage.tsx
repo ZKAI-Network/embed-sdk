@@ -1,10 +1,14 @@
-import { Alert, Stack, Container, Group, Avatar, Text, Loader, Select } from "@mantine/core";
+import { Alert, AlertTitle, AlertDescription } from "../components/ui/alert";
+import { Avatar, AvatarImage, AvatarFallback } from "../components/ui/avatar";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+import { Loader } from "../components/ui/loader";
 import { FeedHeader, FeedGrid } from "../components";
 import { usePullToRefresh } from "../hooks/usePullToRefresh";
 import type { UseFeedDataReturn } from "../hooks/useFeedData";
 import { FEEDS } from "../../../shared/constants/feedIds";
 import type { FeedId } from "../../../shared/constants/feedIds";
 import type { Dispatch, SetStateAction } from "react";
+import { IconUser } from "@tabler/icons-react";
 
 type HomePageProps = UseFeedDataReturn & {
   selectedFeed: FeedId;
@@ -41,60 +45,64 @@ export function HomePage(props: HomePageProps) {
   return (
     <>
       {isPullRefreshing && (
-        <Group justify="center" py="md" style={{ position: 'fixed', top: '20px', left: 0, right: 0, zIndex: 10 }}>
+        <div className="fixed top-5 left-0 right-0 z-10 flex justify-center py-4">
           <Loader />
-        </Group>
+        </div>
       )}
       <div ref={containerRef} style={style}>
-        <Container size="xl" px="md" py="xl">
-          <Stack gap="xl">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <div className="space-y-8">
             {/* Header */}
             <FeedHeader timestamp={timestamp} />
             
             {/* User Profile Section */}
             {isRunningOnFrame && userInfo && (
-              <Group gap="md" p="md" style={{ border: '1px solid #e9ecef', borderRadius: '8px' }}>
-                <Avatar 
-                  src={userInfo.pfpUrl} 
-                  alt={userInfo.displayName || userInfo.username} 
-                  size="lg" 
-                />
+              <div className="flex items-center gap-4 p-4 border border-border rounded-lg bg-card">
+                <Avatar className="w-16 h-16 ring-2 ring-border">
+                  <AvatarImage 
+                    src={userInfo.pfpUrl} 
+                    alt={userInfo.displayName || userInfo.username} 
+                  />
+                  <AvatarFallback className="bg-primary/10 text-primary">
+                    <IconUser size={24} />
+                  </AvatarFallback>
+                </Avatar>
                 <div>
-                  <Text fw={500} size="lg">
+                  <h2 className="font-medium text-lg">
                     {userInfo.displayName || userInfo.username}
-                  </Text>
-                  <Text size="sm" c="dimmed">
+                  </h2>
+                  <p className="text-sm text-muted-foreground">
                     @{userInfo.username} • FID: {userInfo.fid}
-                  </Text>
+                  </p>
                 </div>
-              </Group>
+              </div>
             )}
             
             {/* Demo Mode Alert */}
             {!isRunningOnFrame && (
-              <Alert 
-                title="Demo Mode" 
-                color="blue" 
-                variant="light"
-              >
-                This is a demo feed. Run in a Farcaster frame for personalized content.
+              <Alert>
+                <AlertTitle>Demo Mode</AlertTitle>
+                <AlertDescription>
+                  This is a demo feed. Run in a Farcaster frame for personalized content.
+                </AlertDescription>
               </Alert>
             )}
 
-            <Select
-              label="Select a feed"
-              placeholder="Pick a feed"
-              value={selectedFeed}
-              onChange={(value) => {
-                if (value) {
-                  setSelectedFeed(value as FeedId);
-                }
-              }}
-              data={FEEDS.map((feed) => ({
-                value: feed.id,
-                label: feed.name,
-              }))}
-            />
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Select a feed</label>
+              <Select value={selectedFeed} onValueChange={(value) => setSelectedFeed(value as FeedId)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Pick a feed" />
+                </SelectTrigger>
+                <SelectContent>
+                  {FEEDS.map((feed) => (
+                    <SelectItem key={feed.id} value={feed.id}>
+                      {feed.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
             {/* Feed Content */}
             {isSDKLoaded && (
@@ -110,8 +118,8 @@ export function HomePage(props: HomePageProps) {
                 isRefreshing={isDataRefreshing}
               />
             )}
-          </Stack>
-        </Container>
+          </div>
+        </div>
       </div>
     </>
   );

@@ -7,7 +7,7 @@ async function feedManagementExample() {
   try {
     // 1. Create a new feed
     console.log("Creating a new feed...")
-    const newFeed = await client.createFeedConfig({
+    const newFeed = await client.feed.createConfig({
       name: "Experimental Feed",
       description: "Experimenting with a for-you feed",
       endpoint: "casts/feed/for-you",
@@ -43,13 +43,13 @@ async function feedManagementExample() {
 
     // 2. List all feeds
     console.log("\nListing all feeds...")
-    const feeds = await client.listFeedConfigs("private")
+    const feeds = await client.feed.listConfigs("private")
     console.log(`Found ${feeds.length} feeds:`)
     feeds.forEach((feed) => console.log(`- ${feed.name} (${feed.config_id})`))
 
     // 3. Get a specific feed
     console.log("\nRetrieving feed details for ID:", newFeed.config_id)
-    const feedDetails = await client.getFeedConfig(newFeed.config_id)
+    const feedDetails = await client.feed.getConfig(newFeed.config_id)
     console.log("Current feed configuration:", {
       name: feedDetails.name,
       description: feedDetails.description,
@@ -58,7 +58,7 @@ async function feedManagementExample() {
 
     // 4. Update the feed
     console.log("\nUpdating feed with new configuration...")
-    await client.updateFeedConfig({
+    await client.feed.updateConfig({
       config_id: newFeed.config_id,
       name: "Best Feed Ever",
       description: "This feed gets the most interesting content in web3",
@@ -75,7 +75,7 @@ async function feedManagementExample() {
 
     // 5. Get the updated feed to show the changes
     console.log("\nRetrieving updated feed details...")
-    const updatedFeed = await client.getFeedConfig(newFeed.config_id)
+    const updatedFeed = await client.feed.getConfig(newFeed.config_id)
 
     console.log("Feed successfully updated. Changes:", {
       name: {

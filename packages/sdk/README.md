@@ -18,30 +18,15 @@ The core TypeScript package for embed APIs, featuring an Effect-based HTTP clien
 ### Basic Usage
 
 ```typescript
-import { getClient } from "embed-typescript"
+import { getClient } from "@embed-ai/sdk"
 const client = getClient(process.env.API_KEY_EMBED)
-const feed = await client.getFeedByUserId("16085")
+const feed = await client.feed.byUserId("16085")
 console.log("✅ Success we got:", feed.length, "items")
-```
-
-### Examples
-
-Run the comprehensive examples to see all features in action:
-
-```bash
-# Basic error handling examples
-bun run examples/retry-example.ts
-
-# Feed management examples
-bun run examples/feed-management-example.ts
-
-# Simple SDK usage
-bun run examples/embed-typescript-sdk.ts
 ```
 
 ## Error Handling Guide
 
-The embed-typescript package provides comprehensive error handling with typed errors and automatic retries. Here's everything you need to know.
+The @embed-ai/sdk package provides comprehensive error handling with typed errors and automatic retries. Here's everything you need to know.
 
 ### What Gets Retried Automatically
 
@@ -57,12 +42,12 @@ The embed-typescript package provides comprehensive error handling with typed er
 For simple applications, basic try/catch is sufficient:
 
 ```typescript
-import { getClient } from "embed-typescript"
+import { getClient } from "@embed-ai/sdk"
 
 const client = getClient(process.env.API_KEY_EMBED)
 
 try {
-  const feed = await client.getFeedByUserId("16085")
+  const feed = await client.feed.byUserId("16085")
   return feed
 } catch (error) {
   console.error("API request failed:", error)
@@ -80,7 +65,7 @@ import {
   NetworkError,      // Network connection issues
   TimeoutError,      // Request timeout errors
   ParseError         // JSON parsing errors
-} from "embed-typescript"
+} from "@embed-ai/sdk"
 ```
 
 Each error type contains rich information to help you understand and handle the issue:
@@ -116,12 +101,12 @@ Each error type contains rich information to help you understand and handle the 
 ### Basic Usage with Error Handling
 
 ```typescript
-import { getClient, HttpRequestError, NetworkError, TimeoutError } from "embed-typescript"
+import { getClient, HttpRequestError, NetworkError, TimeoutError } from "@embed-ai/sdk"
 
 const client = getClient(process.env.API_KEY_EMBED)
 
 try {
-  const feed = await client.getFeedByUserId("16085")
+  const feed = await client.feed.byUserId("16085")
   console.log("✅ Success:", feed.length, "items")
 } catch (error) {
   console.error("❌ Error:", error)
@@ -148,13 +133,13 @@ import {
   NetworkError, 
   TimeoutError, 
   ParseError 
-} from "embed-typescript"
+} from "@embed-ai/sdk"
 
 const client = getClient(process.env.API_KEY_EMBED)
 
 async function getFeedWithErrorHandling(userId: string) {
   try {
-    return await client.getFeedByUserId(userId)
+    return await client.feed.byUserId(userId)
   } catch (error) {
     if (error instanceof HttpRequestError) {
       switch (error.status) {
@@ -192,7 +177,7 @@ async function getFeedWithErrorHandling(userId: string) {
 Configure retry behavior for your specific needs:
 
 ```typescript
-import { getClient } from "embed-typescript"
+import { getClient } from "@embed-ai/sdk"
 
 const client = getClient(process.env.API_KEY_EMBED, {
   retry: {
@@ -206,7 +191,7 @@ const client = getClient(process.env.API_KEY_EMBED, {
 })
 
 // Now all requests will use this retry configuration
-const feed = await client.getFeedByWalletAddress("0x123...")
+const feed = await client.feed.byWalletAddress("0x123...")
 ```
 
 ### What Happens When Retries Fail
@@ -215,7 +200,7 @@ When all retry attempts are exhausted, you receive the **last error that occurre
 
 ```typescript
 try {
-  const feed = await client.getFeedByUserId("16085")
+  const feed = await client.feed.byUserId("16085")
 } catch (error) {
   // This error represents the final failure after all retries
   if (error instanceof HttpRequestError) {
@@ -242,7 +227,7 @@ try {
 ```typescript
 // ✅ Good - Specific error handling
 try {
-  const feed = await client.getFeedByUserId(userId)
+  const feed = await client.feed.byUserId(userId)
 } catch (error) {
   if (error instanceof HttpRequestError) {
     // Handle specific HTTP errors
@@ -253,7 +238,7 @@ try {
 
 // ❌ Avoid - Generic error handling
 try {
-  const feed = await client.getFeedByUserId(userId)
+  const feed = await client.feed.byUserId(userId)
 } catch (error) {
   console.error("Something went wrong:", error) // Too generic
 }
@@ -284,7 +269,7 @@ function getUserFriendlyError(error: unknown): string {
 ```typescript
 async function getFeedWithFallback(userId: string) {
   try {
-    return await client.getFeedByUserId(userId)
+    return await client.feed.byUserId(userId)
   } catch (error) {
     if (error instanceof HttpRequestError && error.status === 404) {
       // User not found - return empty feed
@@ -301,13 +286,13 @@ async function getFeedWithFallback(userId: string) {
 #### 4. **Log Errors for Monitoring**
 
 ```typescript
-import { getClient, HttpRequestError } from "embed-typescript"
+import { getClient, HttpRequestError } from "@embed-ai/sdk"
 
 const client = getClient(process.env.API_KEY_EMBED)
 
 async function getFeedWithLogging(userId: string) {
   try {
-    return await client.getFeedByUserId(userId)
+    return await client.feed.byUserId(userId)
   } catch (error) {
     // Log error details for monitoring
     if (error instanceof HttpRequestError) {
@@ -329,22 +314,22 @@ async function getFeedWithLogging(userId: string) {
 
 ```typescript
 // Get personalized "For You" feed by user ID
-await client.getFeedByUserId(userId: string, options?: FeedOptions)
+await client.feed.byUserId(userId: string, options?: FeedOptions)
 
 // Get personalized "For You" feed by wallet address
-await client.getFeedByWalletAddress(walletAddress: string, options?: FeedOptions)
+await client.feed.byWalletAddress(walletAddress: string, options?: FeedOptions)
 
 // Feed management to create new feeds and manage these custom feeds e.g. as custom feed per user in your app, which can be built on top of base feeds
-await client.createFeedConfig(options: CreateFeedOptions)
-await client.getFeedConfig(configId: string)
-await client.listFeedConfigs(visibility?: "private" | "public")
-await client.updateFeedConfig(options: UpdateFeedOptions)
+await client.feed.createConfig(options: CreateFeedOptions)
+await client.feed.getConfig(configId: string)
+await client.feed.listConfigs(visibility?: "private" | "public")
+await client.feed.updateConfig(options: UpdateFeedOptions)
 ```
 
 ### Factory Function
 
 ```typescript
-import { getClient } from "embed-typescript"
+import { getClient } from "@embed-ai/sdk"
 
 // Create client with factory function
 const client = getClient(process.env.API_KEY_EMBED, {

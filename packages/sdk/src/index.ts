@@ -6,3 +6,6 @@ export { type HttpClientError, HttpRequestError, NetworkError, ParseError, Timeo
 
 // Export configuration types
 export type { mbdClientConfig, RetryConfig } from "./client.js"
+
+// Export feed namespace
+export { FeedNamespace } from "./feed/namespace.js"

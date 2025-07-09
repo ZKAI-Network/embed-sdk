@@ -3,7 +3,7 @@ import type { IHttpClient } from "../interfaces/index.js"
 
 export type FeedOptions = Omit<ForYouParams, "wallet_address" | "user_id">
 
-export async function getFeedByUserId(
+export async function byUserId(
   httpClient: IHttpClient,
   userId: string,
   options?: FeedOptions
@@ -23,7 +23,7 @@ export async function getFeedByUserId(
   return [...response.body]
 }
 
-export async function getFeedByWalletAddress(
+export async function byWalletAddress(
   httpClient: IHttpClient,
   walletAddress: string,
   options?: FeedOptions

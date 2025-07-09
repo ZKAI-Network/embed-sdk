@@ -134,7 +134,7 @@ The root `tsconfig.build.json` was referencing packages that don't exist in the 
    {
      "extends": "./tsconfig.base.json",
      "include": [],
-     "references": [{ "path": "packages/embed-typescript/tsconfig.build.json" }]
+     "references": [{ "path": "packages/sdk/tsconfig.build.json" }]
    }
    ```
    Be aware, you may have created more ;)

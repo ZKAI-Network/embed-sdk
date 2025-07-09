@@ -37,7 +37,7 @@ export const appRouter = t.router({
           ...(input.feed_id && { feed_id: input.feed_id })
         }
         console.log("For You feed options:", options)
-        const feed = await client.getForYouFeedByUserId(
+        const feed = await client.feed.byUserId(
           String(input.fid),
           options
         )

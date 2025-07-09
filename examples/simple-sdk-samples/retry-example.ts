@@ -1,4 +1,4 @@
-import { getClient, HttpRequestError, mbdClient, NetworkError, TimeoutError } from "@embed-ai/sdk"
+import { getClient, HttpRequestError, NetworkError, TimeoutError } from "@embed-ai/sdk"
 import { Effect } from "effect"
 
 /**
@@ -7,12 +7,12 @@ import { Effect } from "effect"
 async function basicExample() {
   console.log("=== Basic Example with Default Retries ===")
 
-  const client = new mbdClient(process.env.API_KEY_EMBED, {
+  const client = getClient(process.env.API_KEY_EMBED, {
     baseUrl: "https://api.mbd.xyz"
   })
 
   try {
-    const feed = await client.getFeedByUserId("16085")
+    const feed = await client.feed.byUserId("16085")
     console.log("Success:", feed)
   } catch (error) {
     console.error("Error:", error)
@@ -25,7 +25,7 @@ async function basicExample() {
 async function customRetryExample() {
   console.log("\n=== Custom Retry Configuration Example ===")
 
-  const client = new mbdClient(process.env.API_KEY_EMBED, {
+  const client = getClient(process.env.API_KEY_EMBED, {
     baseUrl: "https://api.mbd.xyz",
     retry: {
       maxRetries: 5,
@@ -38,7 +38,7 @@ async function customRetryExample() {
   })
 
   try {
-    const feed = await client.getFeedByWalletAddress("0x09CEdb7bb69f9F6DF646dBa107D2bAACda93D6C9")
+    const feed = await client.feed.byWalletAddress("0x09CEdb7bb69f9F6DF646dBa107D2bAACda93D6C9")
     console.log("Success with custom retry config:", feed)
   } catch (error) {
     console.error("Error after custom retries:", error)
@@ -51,7 +51,7 @@ async function customRetryExample() {
 async function noRetryExample() {
   console.log("\n=== No Retry Example ===")
 
-  const client = new mbdClient(process.env.API_KEY_EMBED, {
+  const client = getClient(process.env.API_KEY_EMBED, {
     baseUrl: "https://api.mbd.xyz",
     retry: {
       maxRetries: 0,
@@ -60,7 +60,7 @@ async function noRetryExample() {
   })
 
   try {
-    const feed = await client.getFeedByUserId("16085")
+    const feed = await client.feed.byUserId("16085")
     console.log("Success without retries:", feed)
   } catch (error) {
     console.error("Immediate failure:", error)
@@ -73,12 +73,12 @@ async function noRetryExample() {
 async function errorHandlingExample() {
   console.log("\n=== Error Handling Example ===")
 
-  const client = new mbdClient("invalid-token", {
+  const client = getClient("invalid-token", {
     baseUrl: "https://api.mbd.xyz"
   })
 
   try {
-    const feed = await client.getFeedByUserId("16085")
+    const feed = await client.feed.byUserId("16085")
     console.log("Unexpected success:", feed)
   } catch (error) {
     // Handle specific error types
@@ -104,13 +104,13 @@ async function errorHandlingExample() {
 async function advancedEffectExample() {
   console.log("\n=== Advanced Effect Example ===")
 
-  const client = new mbdClient(process.env.API_KEY_EMBED, {
+  const client = getClient(process.env.API_KEY_EMBED, {
     baseUrl: "https://api.mbd.xyz"
   })
 
   // Create an Effect that wraps the API call
   const apiCall = Effect.tryPromise({
-    try: () => client.getFeedByUserId("16085"),
+    try: () => client.feed.byUserId("16085"),
     catch: (error) => error
   })
 

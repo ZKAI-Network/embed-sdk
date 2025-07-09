@@ -11,7 +11,7 @@ import type { IHttpClient } from "../interfaces/index.js"
 
 const CONSOLE_API_BASE_URL = "https://console-api-us-west-2.mbd.xyz"
 
-export async function createFeedConfig(
+export async function createConfig(
   httpClient: IHttpClient,
   options: CreateFeedOptions
 ): Promise<FeedCreateUpdateResponse> {
@@ -54,7 +54,7 @@ export async function createFeedConfig(
   return response.data
 }
 
-export async function getFeedConfig(
+export async function getConfig(
   httpClient: IHttpClient,
   configId: string
 ): Promise<FeedGetResponse> {
@@ -69,7 +69,7 @@ export async function getFeedConfig(
   return response.data
 }
 
-export async function listFeedConfigs(
+export async function listConfigs(
   httpClient: IHttpClient,
   visibility: "private" | "public" = "private"
 ): Promise<ListFeedsResponse> {
@@ -86,12 +86,12 @@ export async function listFeedConfigs(
   return [...response.data]
 }
 
-export async function updateFeedConfig(
+export async function updateConfig(
   httpClient: IHttpClient,
   options: UpdateFeedOptions
 ): Promise<void> {
   // First get the current feed configuration
-  const currentFeed = await getFeedConfig(httpClient, options.config_id)
+  const currentFeed = await getConfig(httpClient, options.config_id)
 
   const { config_id: _config_id, ...updateOptions } = options
 

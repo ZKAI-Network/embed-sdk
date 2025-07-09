@@ -9,7 +9,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@embed-ai/sdk": "workspace:*",
+    "@embed-ai/sdk": "latest",
     "@effect/ai": "^0.19.2",
     "@effect/ai-openai": "^0.22.2",
     "@effect/platform-node": "^0.86.2"

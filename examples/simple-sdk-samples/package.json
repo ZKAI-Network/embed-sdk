@@ -4,7 +4,7 @@
   "description": "Simple examples demonstrating Embed AI SDK usage",
   "type": "module",
   "dependencies": {
-    "@embed-ai/sdk": "workspace:*",
+    "@embed-ai/sdk": "latest",
     "effect": "latest"
   },
   "devDependencies": {

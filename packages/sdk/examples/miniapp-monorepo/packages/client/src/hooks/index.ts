@@ -1,1 +1,1 @@
-export { useFeedData } from "./useFeedData"; 
+export { useFeedData } from "./useFeedData"

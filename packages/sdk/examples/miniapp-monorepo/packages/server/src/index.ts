@@ -20,8 +20,8 @@ app.get("/", (c: Context) => {
 })
 
 app.get("/health", (c: Context) => {
-  return c.json({ 
-    status: "ok", 
+  return c.json({
+    status: "ok",
     timestamp: new Date().toISOString(),
     hasApiKey: !!process.env.API_KEY_EMBED
   })
@@ -33,12 +33,12 @@ app.use(
     router: appRouter,
     createContext: () => {
       return {
-        API_KEY_EMBED: process.env.API_KEY_EMBED,
-      };
+        API_KEY_EMBED: process.env.API_KEY_EMBED
+      }
     },
     onError: ({ error, path }) => {
-      console.error(`tRPC Error on path: ${path}`, error);
-    },
+      console.error(`tRPC Error on path: ${path}`, error)
+    }
   })
 )
 

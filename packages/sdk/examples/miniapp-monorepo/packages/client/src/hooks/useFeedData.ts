@@ -1,130 +1,129 @@
-import { useEffect, useState, useCallback, useRef } from "react";
-import { useFrame } from "../FrameProvider";
-import { trpc } from "../trpc";
-import type { FeedItem } from "../components/FeedCard";
+import { useCallback, useEffect, useRef, useState } from "react"
+import type { FeedItem } from "../components/FeedCard"
+import { useFrame } from "../FrameProvider"
+import { trpc } from "../trpc"
 
 export interface UseFeedDataReturn {
-  data?: FeedItem[];
-  isLoading: boolean;
-  error?: { message: string } | null;
-  fidToUse?: number;
-  customFid?: number;
-  setFid: (fid?: number) => void;
-  timestamp: string;
-  isRunningOnFrame: boolean;
-  isSDKLoaded: boolean;
+  data?: Array<FeedItem>
+  isLoading: boolean
+  error?: { message: string } | null
+  fidToUse?: number
+  customFid?: number
+  setFid: (fid?: number) => void
+  timestamp: string
+  isRunningOnFrame: boolean
+  isSDKLoaded: boolean
   userInfo?: {
-    fid: number;
-    displayName?: string;
-    username?: string;
-    pfpUrl?: string;
-  };
-  fetchNextPage: () => void;
-  isFetchingNextPage: boolean;
-  hasNextPage: boolean;
-  refetch: () => Promise<any>;
-  isRefreshing: boolean;
+    fid: number
+    displayName?: string
+    username?: string
+    pfpUrl?: string
+  }
+  fetchNextPage: () => void
+  isFetchingNextPage: boolean
+  hasNextPage: boolean
+  refetch: () => Promise<any>
+  isRefreshing: boolean
 }
 
 export function useFeedData(
   options: {
-    fetchDefault?: boolean;
-    feedId?: string;
-  } = {},
+    fetchDefault?: boolean
+    feedId?: string
+  } = {}
 ): UseFeedDataReturn {
-  const { fetchDefault = true, feedId } = options;
-  const { isSDKLoaded, isRunningOnFrame, context } = useFrame();
-  const [timestamp, setTimestamp] = useState("");
-  const [pages, setPages] = useState<any[]>([]);
-  const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
-  const [hasNextPage, setHasNextPage] = useState(true);
-  const [customFid, setCustomFid] = useState<number>();
-  const prevFeedIdRef = useRef<string | undefined>(undefined);
+  const { feedId, fetchDefault = true } = options
+  const { context, isRunningOnFrame, isSDKLoaded } = useFrame()
+  const [timestamp, setTimestamp] = useState("")
+  const [pages, setPages] = useState<Array<any>>([])
+  const [isFetchingNextPage, setIsFetchingNextPage] = useState(false)
+  const [hasNextPage, setHasNextPage] = useState(true)
+  const [customFid, setCustomFid] = useState<number>()
+  const prevFeedIdRef = useRef<string | undefined>(undefined)
 
   useEffect(() => {
     // Reset pages when feedId changes
     if (prevFeedIdRef.current !== feedId) {
-      setPages([]);
-      setHasNextPage(true);
+      setPages([])
+      setHasNextPage(true)
     }
-    prevFeedIdRef.current = feedId;
-  }, [feedId]);
+    prevFeedIdRef.current = feedId
+  }, [feedId])
 
-  const fidToUse =
-    customFid ??
-    (fetchDefault ? (isRunningOnFrame && context?.user?.fid) || 3 : undefined);
+  const fidToUse = customFid ??
+    (fetchDefault ? (isRunningOnFrame && context?.user?.fid) || 3 : undefined)
 
   const {
     data: forYouData,
-    isLoading: forYouLoading,
     error: forYouError,
-    refetch: triggerQuery,
+    isLoading: forYouLoading,
     isRefetching: isRefreshing,
+    refetch: triggerQuery
   } = trpc.forYouFeed.useQuery(
     { fid: fidToUse!, ...(feedId && { feed_id: feedId }) },
     {
-      enabled: !!fidToUse && isSDKLoaded && pages.length === 0,
+      enabled: !!fidToUse && isSDKLoaded && pages.length === 0
     } // Only fetch automatically on first load
-  );
+  )
 
   useEffect(() => {
     if (forYouData && pages.length === 0) {
-      setPages([forYouData]);
-      setTimestamp(new Date().toLocaleTimeString());
+      setPages([forYouData])
+      setTimestamp(new Date().toLocaleTimeString())
       if (forYouData.body.length === 0) {
-        setHasNextPage(false);
+        setHasNextPage(false)
       }
     }
-  }, [forYouData, pages.length]);
+  }, [forYouData, pages.length])
 
   const setFid = useCallback((fid?: number) => {
-    setCustomFid(fid);
-    setPages([]);
-    setHasNextPage(true);
-  }, []);
+    setCustomFid(fid)
+    setPages([])
+    setHasNextPage(true)
+  }, [])
 
   const fetchNextPage = useCallback(async () => {
-    if (isFetchingNextPage || !hasNextPage || !fidToUse) return;
+    if (isFetchingNextPage || !hasNextPage || !fidToUse) return
 
-    setIsFetchingNextPage(true);
+    setIsFetchingNextPage(true)
     try {
-      const nextPageData = await triggerQuery();
+      const nextPageData = await triggerQuery()
       if (nextPageData.data) {
-        setPages((prevPages) => [...prevPages, nextPageData.data]);
+        setPages((prevPages) => [...prevPages, nextPageData.data])
         if (nextPageData.data.body.length === 0) {
-          setHasNextPage(false);
+          setHasNextPage(false)
         }
       }
     } catch (e) {
-      console.error("Failed to fetch next page", e);
+      console.error("Failed to fetch next page", e)
     } finally {
-      setIsFetchingNextPage(false);
+      setIsFetchingNextPage(false)
     }
-  }, [isFetchingNextPage, hasNextPage, triggerQuery, fidToUse]);
+  }, [isFetchingNextPage, hasNextPage, triggerQuery, fidToUse])
 
   const refetch = useCallback(async () => {
-    if (!fidToUse) return;
-    const result = await triggerQuery();
+    if (!fidToUse) return
+    const result = await triggerQuery()
     if (result.data) {
-      setPages([result.data]); // Reset pages with new data
-      setTimestamp(new Date().toLocaleTimeString());
-      setHasNextPage(result.data.body.length > 0);
+      setPages([result.data]) // Reset pages with new data
+      setTimestamp(new Date().toLocaleTimeString())
+      setHasNextPage(result.data.body.length > 0)
     }
-    return result;
-  }, [triggerQuery, fidToUse]);
+    return result
+  }, [triggerQuery, fidToUse])
 
   const flattenedData = pages.flatMap((page) =>
-    (page.body as any[]).map((item) => ({
+    (page.body as Array<any>).map((item) => ({
       ...item,
       metadata: {
         ...item.metadata,
         author: {
           ...item.metadata.author,
-          fid: item.metadata.author.user_id,
-        },
-      },
+          fid: item.metadata.author.user_id
+        }
+      }
     }))
-  );
+  )
 
   return {
     data: flattenedData,
@@ -138,16 +137,16 @@ export function useFeedData(
     isSDKLoaded,
     userInfo: context?.user
       ? {
-          fid: context.user.fid,
-          displayName: context.user.displayName,
-          username: context.user.username,
-          pfpUrl: context.user.pfpUrl,
-        }
+        fid: context.user.fid,
+        displayName: context.user.displayName,
+        username: context.user.username,
+        pfpUrl: context.user.pfpUrl
+      }
       : undefined,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
     refetch,
-    isRefreshing,
-  };
-} 
+    isRefreshing
+  }
+}

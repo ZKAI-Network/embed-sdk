@@ -1,4 +1,4 @@
-import { getClient } from "../src/client.js"
+import { getClient } from "@embed-ai/sdk"
 
 async function feedManagementExample() {
   // Initialize the client with your token

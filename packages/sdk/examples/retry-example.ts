@@ -1,5 +1,5 @@
+import { HttpRequestError, mbdClient, NetworkError, TimeoutError } from "@embed-ai/sdk"
 import { Effect } from "effect"
-import { HttpRequestError, mbdClient, NetworkError, TimeoutError } from "../src/client.js"
 
 /**
  * Example demonstrating basic usage with default retry configuration

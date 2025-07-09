@@ -1,8 +1,8 @@
 import { AiLanguageModel } from "@effect/ai"
 import { OpenAiClient, OpenAiLanguageModel } from "@effect/ai-openai"
 import { NodeHttpClient } from "@effect/platform-node"
+import { getClient } from "@embed-ai/sdk"
 import { Config, Console, Effect, Layer, Redacted } from "effect"
-import { getClient } from "../../../packages/embed-typescript/src/index.js"
 
 const generateDadJoke = Effect.gen(function*() {
   const key = yield* Config.redacted("API_KEY_EMBED")

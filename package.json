@@ -21,6 +21,8 @@
     "changeset-publish": "bun run build && TEST_DIST= bun test && changeset publish"
   },
   "devDependencies": {
+    "@embed-ai/types": "workspace:*",
+    "@embed-ai/sdk": "workspace:*",
     "@babel/cli": "^7.25.9",
     "@babel/core": "^7.26.0",
     "@babel/plugin-transform-export-namespace-from": "^7.25.9",

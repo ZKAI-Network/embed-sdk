@@ -1,4 +1,4 @@
-import { getClient } from "../src/index.js"
+import { getClient } from "@embed-ai/sdk"
 
 const main = async () => {
   const client = getClient(process.env.API_KEY_EMBED!)

@@ -1,13 +1,13 @@
 {
-  "name": "embed-typescript",
+  "name": "@embed-ai/sdk",
   "version": "0.0.0",
   "type": "module",
-  "license": "MIT",
-  "description": "The core typescript package for embed APIs.",
+  "license": "BSD-3-Clause",
+  "description": "The typescript sdk package for embed AI APIs.",
   "repository": {
     "type": "git",
     "url": "https://github.com/ZKAI-Network/embed-sdk/",
-    "directory": "packages/embed-typescript"
+    "directory": "packages/sdk"
   },
   "publishConfig": {
     "access": "public",

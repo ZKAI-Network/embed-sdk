@@ -1,11 +1,15 @@
-// Export client implementations
-export * from "./client.js"
 
-// Export interfaces
-export * from "./interfaces/index.js"
+export * as feed from "./casts/feed.js"
 
-// Export casts functionality
-export * from "./casts/index.js"
+/**
+ * Network-related errors (connection issues, DNS failures, etc.)
+ */
+export * as client from "./client.js"
 
-// Export types from @embed-ai/types package
-export type * from "@embed-ai/types"
+
+export * as management from "./feeds/management.js"
+
+/**
+ * HTTP client interface for making API requests
+ */
+export * as http from "./interfaces/http.js"

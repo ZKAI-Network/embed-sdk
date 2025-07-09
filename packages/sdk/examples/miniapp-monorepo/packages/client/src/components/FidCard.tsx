@@ -1,4 +1,6 @@
-import { Card, Stack, Group, Text, TextInput, Button } from "@mantine/core";
+import { Card, CardContent } from "./ui/card";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 import { useState } from "react";
 
 interface FidCardProps {
@@ -24,44 +26,52 @@ export function FidCard({ isSDKLoaded, onSetFid, onResetFid, customFid }: FidCar
   };
 
   return (
-    <Card withBorder radius="lg" p="lg" shadow="sm" style={{ height: "100%" }}>
-      <Stack gap="md" style={{ height: "100%" }}>
+    <Card className="border rounded-lg shadow-sm h-full">
+      <CardContent className="p-6 flex flex-col h-full space-y-4">
         {/* Header */}
-        <Stack gap={0}>
-          <Text fw={500}>View Someone's Feed</Text>
-          <Text size="sm" c="dimmed">
+        <div className="space-y-1">
+          <h3 className="font-medium">View Someone's Feed</h3>
+          <p className="text-sm text-muted-foreground">
             Enter a Farcaster ID (FID) to view their feed.
-          </Text>
-        </Stack>
+          </p>
+        </div>
 
         {/* Input */}
-        <TextInput
-          label="Farcaster User ID (FID)"
-          placeholder="e.g. 3"
-          value={fidInput}
-          onChange={(event) => {
-            const sanitized = event.currentTarget.value.replace(/\D/g, "");
-            setFidInput(sanitized);
-          }}
-          disabled={!isSDKLoaded}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              handleSetFid();
-            }
-          }}
-          style={{ flex: 1 }}
-        />
+        <div className="flex-1 space-y-2">
+          <label className="text-sm font-medium" htmlFor="fid-input">
+            Farcaster User ID (FID)
+          </label>
+          <Input
+            id="fid-input"
+            placeholder="e.g. 3"
+            value={fidInput}
+            onChange={(event) => {
+              const sanitized = event.currentTarget.value.replace(/\D/g, "");
+              setFidInput(sanitized);
+            }}
+            disabled={!isSDKLoaded}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                handleSetFid();
+              }
+            }}
+          />
+        </div>
 
         {/* Action Buttons */}
-        <Group grow mt="auto">
+        <div className="grid grid-cols-2 gap-2 mt-auto">
           <Button onClick={handleSetFid} disabled={!isSDKLoaded || !fidInput}>
             Get Feed
           </Button>
-          <Button onClick={handleResetFid} variant="light" disabled={!isSDKLoaded || customFid === undefined}>
+          <Button 
+            onClick={handleResetFid} 
+            variant="outline" 
+            disabled={!isSDKLoaded || customFid === undefined}
+          >
             Reset
           </Button>
-        </Group>
-      </Stack>
+        </div>
+      </CardContent>
     </Card>
   );
 } 

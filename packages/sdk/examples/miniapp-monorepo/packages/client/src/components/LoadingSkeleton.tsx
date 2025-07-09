@@ -1,28 +1,29 @@
-import { Card, Stack, Group, Skeleton } from "@mantine/core";
+import { Card, CardContent } from "./ui/card";
+import { Skeleton } from "./ui/skeleton";
 
 export function LoadingSkeleton() {
   return (
-    <Card withBorder radius="lg" p="lg" shadow="sm">
-      <Stack gap="md">
-        <Group gap="sm">
-          <Skeleton height={50} circle />
-          <Stack gap="xs" style={{ flex: 1 }}>
-            <Skeleton height={16} width="40%" />
-            <Skeleton height={12} width="30%" />
-          </Stack>
-        </Group>
-        <Stack gap="xs">
-          <Skeleton height={14} />
-          <Skeleton height={14} width="90%" />
-          <Skeleton height={14} width="75%" />
-        </Stack>
-        <Group justify="space-between" mt="md">
-          <Skeleton height={20} width={50} />
-          <Skeleton height={20} width={50} />
-          <Skeleton height={20} width={50} />
-          <Skeleton height={20} width={30} />
-        </Group>
-      </Stack>
+    <Card className="border rounded-lg shadow-sm">
+      <CardContent className="p-6 space-y-4">
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-12 w-12 rounded-full" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-4 w-2/5" />
+            <Skeleton className="h-3 w-1/3" />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-3.5 w-full" />
+          <Skeleton className="h-3.5 w-[90%]" />
+          <Skeleton className="h-3.5 w-3/4" />
+        </div>
+        <div className="flex justify-between items-center mt-6">
+          <Skeleton className="h-5 w-12" />
+          <Skeleton className="h-5 w-12" />
+          <Skeleton className="h-5 w-12" />
+          <Skeleton className="h-5 w-8" />
+        </div>
+      </CardContent>
     </Card>
   );
 } 

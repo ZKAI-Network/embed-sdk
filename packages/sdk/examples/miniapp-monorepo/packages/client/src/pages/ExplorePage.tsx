@@ -1,4 +1,3 @@
-import { Stack, Container } from "@mantine/core";
 import { FeedGrid, FidSelector } from "../components";
 import type { UseFeedDataReturn } from "../hooks/useFeedData";
 
@@ -34,8 +33,8 @@ export function ExplorePage(props: UseFeedDataReturn) {
 
   if (!showFeed) {
     return (
-      <Container size="xl" px="md" py="xl">
-        <Stack gap="xl">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="space-y-8">
           <FidSelector
             title="View Someone's Feed"
             isSDKLoaded={isSDKLoaded}
@@ -43,14 +42,14 @@ export function ExplorePage(props: UseFeedDataReturn) {
             onResetFid={handleResetFid}
             customFid={customFid}
           />
-        </Stack>
-      </Container>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Container size="xl" px="md" py="xl">
-      <Stack gap="xl">
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="space-y-8">
         <FidSelector
           title="View Someone's Feed"
           isSDKLoaded={isSDKLoaded}
@@ -69,7 +68,7 @@ export function ExplorePage(props: UseFeedDataReturn) {
           onRefresh={handleRefresh}
           isRefreshing={isDataRefreshing}
         />
-      </Stack>
-    </Container>
+      </div>
+    </div>
   );
 } 

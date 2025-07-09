@@ -1,4 +1,5 @@
-import { SimpleGrid, Stack, Group, Title, Loader, Button } from "@mantine/core";
+import { Button } from "./ui/button";
+import { Loader } from "./ui/loader";
 import { FidCard } from "./FidCard";
 
 interface FidSelectorProps {
@@ -21,32 +22,35 @@ export function FidSelector({
   isRefreshing,
 }: FidSelectorProps) {
   return (
-    <Stack gap="md">
-      <Group justify="space-between" align="center">
-        <Title order={3} c="dimmed">
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg text-muted-foreground">
           {title}
-        </Title>
+        </h3>
         {onRefresh && (
-          <Group>
-            <Button onClick={onRefresh} loading={isRefreshing} variant="light" size="xs">
+          <div className="flex items-center gap-2">
+            <Button 
+              onClick={onRefresh} 
+              disabled={isRefreshing} 
+              variant="outline" 
+              size="sm"
+            >
+              {isRefreshing && <Loader size="sm" className="mr-2" />}
               Refresh
             </Button>
-          </Group>
+          </div>
         )}
-      </Group>
+      </div>
 
       {/* FID Input Card */}
-      <SimpleGrid
-        cols={{ base: 1, sm: 1, md: 1, lg: 1 }}
-        spacing="md"
-      >
+      <div className="grid grid-cols-1 gap-4">
         <FidCard
           isSDKLoaded={isSDKLoaded}
           onSetFid={onSetFid}
           onResetFid={onResetFid}
           customFid={customFid}
         />
-      </SimpleGrid>
-    </Stack>
+      </div>
+    </div>
   );
 } 

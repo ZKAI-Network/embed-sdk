@@ -9,7 +9,6 @@ import {
 import sdk, {
   type FrameNotificationDetails,
   type Context,
-  type SendTokenResult,
 } from "@farcaster/frame-sdk";
 import { isMobileContext } from "./utils/index";
 import { showToast } from "./components/generic/ToastHelper";
@@ -36,7 +35,7 @@ interface FrameContextType {
       token: string;
       amount: string;
       recipientFid: number;
-    }) => Promise<SendTokenResult | undefined>;
+    }) => Promise<any | undefined>;
   };
   frameInfo?: {
     environment: "server" | "client";

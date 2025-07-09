@@ -1,0 +1,30 @@
+{
+  "name": "@embed-ai/sdk",
+  "version": "0.0.0",
+  "type": "module",
+  "license": "BSD-3-Clause",
+  "description": "The typescript sdk package for embed AI APIs.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZKAI-Network/embed-sdk/",
+    "directory": "packages/sdk"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "scripts": {
+    "build": "bun run build-esm && bun run build-annotate && bun run build-cjs && cp package.json README.md LICENSE dist/ && bun run fix-deps",
+    "build-esm": "tsc --project tsconfig.build.json --noEmit && tsc --project tsconfig.src.json",
+    "build-cjs": "babel dist --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir dist --source-maps",
+    "build-annotate": "babel dist --plugins annotate-pure-calls --out-dir dist --source-maps",
+    "fix-deps": "bun scripts/fix-deps.js",
+    "check": "tsc -b tsconfig.json",
+    "test": "vitest",
+    "coverage": "vitest --coverage"
+  },
+  "dependencies": {
+    "@embed-ai/types": "workspace:*",
+    "effect": "latest"
+  }
+}

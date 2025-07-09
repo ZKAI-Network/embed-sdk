@@ -1,0 +1,17 @@
+{
+  "name": "simple-sdk-samples",
+  "version": "0.1.0",
+  "description": "Simple examples demonstrating Embed AI SDK usage",
+  "type": "module",
+  "dependencies": {
+    "@embed-ai/sdk": "latest",
+    "effect": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+} 

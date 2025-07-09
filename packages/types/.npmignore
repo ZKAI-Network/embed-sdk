@@ -1,0 +1,24 @@
+# Source files
+src/
+tsconfig*.json
+tsconfig.build.tsbuildinfo
+
+# Development files
+*.log
+.DS_Store
+node_modules/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test files
+*.test.ts
+*.spec.ts
+test/
+tests/
+
+# Build artifacts (keep dist/ but exclude build info)
+*.tsbuildinfo 

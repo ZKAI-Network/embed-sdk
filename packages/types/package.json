@@ -1,0 +1,62 @@
+{
+  "name": "@embed-ai/types",
+  "version": "0.0.0",
+  "type": "module",
+  "license": "BSD-3-Clause",
+  "description": "TypeScript types for Embed AI APIs",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./feeds": {
+      "types": "./dist/feeds/index.d.ts",
+      "import": "./dist/feeds/index.js"
+    },
+    "./labels": {
+      "types": "./dist/labels/index.d.ts",
+      "import": "./dist/labels/index.js"
+    },
+    "./search": {
+      "types": "./dist/search/index.d.ts",
+      "import": "./dist/search/index.js"
+    },
+    "./users": {
+      "types": "./dist/users/index.d.ts",
+      "import": "./dist/users/index.js"
+    },
+    "./responses": {
+      "types": "./dist/responses/index.d.ts",
+      "import": "./dist/responses/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZKAI-Network/embed-sdk/",
+    "directory": "packages/types"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "check": "tsc -b tsconfig.json",
+    "test": "vitest",
+    "oas-types": "bunx openapi-to-effect gen src/types/api-spec/embed-farcaster-api-oas.json src/types/"
+  },
+  "dependencies": {
+    "effect": "latest"
+  },
+  "peerDependencies": {
+    "typescript": ">=5.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+} 

@@ -1,0 +1,1 @@
+export { useFeedData } from "./useFeedData"

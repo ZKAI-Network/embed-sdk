@@ -4,8 +4,7 @@
   "license": "MIT",
   "packageManager": "bun@1.1.34",
   "workspaces": [
-    "packages/*",
-    "examples/*"
+    "packages/*"
   ],
   "scripts": {
     "clean": "node scripts/clean.mjs",

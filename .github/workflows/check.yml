@@ -25,7 +25,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install dependencies
         uses: ./.github/actions/setup
-      - run: bun run codegen
+      - run: bun run build
       - name: Check source state
         run: git add packages/*/src && git diff-index --cached HEAD --exit-code packages/*/src
 

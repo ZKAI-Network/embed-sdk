@@ -59,14 +59,6 @@ bun run --filter="@template/cli" <script-name>
 
 ## Development Operations
 
-**Code Generation**
-
-Generate code for all packages:
-
-```sh
-bun run codegen
-```
-
 **Type Checking**
 
 Check types across all packages:

@@ -26,5 +26,6 @@
   "dependencies": {
     "@embed-ai/types": "workspace:*",
     "effect": "latest"
-  }
+  },
+  "types": "src/index.d.ts"
 }

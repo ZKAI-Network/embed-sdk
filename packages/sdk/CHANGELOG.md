@@ -1,5 +1,11 @@
 # @embed-ai/sdk
 
+## 0.1.1
+
+### Patch Changes
+
+- [#8](https://github.com/ZKAI-Network/embed-sdk/pull/8) [`bbba393`](https://github.com/ZKAI-Network/embed-sdk/commit/bbba393dd99d690d1a754db3a416cc1eaffa5ecd) Thanks [@SamuelLHuber](https://github.com/SamuelLHuber)! - include a pointer to the types in the package.json to allow for IntelliSense and type/package resolution in editors
+
 ## 0.1.0
 
 ### Minor Changes

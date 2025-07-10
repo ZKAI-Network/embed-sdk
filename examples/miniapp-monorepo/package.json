@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "../../packages/*"
   ],
   "scripts": {
     "dev:server": "bun --env-file=packages/server/.env --watch packages/server/src/index.ts",

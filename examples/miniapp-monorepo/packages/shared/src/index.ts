@@ -1,6 +1,6 @@
 // This file is used to share the tRPC router type definition with the client.
 import { initTRPC } from "@trpc/server"
-import { getClient } from "embed-typescript/src/index.js"
+import { getClient } from "@embed-ai/sdk"
 import ogs from "open-graph-scraper"
 import { z } from "zod"
 import { ALL_FEED_IDS } from "../constants/feedIds.js"

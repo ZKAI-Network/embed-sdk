@@ -1,7 +1,7 @@
 import type { ForYou as ForYouParams, ForYouApiResponse, ForYouResponse } from "@embed-ai/types"
 import type { IHttpClient } from "../interfaces/index.js"
 
-export type FeedOptions = Omit<ForYouParams, "wallet_address" | "user_id">
+export type FeedOptions = Omit<ForYouParams, "wallet_address" | "user_id" | "feed_id">
 
 export async function byUserId(
   httpClient: IHttpClient,

@@ -1,5 +1,7 @@
 import { Schema as S } from "effect"
 
+import { LabelCategories } from "./LabelLiterals.js"
+
 export const LabelsForItems = S.Struct({
   /** List of casts to retrieve labels for */
   items_list: S.Array(S.String),
@@ -61,7 +63,7 @@ export const LabelsForItems = S.Struct({
    *   - `violence_graphic`
    * - `all` - include all labels above
    */
-  label_category: S.String
+  label_category: LabelCategories
 }) // LabelsForItems
 export type LabelsForItems = S.Schema.Type<typeof LabelsForItems>
 export const LabelsForItemsEncoded = S.encodedSchema(LabelsForItems)

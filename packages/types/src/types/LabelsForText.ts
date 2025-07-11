@@ -1,5 +1,7 @@
 import { Schema as S } from "effect"
 
+import { LabelCategories } from "./LabelLiterals.js"
+
 export const LabelsForText = S.Struct({
   /** List of text to get labels for */
   text_inputs: S.Array(S.String),
@@ -60,7 +62,7 @@ export const LabelsForText = S.Struct({
    *   - `hate_threatening`
    *   - `violence_graphic`
    */
-  label_category: S.String
+  label_category: LabelCategories
 }) // LabelsForText
 export type LabelsForText = S.Schema.Type<typeof LabelsForText>
 export const LabelsForTextEncoded = S.encodedSchema(LabelsForText)

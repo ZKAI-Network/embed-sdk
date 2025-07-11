@@ -1,5 +1,12 @@
 import { Schema as S } from "effect"
 
+import { AllLabels } from "./LabelLiterals.js"
+
+/**
+ * Activity types for user scoring
+ */
+const ActivityScoringTypes = S.Literal("post", "like", "recast", "reply", "all")
+
 export const LabelsTopUsers = S.Struct({
   /**
    * The label to retrieve top scored users for
@@ -61,7 +68,7 @@ export const LabelsTopUsers = S.Struct({
    * - `hate_threatening`
    * - `violence_graphic`
    */
-  label: S.String,
+  label: AllLabels,
   /** Maximum number of users to return (default 100, max 1000) */
   top_k: S.optional(S.Number),
   /** Whether to reverse the search, ie retrieve the lowest scored items (default false) */
@@ -73,7 +80,7 @@ export const LabelsTopUsers = S.Struct({
    *
    *     -`post` - `like` - `recast` - `reply` - `all`;
    */
-  scoring: S.optional(S.String),
+  scoring: S.optional(ActivityScoringTypes),
   /**
    * The minimum number of activity count required for the user to be included in the results
    * (default 10)

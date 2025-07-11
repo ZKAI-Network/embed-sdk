@@ -120,9 +120,9 @@ export class FeedNamespace {
   }
 
   /**
-   * Get a feed configuration by ID
+   * Get a feed configuration by feedId
    *
-   * @param configId - The feed configuration ID
+   * @param feedId - The feedId for which to get the configuration
    * @returns Promise<FeedConfigurationResponse> - The feed configuration details
    *
    * @example
@@ -133,8 +133,8 @@ export class FeedNamespace {
    * console.log(feed.config.filters) // Access feed filters
    * ```
    */
-  async getConfig(configId: string): Promise<FeedGetResponse> {
-    return getConfig(this.http, configId)
+  async getConfig(feedId: string): Promise<FeedGetResponse> {
+    return getConfig(this.http, feedId)
   }
 
   /**
@@ -158,7 +158,8 @@ export class FeedNamespace {
   /**
    * Update an existing feed configuration
    *
-   * @param options - Feed update options, must include config_id
+   * @param feedId - The feedId for which to update the configuration
+   * @param options - Feed update options
    * @returns Promise<void> - Resolves when the feed is successfully updated
    *
    * @example
@@ -176,7 +177,7 @@ export class FeedNamespace {
    * console.log("Feed updated successfully")
    * ```
    */
-  async updateConfig(options: UpdateFeedOptions): Promise<void> {
-    return updateConfig(this.http, options)
+  async updateConfig(feedId: string, options: UpdateFeedOptions): Promise<void> {
+    return updateConfig(this.http, feedId, options)
   }
 }

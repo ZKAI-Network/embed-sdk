@@ -264,10 +264,10 @@ function getUserFriendlyError(error: unknown): string {
 }
 ```
 
-#### 3. **Implement Fallback Strategies**
+#### 3. **Implement Cache Strategies**
 
 ```typescript
-async function getFeedWithFallback(userId: string) {
+async function getFeedWithCache(userId: string) {
   try {
     return await client.feed.byUserId(userId)
   } catch (error) {

@@ -39,6 +39,7 @@ export class FeedNamespace {
    * Get personalized "For You" feed by user ID
    *
    * @param userId - The Farcaster user ID to get personalized feed for
+   * @param feedId - The feed ID to use for the request
    * @param options - Optional configuration for feed generation
    * @returns Promise<ForYouFeedItem[]> - Array of personalized feed items
    *
@@ -55,15 +56,17 @@ export class FeedNamespace {
    */
   async byUserId(
     userId: string,
+    feedId?: string,
     options?: FeedOptions
   ): Promise<ForYouResponse> {
-    return byUserId(this.http, userId, options)
+    return byUserId(this.http, userId, feedId, options)
   }
 
   /**
    * Get personalized "For You" feed by wallet address
    *
    * @param walletAddress - The user's wallet address to get personalized feed for
+   * @param feedId - The feed ID to use for the request
    * @param options - Optional configuration for feed generation
    * @returns Promise<ForYouFeedItem[]> - Array of personalized feed items
    *
@@ -79,9 +82,10 @@ export class FeedNamespace {
    */
   async byWalletAddress(
     walletAddress: string,
+    feedId?: string,
     options?: FeedOptions
   ): Promise<ForYouResponse> {
-    return byWalletAddress(this.http, walletAddress, options)
+    return byWalletAddress(this.http, walletAddress, feedId, options)
   }
 
   // ============================================================================

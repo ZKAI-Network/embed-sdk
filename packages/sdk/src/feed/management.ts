@@ -71,7 +71,7 @@ export async function getConfig(
 
 export async function listConfigs(
   httpClient: IHttpClient,
-  visibility: "private" | "public" = "private"
+  visibility: "private" | "template" | "public" = "private"
 ): Promise<ListFeedsResponse> {
   const request: ListFeedsRequest = { visibility }
 

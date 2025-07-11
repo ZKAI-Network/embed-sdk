@@ -136,7 +136,7 @@ export class FeedNamespace {
   /**
    * List all feed configurations for the account
    *
-   * @param visibility - Filter by visibility (private/public), defaults to "private"
+   * @param visibility - Filter by visibility (private/template/public), defaults to "private"
    * @returns Promise<FeedConfigurationResponse[]> - Array of feed configurations
    *
    * @example
@@ -147,7 +147,7 @@ export class FeedNamespace {
    * feeds.forEach(feed => console.log(feed.name))
    * ```
    */
-  async listConfigs(visibility: "private" | "public" = "private"): Promise<ListFeedsResponse> {
+  async listConfigs(visibility: "private" | "template" | "public" = "private"): Promise<ListFeedsResponse> {
     return listConfigs(this.http, visibility)
   }
 

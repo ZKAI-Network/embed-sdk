@@ -1,5 +1,18 @@
 # @embed-ai/sdk
 
+## 0.1.2
+
+### Patch Changes
+
+- [#11](https://github.com/ZKAI-Network/embed-sdk/pull/11) [`2b48c6b`](https://github.com/ZKAI-Network/embed-sdk/commit/2b48c6bba86643a8f2a747b90cd33c1d1a2b8650) Thanks [@SamuelLHuber](https://github.com/SamuelLHuber)! - feed_id should be a primary parameter
+
+- [#11](https://github.com/ZKAI-Network/embed-sdk/pull/11) [`2b48c6b`](https://github.com/ZKAI-Network/embed-sdk/commit/2b48c6bba86643a8f2a747b90cd33c1d1a2b8650) Thanks [@SamuelLHuber](https://github.com/SamuelLHuber)! - improve type accuracy and tree shakability
+
+  visibility can be "template" too on Feeds
+
+- Updated dependencies [[`2b48c6b`](https://github.com/ZKAI-Network/embed-sdk/commit/2b48c6bba86643a8f2a747b90cd33c1d1a2b8650)]:
+  - @embed-ai/types@0.1.1
+
 ## 0.1.1
 
 ### Patch Changes

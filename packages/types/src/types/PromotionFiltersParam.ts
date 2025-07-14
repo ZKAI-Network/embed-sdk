@@ -1,10 +1,11 @@
-import { pipe, Schema as S } from "effect"
+import { pipe } from "effect"
+import * as S from "effect/Schema"
 
 import { FiltersParam } from "./FiltersParam.js"
 
 /**
  * Define another set of filters for promotional content that will be be inserted in the resulting
- * feed (currently only 1 promotion filter is supported)
+ * feed (currently limited to a maximum of 10 promotion filters)
  *
  * Two types of promotions are supported: 1) `feed` and 2) `items`. This is specified by the
  * `promotion_type` parameter.
@@ -51,6 +52,8 @@ export const PromotionFiltersParam = S.Array(
       )
     )
   })
+).pipe(
+  S.maxItems(10)
 )
 export type PromotionFiltersParam = S.Schema.Type<typeof PromotionFiltersParam>
 export const PromotionFiltersParamEncoded = S.encodedSchema(PromotionFiltersParam)

@@ -1,4 +1,7 @@
-import { Data, Effect, pipe, Schedule } from "effect"
+import { pipe } from "effect"
+import * as Data from "effect/Data"
+import * as Effect from "effect/Effect"
+import * as Schedule from "effect/Schedule"
 import { FeedNamespace } from "./feed/namespace.js"
 import type { IHttpClient } from "./interfaces/index.js"
 

@@ -1,4 +1,4 @@
-import { Schema as S } from "effect"
+import * as S from "effect/Schema"
 
 export const UsersFeedSimilar = S.Struct({
   /** A user_id (fid) to search similar users */

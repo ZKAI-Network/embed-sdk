@@ -1,4 +1,6 @@
-import { Schema as S } from "effect"
+import * as S from "effect/Schema"
+
+import { AllLabels } from "./LabelLiterals.js"
 
 /**
  * Return only casts that have these AI labels Available values:
@@ -66,7 +68,7 @@ import { Schema as S } from "effect"
  * - `web3_industry`
  * - `web3_consumer`
  */
-export const AILabelsFilterParam = S.Array(S.String)
+export const AILabelsFilterParam = S.Array(AllLabels)
 export type AILabelsFilterParam = S.Schema.Type<typeof AILabelsFilterParam>
 export const AILabelsFilterParamEncoded = S.encodedSchema(AILabelsFilterParam)
 export type AILabelsFilterParamEncoded = S.Schema.Encoded<typeof AILabelsFilterParam>

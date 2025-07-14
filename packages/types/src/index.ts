@@ -10,3 +10,6 @@ export * from "./types/ColdstartParam.js"
 export * from "./types/Empty.js"
 export * from "./types/FallbackFeedsParam.js"
 export * from "./types/FeedDiversityConfigParam.js"
+
+// Add the new label literals
+export * from "./types/LabelLiterals.js"

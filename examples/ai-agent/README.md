@@ -6,6 +6,8 @@ To install dependencies:
 bun install
 ```
 
+> **Note:** This example includes `effect` as a dependency, which is required since `@embed-ai/sdk` now uses `effect` as a peer dependency.
+
 Now ensure you're environment variables are set (see .env.example for reference)
 
 To run:

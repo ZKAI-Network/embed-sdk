@@ -1,5 +1,5 @@
-import * as S from "effect/Schema"
 import { pipe } from "effect"
+import * as S from "effect/Schema"
 
 import { FallbackFeedsParam } from "./FallbackFeedsParam.js"
 import { FeedDiversityConfigParam } from "./FeedDiversityConfigParam.js"

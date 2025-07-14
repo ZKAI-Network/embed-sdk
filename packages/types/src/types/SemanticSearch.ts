@@ -1,5 +1,5 @@
-import * as S from "effect/Schema"
 import { pipe } from "effect"
+import * as S from "effect/Schema"
 
 export const SemanticSearch = S.Struct({
   /** A description of what to search for */

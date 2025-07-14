@@ -1,5 +1,13 @@
 # @embed-ai/types
 
+## 0.1.1
+
+### Patch Changes
+
+- [#11](https://github.com/ZKAI-Network/embed-sdk/pull/11) [`2b48c6b`](https://github.com/ZKAI-Network/embed-sdk/commit/2b48c6bba86643a8f2a747b90cd33c1d1a2b8650) Thanks [@SamuelLHuber](https://github.com/SamuelLHuber)! - improve type accuracy and tree shakability
+
+  visibility can be "template" too on Feeds
+
 ## 0.1.0
 
 ### Minor Changes

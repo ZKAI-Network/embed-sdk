@@ -5,8 +5,10 @@ TypeScript types for Embed AI APIs, providing comprehensive type definitions for
 ## Installation
 
 ```bash
-npm install @embed-ai/types
+bun install @embed-ai/types effect
 ```
+
+> **Note:** `effect` is a peer dependency and must be installed alongside `@embed-ai/types`
 
 ## Usage
 

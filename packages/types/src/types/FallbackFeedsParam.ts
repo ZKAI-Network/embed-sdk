@@ -1,4 +1,4 @@
-import { Schema as S } from "effect"
+import * as S from "effect/Schema"
 
 /**
  * A feed can "run out of items" when a user has seen all items satisfying the feed configuration

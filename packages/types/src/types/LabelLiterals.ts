@@ -1,4 +1,4 @@
-import { Schema as S } from "effect"
+import * as S from "effect/Schema"
 
 /**
  * Topic labels - content classification by topic/theme

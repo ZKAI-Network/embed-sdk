@@ -1,4 +1,5 @@
-import { pipe, Schema as S } from "effect"
+import * as S from "effect/Schema"
+import { pipe } from "effect"
 
 // Social proof interaction entry
 export const SocialProofEntry = S.Struct({

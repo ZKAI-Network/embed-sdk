@@ -25,3 +25,5 @@ build/
 # Development dependencies
 .eslintrc*
 .prettierrc* 
+*.tsbuildinfo
+*.map

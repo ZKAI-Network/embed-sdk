@@ -1,4 +1,4 @@
-import { Schema as S } from "effect"
+import * as S from "effect/Schema"
 
 /**
  * This specifies a feed to be used when a user is under "cold start", meaning that the user is

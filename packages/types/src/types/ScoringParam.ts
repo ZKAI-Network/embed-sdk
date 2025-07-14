@@ -1,4 +1,4 @@
-import { Schema as S } from "effect"
+import * as S from "effect/Schema"
 
 /**
  * The type of algorithm to use for ranking - ie how to personalize the feed for the current user_id

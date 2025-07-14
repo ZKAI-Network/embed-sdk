@@ -1,4 +1,5 @@
-import { pipe, Schema as S } from "effect"
+import * as S from "effect/Schema"
+import { pipe } from "effect"
 
 /**
  * Configurations that help improve the perceived diversity of the feed. Post are returned in order

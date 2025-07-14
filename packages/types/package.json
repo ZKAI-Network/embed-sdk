@@ -8,6 +8,7 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist/**/*",
+    "!dist/**/*.map",
     "README.md"
   ],
   "exports": {
@@ -50,10 +51,8 @@
     "test": "vitest",
     "oas-types": "bunx openapi-to-effect gen src/types/api-spec/embed-farcaster-api-oas.json src/types/"
   },
-  "dependencies": {
-    "effect": "latest"
-  },
   "peerDependencies": {
+    "effect": ">=3.0.0",
     "typescript": ">=5.0.0"
   },
   "devDependencies": {

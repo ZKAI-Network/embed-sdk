@@ -1,6 +1,6 @@
 import { IconX } from "@tabler/icons-react"
 import React, { useState } from "react"
-import { Button, Dialog, DialogContent, Image } from "../index.js"
+import { Button, Dialog, DialogContent, DialogTitle, Image, VisuallyHidden } from "../index.js"
 
 interface ImageGalleryProps {
   className?: string
@@ -167,6 +167,9 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ className = "", images }) =
   const renderModalGallery = () => (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogContent className="w-[92vw] max-w-6xl h-[88vh] max-h-[88vh] p-0 overflow-hidden [&>button]:hidden">
+        <VisuallyHidden>
+          <DialogTitle>Image Gallery</DialogTitle>
+        </VisuallyHidden>
         <div className="relative w-full h-full flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-3 sm:p-4 border-b bg-background flex-shrink-0">

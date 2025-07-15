@@ -92,16 +92,25 @@ export function FeedCard({ item, onReply, onShare, onTip, onViewProfile }: FeedC
           embed_items.length > 0 &&
           (() => {
             // Separate images from other embeds
-            // Separate images from other embeds
-            const images: string[] = []
-            const otherEmbeds: string[] = []
+            const images: Array<string> = []
+            const otherEmbeds: Array<string> = []
 
             embed_items.forEach((embed) => {
-              if (
-                /\.(jpeg|jpg|gif|png|webp)$/i.test(embed) ||
-                embed.includes("imagedelivery.net") ||
-                embed.includes("/ipfs/") // not all ipfs files are images, this is sample app only and these cases should be better supported
-              ) {
+              const imageExtensions = /\.(jpeg|jpg|gif|png|webp)$/i
+              let isImage = imageExtensions.test(embed) || embed.includes("/ipfs/") // not all ipfs files are images, this is sample app only and these cases should be better supported
+
+              if (!isImage) {
+                try {
+                  const url = new URL(embed)
+                  if (url.hostname === "imagedelivery.net") {
+                    isImage = true
+                  }
+                } catch {
+                  // Not a valid URL, ignore
+                }
+              }
+
+              if (isImage) {
                 images.push(embed)
               } else {
                 otherEmbeds.push(embed)

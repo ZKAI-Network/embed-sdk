@@ -1,9 +1,7 @@
 import { useInView } from "react-intersection-observer"
-import { useEffect, useState, useCallback } from "react"
-import { FeedGrid, FeedCard, type FeedItem, type OgDataState } from "@embed-ai/react"
+import { useEffect } from "react"
+import { FeedGrid, FeedCard, type FeedItem } from "@embed-ai/react"
 import { useFrame } from "../FrameProvider"
-import { OgDataFetcher } from "./OgDataFetcher"
-
 
 
 interface FeedGridContainerProps {
@@ -35,21 +33,11 @@ export function FeedGridContainer({
 
   const { actions: { composeCast, viewProfile, sendToken } } = useFrame()
   
-  const [ogDataMap, setOgDataMap] = useState<Record<string, OgDataState>>({})
-
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage()
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
-
-  const handleOgData = useCallback((url: string, ogState: OgDataState) => {
-    setOgDataMap(prev => ({ ...prev, [url]: ogState }))
-  }, [setOgDataMap])
-
-  const uniqueUrls = data
-    ? [...new Set(data.flatMap((item) => item.metadata.embed_items || []))]
-    : []
 
   const isEmpty = !data || data.length === 0;
 
@@ -65,15 +53,6 @@ export function FeedGridContainer({
       loaderRef={ref}
       isEmpty={isEmpty}
     >
-      {/* Render fetchers for each unique URL */}
-      {uniqueUrls.map((url) => (
-        <OgDataFetcher
-          key={url}
-          url={url}
-          onData={handleOgData}
-        />
-      ))}
-
       {data &&
         data.map((item) => {
         const { author } = item.metadata;
@@ -112,7 +91,6 @@ export function FeedGridContainer({
             onReply={handleReply}
             onViewProfile={handleViewProfile}
             onTip={handleTip}
-            ogDataMap={ogDataMap}
           />
         )
       })}

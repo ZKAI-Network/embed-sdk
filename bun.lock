@@ -40,7 +40,7 @@
     },
     "packages/sdk": {
       "name": "@embed-ai/sdk",
-      "version": "0.1.0",
+      "version": "0.1.2",
       "dependencies": {
         "@embed-ai/types": "workspace:*",
       },
@@ -50,7 +50,7 @@
     },
     "packages/types": {
       "name": "@embed-ai/types",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "devDependencies": {
         "typescript": "^5.6.3",
       },

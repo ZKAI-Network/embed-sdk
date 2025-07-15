@@ -4,7 +4,7 @@ const PULL_THRESHOLD = 100 // Distance to pull before refresh is triggered
 const RESISTANCE_FACTOR = 0.5 // How much resistance to feel when pulling
 
 interface UsePullToRefreshOptions {
-  onRefresh: () => Promise<any>
+  onRefresh: () => Promise<void>
   isDisabled?: boolean
 }
 
@@ -59,9 +59,9 @@ export function usePullToRefresh({ isDisabled = false, onRefresh }: UsePullToRef
     const el = containerRef.current
     if (!el) return
 
-    el.addEventListener("touchstart", handleTouchStart)
+    el.addEventListener("touchstart", handleTouchStart, { passive: true })
     el.addEventListener("touchmove", handleTouchMove, { passive: false })
-    el.addEventListener("touchend", handleTouchEnd)
+    el.addEventListener("touchend", handleTouchEnd, { passive: true })
 
     return () => {
       el.removeEventListener("touchstart", handleTouchStart)

@@ -1,8 +1,5 @@
-import { Button, Loader } from "@embed-ai/react";
+import { Button, EmptyState, ErrorState, Loader, LoadingSkeleton } from "@embed-ai/react";
 import { FeedCard, type FeedItem } from "./FeedCard";
-import { LoadingSkeleton } from "./LoadingSkeleton";
-import { ErrorState } from "./ErrorState";
-import { EmptyState } from "./EmptyState";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 

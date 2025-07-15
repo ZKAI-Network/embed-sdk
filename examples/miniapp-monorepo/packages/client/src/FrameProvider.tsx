@@ -24,7 +24,7 @@ interface FrameContextType {
   actions: {
     openUrl: (url: string) => void;
     close: () => void;
-    addFrame: () => Promise<any>;
+    addFrame: () => Promise<unknown>;
     viewProfile: (params: { fid: number }) => void;
     composeCast(params: {
       text?: string;

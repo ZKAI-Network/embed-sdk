@@ -1,7 +1,6 @@
 import { trpc } from "../trpc";
 import { OgPreviewCard } from "./OgPreviewCard";
-import { EmbedSkeleton } from "./EmbedSkeleton";
-import { Card, CardContent } from "@embed-ai/react";
+import { Card, CardContent, EmbedSkeleton } from "@embed-ai/react";
 import { IconLink, IconExternalLink } from "@tabler/icons-react";
 
 interface UrlEmbedProps {
@@ -45,5 +44,15 @@ export function UrlEmbed({ url }: UrlEmbedProps) {
     );
   }
 
-  return <OgPreviewCard data={data} />;
+  return (
+    <OgPreviewCard
+      data={{
+        ogTitle: data.ogTitle,
+        ogDescription: data.ogDescription,
+        ogImage: data.ogImage,
+        ogUrl: data.ogUrl,
+        requestUrl: data.requestUrl,
+      }}
+    />
+  );
 } 

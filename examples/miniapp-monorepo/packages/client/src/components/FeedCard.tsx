@@ -1,18 +1,24 @@
-import { Card, CardContent, Avatar, AvatarImage, AvatarFallback } from "@embed-ai/react";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Card,
+  CardContent,
+  LocationCard,
+} from "@embed-ai/react";
 import ImageGallery from "./ImageGallery";
 import {
-  IconMessageCircle,
+  IconCoin,
+  IconExternalLink,
   IconHeart,
+  IconMessageCircle,
+  IconPlayerPlay as IconVideoPlay,
   IconRepeat,
   IconShare,
   IconUser,
-  IconCoin,
-  IconPlayerPlay as IconVideoPlay,
-  IconExternalLink,
 } from "@tabler/icons-react";
 import { useFrame } from "../FrameProvider";
 import { UrlEmbed } from "./UrlEmbed";
-import { LocationCard } from "./LocationCard";
 import { useMemo, useState } from "react";
 
 interface Author {

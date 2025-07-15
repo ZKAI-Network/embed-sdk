@@ -1,10 +1,19 @@
 import {
-  Alert, AlertTitle, AlertDescription,
-  Avatar, AvatarImage, AvatarFallback,
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-  Loader
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  FeedHeader,
+  Loader,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@embed-ai/react";
-import { FeedHeader, FeedGrid } from "../components";
+import { FeedGrid } from "../components";
 import { usePullToRefresh } from "../hooks/usePullToRefresh";
 import type { UseFeedDataReturn } from "../hooks/useFeedData";
 import { FEEDS } from "../../../shared/constants/feedIds";

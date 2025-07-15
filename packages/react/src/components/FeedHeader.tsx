@@ -1,7 +1,7 @@
-import { Badge } from "@embed-ai/react";
+import { Badge } from "./badge.js"
 
 interface FeedHeaderProps {
-  timestamp?: string;
+  timestamp?: string
 }
 
 export function FeedHeader({ timestamp }: FeedHeaderProps) {
@@ -16,5 +16,5 @@ export function FeedHeader({ timestamp }: FeedHeaderProps) {
         </Badge>
       )}
     </div>
-  );
-} 
+  )
+}

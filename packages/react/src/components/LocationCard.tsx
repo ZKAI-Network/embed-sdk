@@ -1,48 +1,49 @@
-import { Card, CardContent, Button } from "@embed-ai/react";
-import { IconMapPin, IconExternalLink, IconNavigation, IconMap } from "@tabler/icons-react";
+import { IconExternalLink, IconMap, IconMapPin, IconNavigation } from "@tabler/icons-react"
+import { Button } from "./button.js"
+import { Card, CardContent } from "./card.js"
 
 interface LocationCardProps {
-  geoUrl: string;
+  geoUrl: string
 }
 
 interface ParsedLocation {
-  lat: number;
-  lng: number;
-  placeId?: string;
-  query?: string;
+  lat: number
+  lng: number
+  placeId?: string
+  query?: string
 }
 
 function parseGeoUrl(geoUrl: string): ParsedLocation | null {
   try {
     // Handle geo:lat,lng or geo:lat,lng?query format
-    const geoMatch = geoUrl.match(/^geo:([+-]?\d+\.?\d*),([+-]?\d+\.?\d*)(\?(.+))?$/);
-    
-    if (!geoMatch) return null;
-    
-    const lat = parseFloat(geoMatch[1]);
-    const lng = parseFloat(geoMatch[2]);
-    const queryString = geoMatch[4];
-    
-    if (isNaN(lat) || isNaN(lng)) return null;
-    
-    const result: ParsedLocation = { lat, lng };
-    
+    const geoMatch = geoUrl.match(/^geo:([+-]?\d+\.?\d*),([+-]?\d+\.?\d*)(\?(.+))?$/)
+
+    if (!geoMatch) return null
+
+    const lat = parseFloat(geoMatch[1])
+    const lng = parseFloat(geoMatch[2])
+    const queryString = geoMatch[4]
+
+    if (isNaN(lat) || isNaN(lng)) return null
+
+    const result: ParsedLocation = { lat, lng }
+
     if (queryString) {
-      const params = new URLSearchParams(queryString);
-      result.placeId = params.get('place_id') || undefined;
-      result.query = params.get('q') || undefined;
+      const params = new URLSearchParams(queryString)
+      result.placeId = params.get("place_id") || undefined
+      result.query = params.get("q") || undefined
     }
-    
-    return result;
+
+    return result
   } catch {
-    return null;
+    return null
   }
 }
 
 function formatCoordinates(lat: number, lng: number): string {
-  const latDir = lat >= 0 ? 'N' : 'S';
-  const lngDir = lng >= 0 ? 'E' : 'W';
-  return `${Math.abs(lat).toFixed(4)}°${latDir}, ${Math.abs(lng).toFixed(4)}°${lngDir}`;
+  const latDir = lat >= 0 ? "N" : "S"
+  const lngDir = lng >= 0 ? "E" : "W"
+  return `${Math.abs(lat).toFixed(4)}°${latDir}, ${Math.abs(lng).toFixed(4)}°${lngDir}`
 }
 
 function getMapUrls(lat: number, lng: number) {
@@ -50,12 +51,12 @@ function getMapUrls(lat: number, lng: number) {
     google: `https://www.google.com/maps?q=${lat},${lng}`,
     apple: `https://maps.apple.com/?q=${lat},${lng}`,
     openstreetmap: `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}&zoom=16`
-  };
+  }
 }
 
 export function LocationCard({ geoUrl }: LocationCardProps) {
-  const location = parseGeoUrl(geoUrl);
-  
+  const location = parseGeoUrl(geoUrl)
+
   if (!location) {
     return (
       <Card className="border">
@@ -71,12 +72,12 @@ export function LocationCard({ geoUrl }: LocationCardProps) {
           </div>
         </CardContent>
       </Card>
-    );
+    )
   }
 
-  const { lat, lng, placeId } = location;
-  const mapUrls = getMapUrls(lat, lng);
-  
+  const { lat, lng, placeId } = location
+  const mapUrls = getMapUrls(lat, lng)
+
   return (
     <Card className="border hover:shadow-md transition-shadow">
       <CardContent className="p-4">
@@ -111,7 +112,7 @@ export function LocationCard({ geoUrl }: LocationCardProps) {
             variant="outline"
             size="sm"
             className="text-xs"
-            onClick={() => window.open(mapUrls.google, '_blank')}
+            onClick={() => window.open(mapUrls.google, "_blank")}
           >
             <IconNavigation size={14} className="mr-2" />
             Google Maps
@@ -120,7 +121,7 @@ export function LocationCard({ geoUrl }: LocationCardProps) {
             variant="outline"
             size="sm"
             className="text-xs"
-            onClick={() => window.open(mapUrls.apple, '_blank')}
+            onClick={() => window.open(mapUrls.apple, "_blank")}
           >
             <IconExternalLink size={14} className="mr-2" />
             Apple Maps
@@ -132,11 +133,11 @@ export function LocationCard({ geoUrl }: LocationCardProps) {
           variant="ghost"
           size="sm"
           className="w-full mt-2 text-xs"
-          onClick={() => window.open(mapUrls.openstreetmap, '_blank')}
+          onClick={() => window.open(mapUrls.openstreetmap, "_blank")}
         >
           Open in OpenStreetMap
         </Button>
       </CardContent>
     </Card>
-  );
-} 
+  )
+}

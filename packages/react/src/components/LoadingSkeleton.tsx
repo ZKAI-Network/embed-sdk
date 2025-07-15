@@ -1,4 +1,5 @@
-import { Card, CardContent, Skeleton } from "@embed-ai/react";
+import { Card, CardContent } from "./card.js"
+import { Skeleton } from "./skeleton.js"
 
 export function LoadingSkeleton() {
   return (
@@ -18,11 +19,9 @@ export function LoadingSkeleton() {
         </div>
         <div className="flex justify-between items-center mt-6">
           <Skeleton className="h-5 w-12" />
-          <Skeleton className="h-5 w-12" />
-          <Skeleton className="h-5 w-12" />
-          <Skeleton className="h-5 w-8" />
+          <Skeleton className="h-8 w-24" />
         </div>
       </CardContent>
     </Card>
-  );
-} 
+  )
+}

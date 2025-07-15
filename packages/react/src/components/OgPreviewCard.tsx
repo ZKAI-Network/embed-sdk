@@ -1,5 +1,5 @@
 import { Card, CardContent, Image } from "../index.js"
-import type { OgDataSuccess } from "./FeedCard.js"
+import type { OgDataSuccess } from "./types.js"
 
 interface OgPreviewCardProps {
   data: OgDataSuccess

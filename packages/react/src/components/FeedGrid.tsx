@@ -1,46 +1,44 @@
-import React from "react";
-import { Button } from "./Button.js";
-import { EmptyState } from "./EmptyState.js";
-import { ErrorState } from "./ErrorState.js";
-import { Loader } from "./Loader.js";
-import { LoadingSkeleton } from "./LoadingSkeleton.js";
+import React from "react"
+import { Button } from "./button.js"
+import { EmptyState } from "./EmptyState.js"
+import { ErrorState } from "./ErrorState.js"
+import { Loader } from "./loader.js"
+import { LoadingSkeleton } from "./LoadingSkeleton.js"
 
 interface FeedGridProps {
-  title: string;
-  children: React.ReactNode;
-  isLoading: boolean;
-  error?: { message: string } | null;
-  isFetchingNextPage: boolean;
-  hasNextPage: boolean;
-  onRefresh: () => void;
-  isRefreshing: boolean;
-  loaderRef: (node?: Element | null | undefined) => void;
-  isEmpty: boolean;
+  children: React.ReactNode
+  error?: { message: string } | null
+  hasNextPage: boolean
+  isEmpty: boolean
+  isFetchingNextPage: boolean
+  isLoading: boolean
+  isRefreshing: boolean
+  loaderRef: (node?: Element | null | undefined) => void
+  onRefresh: () => void
+  title: string
 }
 
 export function FeedGrid({
-  title,
   children,
-  isLoading,
   error,
-  isFetchingNextPage,
   hasNextPage,
-  onRefresh,
+  isEmpty,
+  isFetchingNextPage,
+  isLoading,
   isRefreshing,
   loaderRef,
-  isEmpty,
+  onRefresh,
+  title
 }: FeedGridProps) {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg text-muted-foreground">
-          {title}
-        </h3>
+        <h3 className="text-lg text-muted-foreground">{title}</h3>
         <div className="flex items-center gap-2">
-          <Button 
-            onClick={onRefresh} 
-            disabled={isRefreshing} 
-            variant="outline" 
+          <Button
+            onClick={onRefresh}
+            disabled={isRefreshing}
+            variant="outline"
             size="sm"
           >
             {isRefreshing && <Loader size="sm" className="mr-2" />}
@@ -57,9 +55,7 @@ export function FeedGrid({
       {isLoading && (
         <div className="w-full sm:max-w-2xl sm:mx-auto">
           <div className="grid grid-cols-1 gap-4">
-            {Array.from({ length: 8 }).map((_, index) => (
-              <LoadingSkeleton key={index} />
-            ))}
+            {Array.from({ length: 8 }).map((_, index) => <LoadingSkeleton key={index} />)}
           </div>
         </div>
       )}
@@ -67,9 +63,7 @@ export function FeedGrid({
       {/* Feed Cards */}
       {!isEmpty && (
         <div className="w-full sm:max-w-2xl sm:mx-auto">
-          <div className="grid grid-cols-1 gap-4">
-            {children}
-          </div>
+          <div className="grid grid-cols-1 gap-4">{children}</div>
         </div>
       )}
 
@@ -80,9 +74,7 @@ export function FeedGrid({
       {isFetchingNextPage && (
         <div className="w-full sm:max-w-2xl sm:mx-auto">
           <div className="grid grid-cols-1 gap-4">
-            {Array.from({ length: 4 }).map((_, index) => (
-              <LoadingSkeleton key={index} />
-            ))}
+            {Array.from({ length: 4 }).map((_, index) => <LoadingSkeleton key={index} />)}
           </div>
         </div>
       )}
@@ -90,5 +82,5 @@ export function FeedGrid({
       {/* Empty State */}
       {isEmpty && !isLoading && <EmptyState />}
     </div>
-  );
+  )
 }

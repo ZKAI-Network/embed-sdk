@@ -30,8 +30,14 @@ function parseGeoUrl(geoUrl: string): ParsedLocation | null {
 
     if (queryString) {
       const params = new URLSearchParams(queryString)
-      result.placeId = params.get("place_id") || undefined
-      result.query = params.get("q") || undefined
+      const placeId = params.get("place_id")
+      const query = params.get("q")
+      if (placeId) {
+        result.placeId = placeId
+      }
+      if (query) {
+        result.query = query
+      }
     }
 
     return result

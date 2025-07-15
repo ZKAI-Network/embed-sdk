@@ -1,3 +1,5 @@
+export type OgDataSuccess = Extract<OgData, { success: true }>
+
 export type OgData = {
   success: true
   is_image?: boolean

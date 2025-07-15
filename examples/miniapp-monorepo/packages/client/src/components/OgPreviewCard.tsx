@@ -1,5 +1,4 @@
-import { Card, CardContent } from "./ui/card";
-import { Image } from "./ui/image";
+import { Card, CardContent, Image } from "@embed-ai/react";
 
 interface OgPreviewCardProps {
   data: {
@@ -8,7 +7,7 @@ interface OgPreviewCardProps {
     ogImage?: { url: string }[];
     ogUrl?: string;
     requestUrl?: string;
-    [key: string]: any;
+
   };
 }
 

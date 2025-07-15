@@ -1,5 +1,4 @@
-import { Button } from "./ui/button";
-import { Loader } from "./ui/loader";
+import { Button, Loader } from "@embed-ai/react";
 import { FeedCard, type FeedItem } from "./FeedCard";
 import { LoadingSkeleton } from "./LoadingSkeleton";
 import { ErrorState } from "./ErrorState";

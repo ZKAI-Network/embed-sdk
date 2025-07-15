@@ -1,4 +1,4 @@
-import { Card, CardContent } from "./ui/card";
+import { Card, CardContent } from "@embed-ai/react";
 
 export function EmptyState() {
   return (

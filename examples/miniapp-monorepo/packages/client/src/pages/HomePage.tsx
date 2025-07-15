@@ -1,7 +1,9 @@
-import { Alert, AlertTitle, AlertDescription } from "../components/ui/alert";
-import { Avatar, AvatarImage, AvatarFallback } from "../components/ui/avatar";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-import { Loader } from "../components/ui/loader";
+import {
+  Alert, AlertTitle, AlertDescription,
+  Avatar, AvatarImage, AvatarFallback,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Loader
+} from "@embed-ai/react";
 import { FeedHeader, FeedGrid } from "../components";
 import { usePullToRefresh } from "../hooks/usePullToRefresh";
 import type { UseFeedDataReturn } from "../hooks/useFeedData";
@@ -90,7 +92,7 @@ export function HomePage(props: HomePageProps) {
 
             <div className="space-y-2">
               <label className="text-sm font-medium">Select a feed</label>
-              <Select value={selectedFeed} onValueChange={(value) => setSelectedFeed(value as FeedId)}>
+              <Select value={selectedFeed} onValueChange={(value: string) => setSelectedFeed(value as FeedId)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Pick a feed" />
                 </SelectTrigger>

@@ -1,0 +1,10 @@
+dist
+node_modules
+*.log
+*.tsbuildinfo
+
+# Config files
+.eslintrc.js
+
+# Test files
+vitest.config.ts

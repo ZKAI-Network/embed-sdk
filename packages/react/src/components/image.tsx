@@ -1,27 +1,31 @@
+import { IconPhotoOff } from "@tabler/icons-react"
 import * as React from "react"
 import { useState } from "react"
-import { cn } from "../../lib/utils"
-import { Skeleton } from "./skeleton"
-import { IconPhotoOff } from "@tabler/icons-react"
+
+import { cn } from "../lib/utils.js"
+import { Skeleton } from "./skeleton.js"
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-  src: string
   alt: string
+  src: string
+  aspectRatio?: "square" | "video" | "auto"
   fallback?: React.ReactNode
   showSkeleton?: boolean
-  aspectRatio?: "square" | "video" | "auto"
 }
 
 const Image = React.forwardRef<HTMLImageElement, ImageProps>(
-  ({ 
-    className, 
-    src, 
-    alt, 
-    fallback, 
-    showSkeleton = true, 
-    aspectRatio = "auto",
-    ...props 
-  }, ref) => {
+  (
+    {
+      alt,
+      className,
+      src,
+      aspectRatio = "auto",
+      fallback,
+      showSkeleton = true,
+      ...props
+    },
+    ref,
+  ) => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
 
@@ -37,17 +41,18 @@ const Image = React.forwardRef<HTMLImageElement, ImageProps>(
 
     const aspectRatioClasses = {
       square: "aspect-square",
-      video: "aspect-video", 
-      auto: ""
+      video: "aspect-video",
+      auto: "",
     }
 
     if (error) {
       return (
-        <div className={cn(
-          "flex items-center justify-center bg-muted text-muted-foreground border border-border rounded-md",
-          aspectRatioClasses[aspectRatio],
-          className
-        )}>
+        <div
+          className={cn(
+            "flex items-center justify-center rounded-md border border-border bg-muted text-muted-foreground",
+            aspectRatioClasses[aspectRatio],
+            className,
+          )}>
           {fallback || (
             <div className="flex flex-col items-center justify-center p-4">
               <IconPhotoOff size={24} className="mb-2" />

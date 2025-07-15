@@ -1,5 +1,4 @@
-import { Card, CardContent } from "./ui/card";
-import { Button } from "./ui/button";
+import { Card, CardContent, Button } from "@embed-ai/react";
 import { IconMapPin, IconExternalLink, IconNavigation, IconMap } from "@tabler/icons-react";
 
 interface LocationCardProps {

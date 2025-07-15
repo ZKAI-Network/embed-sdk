@@ -1,5 +1,4 @@
-import { Card, CardContent } from "./ui/card";
-import { Skeleton } from "./ui/skeleton";
+import { Card, CardContent, Skeleton } from "@embed-ai/react";
 
 export function LoadingSkeleton() {
   return (

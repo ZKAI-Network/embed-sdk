@@ -1,0 +1,53 @@
+{
+  "name": "@embed-ai/react",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "license": "BSD-3-Clause",
+  "description": "The reusable React component library for embed AI.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZKAI-Network/embed-sdk/",
+    "directory": "packages/react"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "scripts": {
+    "build": "bun run build-esm && bun run build-annotate && bun run build-cjs && cp package.json README.md LICENSE dist/ && bun run fix-deps",
+    "build-esm": "tsc --project tsconfig.build.json --noEmit && tsc --project tsconfig.src.json",
+    "build-cjs": "babel dist --plugins @babel/transform-export-namespace-from --plugins @babel/transform-modules-commonjs --out-dir dist --source-maps",
+    "build-annotate": "babel dist --plugins annotate-pure-calls --out-dir dist --source-maps",
+    "fix-deps": "bun scripts/fix-deps.js",
+    "check": "tsc -b tsconfig.json",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.0.5",
+    "@radix-ui/react-avatar": "^1.0.4",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-toast": "^1.1.5",
+    "@tabler/icons-react": "^3.34.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "lucide-react": "^0.263.1",
+    "tailwind-merge": "^2.2.0",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@embed-ai/types": "workspace:*",
+    "typescript": "~5.8.3",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2"
+  }
+}

@@ -6,6 +6,8 @@ module.exports = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+    // TODO: This direct path should be replaced by a call to the SDK
+    '../../../../packages/react/src/**/*.{ts,tsx}',
   ],
   prefix: "",
   theme: {

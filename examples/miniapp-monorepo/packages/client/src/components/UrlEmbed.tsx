@@ -1,7 +1,7 @@
 import { trpc } from "../trpc";
 import { OgPreviewCard } from "./OgPreviewCard";
 import { EmbedSkeleton } from "./EmbedSkeleton";
-import { Card, CardContent } from "./ui/card";
+import { Card, CardContent } from "@embed-ai/react";
 import { IconLink, IconExternalLink } from "@tabler/icons-react";
 
 interface UrlEmbedProps {

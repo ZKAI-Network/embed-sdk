@@ -1,6 +1,4 @@
-import { Card, CardContent } from "./ui/card";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Card, CardContent, Input, Button } from "@embed-ai/react";
 import { useState } from "react";
 
 interface FidCardProps {
@@ -25,6 +23,8 @@ export function FidCard({ isSDKLoaded, onSetFid, onResetFid, customFid }: FidCar
     setFidInput("");
   };
 
+  
+
   return (
     <Card className="border rounded-lg shadow-sm h-full">
       <CardContent className="p-6 flex flex-col h-full space-y-4">
@@ -45,12 +45,12 @@ export function FidCard({ isSDKLoaded, onSetFid, onResetFid, customFid }: FidCar
             id="fid-input"
             placeholder="e.g. 3"
             value={fidInput}
-            onChange={(event) => {
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               const sanitized = event.currentTarget.value.replace(/\D/g, "");
               setFidInput(sanitized);
             }}
             disabled={!isSDKLoaded}
-            onKeyDown={(event) => {
+            onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
               if (event.key === "Enter") {
                 handleSetFid();
               }

@@ -1,5 +1,4 @@
-import { Card, CardContent } from "./ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
+import { Card, CardContent, Avatar, AvatarImage, AvatarFallback } from "@embed-ai/react";
 import ImageGallery from "./ImageGallery";
 import {
   IconMessageCircle,

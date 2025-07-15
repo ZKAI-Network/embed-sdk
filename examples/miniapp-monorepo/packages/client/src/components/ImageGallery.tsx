@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { IconX } from '@tabler/icons-react';
-import { Image } from './ui/image';
-import { Dialog, DialogContent } from './ui/dialog';
-import { Button } from './ui/button';
+import { Button, Dialog, DialogContent, Image } from '@embed-ai/react';
 
 interface ImageGalleryProps {
   images: string[];

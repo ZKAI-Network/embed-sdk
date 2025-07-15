@@ -1,4 +1,4 @@
-import { cn } from "../../lib/utils"
+import { cn } from "../lib/utils.js"
 
 interface LoaderProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: "sm" | "md" | "lg"

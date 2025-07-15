@@ -22,3 +22,4 @@ tests/
 
 # Build artifacts (keep dist/ but exclude build info)
 *.tsbuildinfo 
+*.map

@@ -1,6 +1,10 @@
-import { Data, Effect, pipe, Schedule } from "effect"
+import { pipe } from "effect"
+import * as Data from "effect/Data"
+import * as Effect from "effect/Effect"
+import * as Schedule from "effect/Schedule"
 import { FeedNamespace } from "./feed/namespace.js"
 import type { IHttpClient } from "./interfaces/index.js"
+import { SearchNamespace } from "./search/namespace.js"
 
 // ============================================================================
 // ERROR TYPES
@@ -376,7 +380,7 @@ class HttpClient implements IHttpClient {
 // ============================================================================
 
 /**
- * Main Embed API client providing access to personalized feeds and feed management
+ * Main Embed API client providing access to personalized feeds, feed management, and search
  *
  * @example
  * ```typescript
@@ -392,11 +396,18 @@ class HttpClient implements IHttpClient {
  *   name: 'My Custom Feed',
  *   description: 'A feed for my app'
  * })
+ *
+ * // Search for similar users
+ * const similarUsers = await client.search.users.similar('16085')
+ *
+ * // Search users by query
+ * const users = await client.search.users.byQuery('web3 developers')
  * ```
  */
 export class mbdClient {
   private http: HttpClient
   public readonly feed: FeedNamespace
+  public readonly search: SearchNamespace
 
   constructor(token?: string, options?: mbdClientConfig) {
     if (!token && !options?.token) {
@@ -410,6 +421,7 @@ export class mbdClient {
 
     this.http = new HttpClient(config)
     this.feed = new FeedNamespace(this.http)
+    this.search = new SearchNamespace(this.http)
   }
 }
 
@@ -435,6 +447,12 @@ export class mbdClient {
  *   name: 'My Custom Feed',
  *   description: 'A feed for my app'
  * })
+ *
+ * // Search for similar users
+ * const similarUsers = await client.search.users.similar('16085')
+ *
+ * // Search users by query
+ * const users = await client.search.users.byQuery('web3 developers')
  *
  * // With configuration
  * const client = getClient('your-api-key', {

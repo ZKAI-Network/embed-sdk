@@ -11,7 +11,7 @@
     "build": "bun run build:types && bun run build:sdk",
     "build:types": "cd packages/types && bun run build",
     "build:sdk": "cd packages/sdk && bun run build",
-    "build:packages": "bun run --filter='@embed-ai/*' build",
+    "link-local-sdk": "bun scripts/link-local-sdk.mjs",
     "check": "tsc -b tsconfig.json",
     "check-recursive": "bun run --filter='@embed-ai/*' check",
     "lint": "eslint \"**/{src,test,examples,scripts,dtslint}/**/*.{ts,mjs}\"",
@@ -19,7 +19,7 @@
     "test": "bun run --filter='@embed-ai/*' test --run --passWithNoTests",
     "coverage": "bun run --filter='@embed-ai/*' test --coverage",
     "changeset-version": "changeset version && node scripts/version.mjs",
-    "changeset-publish": "bun run build:packages && TEST_DIST= bun run test && changeset publish"
+    "changeset-publish": "bun run build && TEST_DIST= bun run test && changeset publish"
   },
   "devDependencies": {
     "@babel/cli": "^7.25.9",

@@ -33,7 +33,7 @@ export interface FeedConfiguration {
   description: string
   endpoint: string
   status: "active" | "inactive"
-  visibility: "private" | "public"
+  visibility: "private" | "template" | "public"
   config: FeedConfig
   feed_image_url?: string | undefined
   short_name?: string | null | undefined
@@ -48,7 +48,7 @@ export interface FeedConfigurationResponse {
   description: string
   endpoint: string
   status: "active" | "inactive"
-  visibility: "private" | "public"
+  visibility: "private" | "template" | "public"
   config: FeedConfig
   feed_image_url?: string
   short_name?: string | null
@@ -67,7 +67,7 @@ export type ListFeedsResponse = Array<FeedConfigurationResponse>
  * Request payload for listing feeds
  */
 export interface ListFeedsRequest {
-  visibility: "private" | "public"
+  visibility: "private" | "template" | "public"
 }
 
 /**
@@ -78,7 +78,7 @@ export interface CreateFeedOptions {
   description: string
   endpoint?: string
   status?: "active" | "inactive"
-  visibility?: "private" | "public"
+  visibility?: "private" | "template" | "public"
   config?: Partial<FeedConfig>
   feed_image_url?: string
   short_name?: string | null

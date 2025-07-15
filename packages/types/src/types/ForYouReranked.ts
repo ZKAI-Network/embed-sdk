@@ -1,4 +1,4 @@
-import { Schema as S } from "effect"
+import * as S from "effect/Schema"
 
 import { FiltersParam } from "./FiltersParam.js"
 

@@ -59,6 +59,12 @@ bun run --filter="@template/cli" <script-name>
 
 ## Development Operations
 
+**Build local SDK to use in examples/simple-sdk-samples**
+
+```sh
+bun run link-local-sdk
+```
+
 **Type Checking**
 
 Check types across all packages:

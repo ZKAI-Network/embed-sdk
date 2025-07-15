@@ -1,4 +1,4 @@
-import { Schema as S } from "effect"
+import * as S from "effect/Schema"
 
 export const UsersFeedForItem = S.Struct({
   /** Item_id for fetching users feed */

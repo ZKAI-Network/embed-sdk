@@ -13,6 +13,14 @@ The core TypeScript package for embed APIs, featuring an Effect-based HTTP clien
 - 📊 **Built-in logging** of failed requests and retries
 - 🎯 **Selective retry logic** for different error types
 
+## Installation
+
+```bash
+bun install @embed-ai/sdk effect
+```
+
+> **Note:** `effect` is a peer dependency and must be installed alongside `@embed-ai/sdk`
+
 ## Quick Start
 
 ### Basic Usage
@@ -264,10 +272,10 @@ function getUserFriendlyError(error: unknown): string {
 }
 ```
 
-#### 3. **Implement Fallback Strategies**
+#### 3. **Implement Cache Strategies**
 
 ```typescript
-async function getFeedWithFallback(userId: string) {
+async function getFeedWithCache(userId: string) {
   try {
     return await client.feed.byUserId(userId)
   } catch (error) {

@@ -1,6 +1,6 @@
 {
   "name": "@embed-ai/types",
-  "version": "0.0.0",
+  "version": "0.1.2",
   "type": "module",
   "license": "BSD-3-Clause",
   "description": "TypeScript types for Embed AI APIs",
@@ -8,6 +8,7 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist/**/*",
+    "!dist/**/*.map",
     "README.md"
   ],
   "exports": {
@@ -50,13 +51,11 @@
     "test": "vitest",
     "oas-types": "bunx openapi-to-effect gen src/types/api-spec/embed-farcaster-api-oas.json src/types/"
   },
-  "dependencies": {
-    "effect": "latest"
-  },
   "peerDependencies": {
+    "effect": ">=3.0.0",
     "typescript": ">=5.0.0"
   },
   "devDependencies": {
     "typescript": "^5.6.3"
   }
-} 
+}

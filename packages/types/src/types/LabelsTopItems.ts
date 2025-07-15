@@ -1,4 +1,6 @@
-import { Schema as S } from "effect"
+import * as S from "effect/Schema"
+
+import { AllLabels } from "./LabelLiterals.js"
 
 export const LabelsTopItems = S.Struct({
   /**
@@ -61,7 +63,7 @@ export const LabelsTopItems = S.Struct({
    * - `hate_threatening`
    * - `violence_graphic`
    */
-  label: S.String,
+  label: AllLabels,
   /** Maximum number of casts to return (default 100, max 1000) */
   top_k: S.optional(S.Number),
   /** Whether to reverse the search, ie retrieve the lowest scored items (default false) */

@@ -1,9 +1,7 @@
 {
   "name": "@embed-ai/sdk",
-  "version": "0.0.0",
-  "type": "module",
-  "main": "./src/index.js",
-  "types": "./src/index.d.ts",
+  "version": "0.1.3",
+  "main": "src/index.js",
   "license": "BSD-3-Clause",
   "description": "The typescript sdk package for embed AI APIs.",
   "repository": {
@@ -11,6 +9,12 @@
     "url": "https://github.com/ZKAI-Network/embed-sdk/",
     "directory": "packages/sdk"
   },
+  "files": [
+    "src/**/*.js",
+    "src/**/*.d.ts",
+    "!src/**/*.map",
+    "!**/*.tsbuildinfo"
+  ],
   "publishConfig": {
     "access": "public",
     "directory": "dist"
@@ -26,7 +30,10 @@
     "coverage": "vitest --coverage"
   },
   "dependencies": {
-    "@embed-ai/types": "workspace:*",
-    "effect": "latest"
-  }
+    "@embed-ai/types": "workspace:*"
+  },
+  "peerDependencies": {
+    "effect": ">=3.0.0"
+  },
+  "types": "src/index.d.ts"
 }

@@ -3,8 +3,7 @@ import type {
   FeedCreateUpdateResponse,
   FeedGetResponse,
   ForYouResponse,
-  ListFeedsResponse,
-  UpdateFeedOptions
+  ListFeedsResponse
 } from "@embed-ai/types"
 import type { IHttpClient } from "../interfaces/index.js"
 import { byUserId, byWalletAddress } from "./feed.js"
@@ -18,8 +17,8 @@ import { createConfig, getConfig, listConfigs, updateConfig } from "./management
  * ```typescript
  * const client = getClient('your-api-key')
  *
- * // Get personalized feed
- * const feed = await client.feed.byUserId('16085')
+ * // Get personalized feed based on the For-You template
+ * const feed = await client.feed.byUserId('16085', 'feed_390')
  *
  * // Create a custom feed
  * const customFeed = await client.feed.createConfig({
@@ -39,13 +38,14 @@ export class FeedNamespace {
    * Get personalized "For You" feed by user ID
    *
    * @param userId - The Farcaster user ID to get personalized feed for
+   * @param feedId - The feed ID to use for the request
    * @param options - Optional configuration for feed generation
    * @returns Promise<ForYouFeedItem[]> - Array of personalized feed items
    *
    * @example
    * ```typescript
    * const client = getClient("your-api-key")
-   * const feed = await client.feed.byUserId("16085", {
+   * const feed = await client.feed.byUserId("16085", "feed_390", {
    *   top_k: 10,
    *   return_metadata: true
    * })
@@ -55,22 +55,24 @@ export class FeedNamespace {
    */
   async byUserId(
     userId: string,
+    feedId?: string,
     options?: FeedOptions
   ): Promise<ForYouResponse> {
-    return byUserId(this.http, userId, options)
+    return byUserId(this.http, userId, feedId, options)
   }
 
   /**
    * Get personalized "For You" feed by wallet address
    *
    * @param walletAddress - The user's wallet address to get personalized feed for
+   * @param feedId - The feed ID to use for the request
    * @param options - Optional configuration for feed generation
    * @returns Promise<ForYouFeedItem[]> - Array of personalized feed items
    *
    * @example
    * ```typescript
    * const client = getClient("your-api-key")
-   * const feed = await client.feed.byWalletAddress("0x1234...", {
+   * const feed = await client.feed.byWalletAddress("0x1234...", "feed_390", {
    *   top_k: 15,
    * })
    * console.log(feed[0].metadata?.author.username) // Access author username
@@ -79,9 +81,10 @@ export class FeedNamespace {
    */
   async byWalletAddress(
     walletAddress: string,
+    feedId?: string,
     options?: FeedOptions
   ): Promise<ForYouResponse> {
-    return byWalletAddress(this.http, walletAddress, options)
+    return byWalletAddress(this.http, walletAddress, feedId, options)
   }
 
   // ============================================================================
@@ -116,9 +119,9 @@ export class FeedNamespace {
   }
 
   /**
-   * Get a feed configuration by ID
+   * Get a feed configuration by feedId
    *
-   * @param configId - The feed configuration ID
+   * @param feedId - The feedId for which to get the configuration
    * @returns Promise<FeedConfigurationResponse> - The feed configuration details
    *
    * @example
@@ -129,14 +132,14 @@ export class FeedNamespace {
    * console.log(feed.config.filters) // Access feed filters
    * ```
    */
-  async getConfig(configId: string): Promise<FeedGetResponse> {
-    return getConfig(this.http, configId)
+  async getConfig(feedId: string): Promise<FeedGetResponse> {
+    return getConfig(this.http, feedId)
   }
 
   /**
    * List all feed configurations for the account
    *
-   * @param visibility - Filter by visibility (private/public), defaults to "private"
+   * @param visibility - Filter by visibility (private/template/public), defaults to "private"
    * @returns Promise<FeedConfigurationResponse[]> - Array of feed configurations
    *
    * @example
@@ -147,21 +150,21 @@ export class FeedNamespace {
    * feeds.forEach(feed => console.log(feed.name))
    * ```
    */
-  async listConfigs(visibility: "private" | "public" = "private"): Promise<ListFeedsResponse> {
+  async listConfigs(visibility: "private" | "template" | "public" = "private"): Promise<ListFeedsResponse> {
     return listConfigs(this.http, visibility)
   }
 
   /**
    * Update an existing feed configuration
    *
-   * @param options - Feed update options, must include config_id
+   * @param feedId - The feedId for which to update the configuration
+   * @param options - Feed update options
    * @returns Promise<void> - Resolves when the feed is successfully updated
    *
    * @example
    * ```typescript
    * const client = getClient("your-api-key")
-   * await client.feed.updateConfig({
-   *   config_id: "feed_123",
+   * await client.feed.updateConfig("feed_123", {
    *   name: "Updated Feed Name",
    *   config: {
    *     filters: {
@@ -172,7 +175,7 @@ export class FeedNamespace {
    * console.log("Feed updated successfully")
    * ```
    */
-  async updateConfig(options: UpdateFeedOptions): Promise<void> {
-    return updateConfig(this.http, options)
+  async updateConfig(feedId: string, options: CreateFeedOptions): Promise<void> {
+    return updateConfig(this.http, feedId, options)
   }
 }

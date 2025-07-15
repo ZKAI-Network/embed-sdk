@@ -1,4 +1,4 @@
-import { Schema as S } from "effect"
+import * as S from "effect/Schema"
 
 /**
  * A feed can "run out of items" when a user has seen all items satisfying the feed configuration
@@ -11,6 +11,8 @@ export const FallbackFeedsParam = S.Array(
     /** The ID of the feed to be used as fallback */
     feed_id: S.optional(S.String)
   })
+).pipe(
+  S.maxItems(3)
 )
 export type FallbackFeedsParam = S.Schema.Type<typeof FallbackFeedsParam>
 export const FallbackFeedsParamEncoded = S.encodedSchema(FallbackFeedsParam)

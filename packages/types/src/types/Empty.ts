@@ -1,4 +1,4 @@
-import { Schema as S } from "effect"
+import * as S from "effect/Schema"
 
 export const Empty = S.Struct({}) // Empty Schema
 export type Empty = S.Schema.Type<typeof Empty>

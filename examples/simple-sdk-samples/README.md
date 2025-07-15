@@ -13,6 +13,8 @@ This directory contains simple, standalone examples demonstrating how to use the
    ```bash
    bun install
    ```
+   
+   > **Note:** This example already includes `effect` as a dependency, which is required since `@embed-ai/sdk` now uses `effect` as a peer dependency.
 
 2. **Set up environment variables:**
    Create a `.env` file in this directory:

@@ -14,10 +14,6 @@
     },
   },
   "packages": {
-    "@embed-ai/sdk": ["@embed-ai/sdk@0.1.0", "", { "dependencies": { "@embed-ai/types": "^0.1.0", "effect": "latest" } }, "sha512-qqEudBQqZj6Y4v1HGMC1EibDrzLDoF2RXFlW78gL5i/7cVs7vgF8g7Bx26Wxt7JQYcMqXQ6Qfb3B4jAaWq0U/g=="],
-
-    "@embed-ai/types": ["@embed-ai/types@0.1.0", "", { "dependencies": { "effect": "latest" }, "peerDependencies": { "typescript": ">=5.0.0" } }, "sha512-uXa4wttRnTNJ3pUwLgJsRpNKNzGLxIru887idL+FtTGNrK1lflUgAldqpNtV+8YYnScRPLtnQHlWCve6md+U4g=="],
-
     "@standard-schema/spec": ["@standard-schema/spec@1.0.0", "", {}, "sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA=="],
 
     "@types/node": ["@types/node@20.19.6", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-uYssdp9z5zH5GQ0L4zEJ2ZuavYsJwkozjiUzCRfGtaaQcyjAMJ34aP8idv61QlqTozu6kudyr6JMq9Chf09dfA=="],

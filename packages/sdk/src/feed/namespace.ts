@@ -3,8 +3,7 @@ import type {
   FeedCreateUpdateResponse,
   FeedGetResponse,
   ForYouResponse,
-  ListFeedsResponse,
-  UpdateFeedOptions
+  ListFeedsResponse
 } from "@embed-ai/types"
 import type { IHttpClient } from "../interfaces/index.js"
 import { byUserId, byWalletAddress } from "./feed.js"
@@ -18,8 +17,8 @@ import { createConfig, getConfig, listConfigs, updateConfig } from "./management
  * ```typescript
  * const client = getClient('your-api-key')
  *
- * // Get personalized feed
- * const feed = await client.feed.byUserId('16085')
+ * // Get personalized feed based on the For-You template
+ * const feed = await client.feed.byUserId('16085', 'feed_390')
  *
  * // Create a custom feed
  * const customFeed = await client.feed.createConfig({
@@ -46,7 +45,7 @@ export class FeedNamespace {
    * @example
    * ```typescript
    * const client = getClient("your-api-key")
-   * const feed = await client.feed.byUserId("16085", {
+   * const feed = await client.feed.byUserId("16085", "feed_390", {
    *   top_k: 10,
    *   return_metadata: true
    * })
@@ -73,7 +72,7 @@ export class FeedNamespace {
    * @example
    * ```typescript
    * const client = getClient("your-api-key")
-   * const feed = await client.feed.byWalletAddress("0x1234...", {
+   * const feed = await client.feed.byWalletAddress("0x1234...", "feed_390", {
    *   top_k: 15,
    * })
    * console.log(feed[0].metadata?.author.username) // Access author username
@@ -165,8 +164,7 @@ export class FeedNamespace {
    * @example
    * ```typescript
    * const client = getClient("your-api-key")
-   * await client.feed.updateConfig({
-   *   config_id: "feed_123",
+   * await client.feed.updateConfig("feed_123", {
    *   name: "Updated Feed Name",
    *   config: {
    *     filters: {
@@ -177,7 +175,7 @@ export class FeedNamespace {
    * console.log("Feed updated successfully")
    * ```
    */
-  async updateConfig(feedId: string, options: UpdateFeedOptions): Promise<void> {
+  async updateConfig(feedId: string, options: CreateFeedOptions): Promise<void> {
     return updateConfig(this.http, feedId, options)
   }
 }

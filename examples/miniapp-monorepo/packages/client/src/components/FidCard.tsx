@@ -1,4 +1,4 @@
-import { Card, CardContent, Input, Button } from "@embed-ai/react";
+import { FarcasterUserSearch } from "@embed-ai/react";
 import { useState } from "react";
 
 interface FidCardProps {
@@ -23,55 +23,27 @@ export function FidCard({ isSDKLoaded, onSetFid, onResetFid, customFid }: FidCar
     setFidInput("");
   };
 
-  
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const sanitized = event.currentTarget.value.replace(/\D/g, "");
+    setFidInput(sanitized);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSetFid();
+    }
+  };
 
   return (
-    <Card className="border rounded-lg shadow-sm h-full">
-      <CardContent className="p-6 flex flex-col h-full space-y-4">
-        {/* Header */}
-        <div className="space-y-1">
-          <h3 className="font-medium">View Someone's Feed</h3>
-          <p className="text-sm text-muted-foreground">
-            Enter a Farcaster ID (FID) to view their feed.
-          </p>
-        </div>
-
-        {/* Input */}
-        <div className="flex-1 space-y-2">
-          <label className="text-sm font-medium" htmlFor="fid-input">
-            Farcaster User ID (FID)
-          </label>
-          <Input
-            id="fid-input"
-            placeholder="e.g. 3"
-            value={fidInput}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              const sanitized = event.currentTarget.value.replace(/\D/g, "");
-              setFidInput(sanitized);
-            }}
-            disabled={!isSDKLoaded}
-            onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-              if (event.key === "Enter") {
-                handleSetFid();
-              }
-            }}
-          />
-        </div>
-
-        {/* Action Buttons */}
-        <div className="grid grid-cols-2 gap-2 mt-auto">
-          <Button onClick={handleSetFid} disabled={!isSDKLoaded || !fidInput}>
-            Get Feed
-          </Button>
-          <Button 
-            onClick={handleResetFid} 
-            variant="outline" 
-            disabled={!isSDKLoaded || customFid === undefined}
-          >
-            Reset
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+    <FarcasterUserSearch
+      inputValue={fidInput}
+      onInputChange={handleInputChange}
+      onGetFeed={handleSetFid}
+      onReset={handleResetFid}
+      onKeyDown={handleKeyDown}
+      isGetFeedDisabled={!isSDKLoaded || !fidInput}
+      isResetDisabled={!isSDKLoaded || customFid === undefined}
+      isInputDisabled={!isSDKLoaded}
+    />
   );
 } 

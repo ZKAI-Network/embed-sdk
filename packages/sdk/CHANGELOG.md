@@ -1,5 +1,16 @@
 # @embed-ai/sdk
 
+## 0.1.3
+
+### Patch Changes
+
+- [#13](https://github.com/ZKAI-Network/embed-sdk/pull/13) [`e3d5494`](https://github.com/ZKAI-Network/embed-sdk/commit/e3d5494de3a74f79bd691ec58b115a4ce2ec29bc) Thanks [@SamuelLHuber](https://github.com/SamuelLHuber)! - ensure config_id is truely replaced by feedId for feed updating
+
+- [#13](https://github.com/ZKAI-Network/embed-sdk/pull/13) [`e3d5494`](https://github.com/ZKAI-Network/embed-sdk/commit/e3d5494de3a74f79bd691ec58b115a4ce2ec29bc) Thanks [@SamuelLHuber](https://github.com/SamuelLHuber)! - add search endpoints for user search and labels
+
+- Updated dependencies [[`e3d5494`](https://github.com/ZKAI-Network/embed-sdk/commit/e3d5494de3a74f79bd691ec58b115a4ce2ec29bc)]:
+  - @embed-ai/types@0.1.2
+
 ## 0.1.2
 
 ### Patch Changes

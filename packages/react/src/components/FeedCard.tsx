@@ -1,21 +1,11 @@
-import {
-  IconCoin,
-  IconExternalLink,
-  IconHeart,
-  IconMessageCircle,
-  IconPlayerPlay as IconVideoPlay,
-  IconRepeat,
-  IconShare,
-  IconUser
-} from "@tabler/icons-react"
+import { IconCoin, IconHeart, IconMessageCircle, IconRepeat, IconShare, IconUser } from "@tabler/icons-react"
 import { useMemo, useState } from "react"
 
-import { Avatar, AvatarFallback, AvatarImage } from "./avatar"
-import { Card, CardContent } from "./card"
-import ImageGallery from "./ImageGallery"
-import { LocationCard } from "./LocationCard"
-import type { FeedItem } from "./types"
-import { UrlEmbed } from "./UrlEmbed"
+import { Avatar, AvatarFallback, AvatarImage, Card, CardContent, VideoPlayer } from "../index.js"
+import ImageGallery from "./ImageGallery.js"
+import { LocationCard } from "./LocationCard.js"
+import type { FeedItem } from "./types.js"
+import { UrlEmbed } from "./UrlEmbed.js"
 
 interface FeedCardProps {
   item: FeedItem
@@ -91,14 +81,20 @@ export function FeedCard({ item, onReply, onShare, onTip, onViewProfile }: FeedC
         {embed_items &&
           embed_items.length > 0 &&
           (() => {
-            // Separate images from other embeds
             const images: Array<string> = []
+            const videos: Array<string> = []
             const otherEmbeds: Array<string> = []
 
             embed_items.forEach((embed) => {
               const imageExtensions = /\.(jpeg|jpg|gif|png|webp)$/i
-              let isImage = imageExtensions.test(embed) || embed.includes("/ipfs/") // not all ipfs files are images, this is sample app only and these cases should be better supported
+              const videoExtensions = /\.(mp4|webm|m3u8)$/i
 
+              if (videoExtensions.test(embed)) {
+                videos.push(embed)
+                return
+              }
+
+              let isImage = imageExtensions.test(embed) || embed.includes("/ipfs/")
               if (!isImage) {
                 try {
                   const url = new URL(embed)
@@ -119,58 +115,14 @@ export function FeedCard({ item, onReply, onShare, onTip, onViewProfile }: FeedC
 
             return (
               <div className="space-y-3 pt-2">
-                {/* Render image gallery if there are images */}
-                {images.length > 0 && <ImageGallery images={images} className="w-full" />}
-
-                {/* Render other embeds */}
+                {videos.map((videoUrl, index) => <VideoPlayer key={`video-${index}`} src={videoUrl} />)}
+                {images.length > 0 && <ImageGallery images={images} />}
                 {otherEmbeds.map((embed, index) => {
                   // Handle geographic location URLs
                   if (embed.startsWith("geo:")) {
-                    return <LocationCard key={index} geoUrl={embed} />
+                    return <LocationCard key={`geo-${index}`} geoUrl={embed} />
                   }
-
-                  // Handle Farcaster stream content
-                  if (embed.includes("stream.farcaster.xyz")) {
-                    return (
-                      <Card
-                        key={index}
-                        className="border hover:bg-gray-50 transition-colors"
-                      >
-                        <a
-                          href={embed}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block"
-                        >
-                          <CardContent className="p-3">
-                            <div className="flex items-center gap-3">
-                              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-md flex items-center justify-center">
-                                <IconVideoPlay
-                                  size={20}
-                                  className="text-white"
-                                />
-                              </div>
-                              <div className="flex-1">
-                                <p className="text-sm font-medium text-primary">
-                                  View Media
-                                </p>
-                                <p className="text-xs text-muted-foreground">
-                                  Farcaster video content
-                                </p>
-                              </div>
-                              <IconExternalLink
-                                size={16}
-                                className="text-muted-foreground"
-                              />
-                            </div>
-                          </CardContent>
-                        </a>
-                      </Card>
-                    )
-                  }
-
-                  // Handle all other URLs with OG preview
-                  return <UrlEmbed key={index} url={embed} />
+                  return <UrlEmbed key={`url-${index}`} url={embed} isLoading={false} />
                 })}
               </div>
             )

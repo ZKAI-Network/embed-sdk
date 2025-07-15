@@ -10,7 +10,7 @@ const generateDadJoke = Effect.gen(function*() {
 
   // Convert the Promise to Effect using Effect.tryPromise
   const feed = yield* Effect.tryPromise({
-    try: () => client.feed.byUserId("16085", { top_k: 10, feed_id: "feed_274" }), // fun music feed
+    try: () => client.feed.byUserId("16085", "feed_274", { top_k: 10 }), // fun music feed
     catch: (error) => new Error(`Failed to get feed: ${error}`)
   })
 

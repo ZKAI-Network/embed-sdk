@@ -58,8 +58,7 @@ async function feedManagementExample() {
 
     // 4. Update the feed
     console.log("\nUpdating feed with new configuration...")
-    await client.feed.updateConfig({
-      config_id: newFeed.config_id,
+    await client.feed.updateConfig(newFeed.config_id, {
       name: "Best Feed Ever",
       description: "This feed gets the most interesting content in web3",
       config: {
@@ -69,7 +68,7 @@ async function feedManagementExample() {
           ai_labels: ["web3_nft", "web3_consumer", "web3_defi"],
           start_timestamp: "days_ago:30"
         }
-      }
+      },
     })
     console.log("Feed updated successfully!")
 

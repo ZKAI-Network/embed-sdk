@@ -1,41 +1,35 @@
-import { Button, EmptyState, ErrorState, Loader, LoadingSkeleton } from "@embed-ai/react";
-import { FeedCard, type FeedItem } from "./FeedCard";
-import { useInView } from "react-intersection-observer";
-import { useEffect } from "react";
+import React from "react";
+import { Button } from "./Button.js";
+import { EmptyState } from "./EmptyState.js";
+import { ErrorState } from "./ErrorState.js";
+import { Loader } from "./Loader.js";
+import { LoadingSkeleton } from "./LoadingSkeleton.js";
 
 interface FeedGridProps {
   title: string;
-  data?: FeedItem[];
+  children: React.ReactNode;
   isLoading: boolean;
   error?: { message: string } | null;
-  fetchNextPage: () => void;
   isFetchingNextPage: boolean;
   hasNextPage: boolean;
   onRefresh: () => void;
   isRefreshing: boolean;
+  loaderRef: (node?: Element | null | undefined) => void;
+  isEmpty: boolean;
 }
 
 export function FeedGrid({
   title,
-  data,
+  children,
   isLoading,
   error,
-  fetchNextPage,
   isFetchingNextPage,
   hasNextPage,
   onRefresh,
   isRefreshing,
+  loaderRef,
+  isEmpty,
 }: FeedGridProps) {
-  const { ref, inView } = useInView({
-    threshold: 0,
-  });
-
-  useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
-
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -71,18 +65,16 @@ export function FeedGrid({
       )}
 
       {/* Feed Cards */}
-      {data && data.length > 0 && (
+      {!isEmpty && (
         <div className="w-full sm:max-w-2xl sm:mx-auto">
           <div className="grid grid-cols-1 gap-4">
-            {data.map((item) => (
-              <FeedCard key={item.item_id} item={item} />
-            ))}
+            {children}
           </div>
         </div>
       )}
 
       {/* Intersection Observer Trigger: only rendered when we can fetch more */}
-      {hasNextPage && !isFetchingNextPage && <div ref={ref} />}
+      {hasNextPage && !isFetchingNextPage && <div ref={loaderRef} />}
 
       {/* Loading More Indicator */}
       {isFetchingNextPage && (
@@ -96,7 +88,7 @@ export function FeedGrid({
       )}
 
       {/* Empty State */}
-      {data && data.length === 0 && !isLoading && <EmptyState />}
+      {isEmpty && !isLoading && <EmptyState />}
     </div>
   );
-} 
+}

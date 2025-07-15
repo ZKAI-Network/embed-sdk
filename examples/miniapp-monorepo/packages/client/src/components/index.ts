@@ -1,4 +1,3 @@
-export { type Author, FeedCard, type FeedItem, type FeedItemMetadata } from "./FeedCard"
-export { FeedGrid } from "./FeedGrid"
-export { FidCard } from "./FidCard"
-export { FidSelector } from "./FidSelector"
+export { FeedGridContainer as FeedGrid } from "./FeedGridContainer.js"
+export { FidCard } from "./FidCard.js"
+export { FidSelector } from "./FidSelector.js"

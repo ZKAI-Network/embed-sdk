@@ -8,6 +8,7 @@ import {
   IconShare,
   IconUser
 } from "@tabler/icons-react"
+import { useMemo, useState } from "react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar"
 import { Card, CardContent } from "./card"
@@ -26,6 +27,14 @@ interface FeedCardProps {
 
 export function FeedCard({ item, onReply, onShare, onTip, onViewProfile }: FeedCardProps) {
   const { author, comments_count, embed_items, likes_count, shares_count, text } = item.metadata
+
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  const { displayText, isLongText } = useMemo(() => {
+    const longText = text ? text.length > 300 : false
+    const display = longText && !isExpanded ? text.slice(0, 300) : text
+    return { displayText: display, isLongText: longText }
+  }, [text, isExpanded])
 
   return (
     <Card className="border rounded-lg shadow-sm h-full">
@@ -52,7 +61,31 @@ export function FeedCard({ item, onReply, onShare, onTip, onViewProfile }: FeedC
         </div>
 
         {/* Content */}
-        <p className="text-sm flex-1 leading-6">{text}</p>
+        <div className="flex-1 w-full">
+          <p className="text-sm flex-1 leading-6 break-words">
+            {displayText}
+            {isLongText && !isExpanded && (
+              <>
+                {"... "}
+                <span
+                  onClick={() => setIsExpanded(true)}
+                  className="text-primary font-semibold hover:underline cursor-pointer"
+                  role="button"
+                >
+                  Show more
+                </span>
+              </>
+            )}
+          </p>
+          {isLongText && isExpanded && (
+            <button
+              onClick={() => setIsExpanded(false)}
+              className="text-primary text-sm font-semibold mt-2 hover:underline cursor-pointer"
+            >
+              Show less
+            </button>
+          )}
+        </div>
 
         {/* Embeds */}
         {embed_items &&

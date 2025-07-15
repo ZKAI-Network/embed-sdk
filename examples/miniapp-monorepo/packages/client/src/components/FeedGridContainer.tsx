@@ -34,7 +34,7 @@ export function FeedGridContainer({
   });
 
   const { actions: { composeCast, viewProfile, sendToken } } = useFrame()
-  const [expandedState, setExpandedState] = useState<Record<string, boolean>>({})
+  
   const [ogDataMap, setOgDataMap] = useState<Record<string, OgDataState>>({})
 
   useEffect(() => {
@@ -76,11 +76,7 @@ export function FeedGridContainer({
 
       {data &&
         data.map((item) => {
-        const { author, text } = item.metadata;
-        const isExpanded = expandedState[item.item_id] || false;
-
-        const isLongText = text ? text.length > 300 : false;
-        const displayText = isLongText && !isExpanded ? text.slice(0, 300) : text;
+        const { author } = item.metadata;
 
         const handleShare = () => {
           composeCast({
@@ -108,18 +104,10 @@ export function FeedGridContainer({
           });
         };
 
-        const handleSetIsExpanded = (expanded: boolean) => {
-          setExpandedState(prev => ({ ...prev, [item.item_id]: expanded }));
-        };
-
         return (
           <FeedCard
             key={item.item_id}
             item={item}
-            isExpanded={isExpanded}
-            setIsExpanded={handleSetIsExpanded}
-            displayText={displayText}
-            isLongText={isLongText}
             onShare={handleShare}
             onReply={handleReply}
             onViewProfile={handleViewProfile}

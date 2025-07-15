@@ -52,7 +52,41 @@ bun run feed-management-example.ts
 - Updates the feed with new configuration
 - Shows before/after changes
 
-### 3. Retry Logic (`retry-example.ts`)
+### 3. User Search Examples
+
+Examples demonstrating user search functionality:
+
+- **`search-users-similar.ts`** - Find similar users based on a user ID
+- **`search-users-by-query.ts`** - Search users by semantic query
+- **`search-users-top-by-label.ts`** - Get top users by AI label
+- **`search-users-get-labels.ts`** - Get AI labels for specific users
+
+```bash
+bun run search-users-by-query.ts
+bun run search-users-similar.ts
+```
+
+### 4. Posts Search Examples
+
+Examples demonstrating posts/casts search functionality:
+
+- **`search-posts-by-query.ts`** - Search posts by semantic query
+- **`search-posts-get-labels.ts`** - Get AI labels for specific posts
+- **`search-posts-comprehensive.ts`** - Comprehensive demo of all posts search features
+
+```bash
+bun run search-posts-by-query.ts
+bun run search-posts-get-labels.ts
+bun run search-posts-comprehensive.ts
+```
+
+**What these examples show:**
+- Semantic search for posts/casts with various options
+- Retrieving AI labels (moderation, topics, sentiment, emotion)
+- Advanced filtering by timestamp, AI labels, channels, etc.
+- Different configurations and error handling
+
+### 5. Retry Logic (`retry-example.ts`)
 
 Advanced examples showing different retry configurations and error handling strategies.
 

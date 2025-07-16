@@ -3,7 +3,8 @@
   "include": [],
   "references": [
     { "path": "packages/types" },
-    { "path": "packages/sdk" }
+    { "path": "packages/sdk" },
+    { "path": "packages/react" }
   ],
   "files": [],
   "exclude": ["examples/**"]

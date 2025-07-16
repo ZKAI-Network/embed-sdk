@@ -1,5 +1,6 @@
 import { pipe } from "effect"
 import * as S from "effect/Schema"
+import { AllLabels } from "./LabelLiterals.js"
 
 export const SemanticSearch = S.Struct({
   /** A description of what to search for */
@@ -21,7 +22,7 @@ export const SemanticSearch = S.Struct({
       /** Return only casts before this end_timestamp, specified as Epoch time (Unix timestamp) */
       end_timestamp: S.optional(S.String),
       /** Return only casts that have these AI labels */
-      ai_labels: S.optional(S.Array(S.String)),
+      ai_labels: S.optional(S.Array(AllLabels)),
       /** Fid of the author of the cast */
       author_id: S.optional(S.String),
       /** Return only casts in specific channels, specified by the channel url (root_parent_url) */

@@ -2,6 +2,7 @@ import { pipe } from "effect"
 import * as S from "effect/Schema"
 
 import { AILabelsFilterParam } from "./AILabelsFilterParam.js"
+import { AllLabels } from "./LabelLiterals.js"
 
 /** Filtering options to be applied to the feed */
 export const FiltersParam = S.Struct({
@@ -81,7 +82,7 @@ export const FiltersParam = S.Struct({
   embed_domains: S.optional(S.Array(S.String)),
   ai_labels: S.optional(AILabelsFilterParam),
   /** Do not return casts with these AI labels */
-  remove_ai_labels: S.optional(S.Array(S.String)),
+  remove_ai_labels: S.optional(S.Array(AllLabels)),
   /**
    * Filter posts by specifying minimum or maximum engagement counts - this is useful for serving
    * posts that are already engaging (having minimum engagement) or surfacing posts that have not

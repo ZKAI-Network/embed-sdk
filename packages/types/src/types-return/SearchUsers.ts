@@ -1,4 +1,5 @@
 import * as S from "effect/Schema"
+import { AllLabels, EmotionLabels, ModerationLabels, SentimentLabels, TopicLabels } from "../types/LabelLiterals.js"
 
 export const UserSimilarityScore = S.Struct({
   user_id: S.String,
@@ -13,15 +14,35 @@ export const UserLabelTopResult = S.Struct({
 })
 
 export const UserLabelScore = S.Struct({
-  label: S.String,
+  label: AllLabels,
+  score: S.Number
+})
+
+export const UserTopicLabelScore = S.Struct({
+  label: TopicLabels,
+  score: S.Number
+})
+
+export const UserSentimentLabelScore = S.Struct({
+  label: SentimentLabels,
+  score: S.Number
+})
+
+export const UserEmotionLabelScore = S.Struct({
+  label: EmotionLabels,
+  score: S.Number
+})
+
+export const UserModerationLabelScore = S.Struct({
+  label: ModerationLabels,
   score: S.Number
 })
 
 export const UserAiLabels = S.Struct({
-  topics: S.Array(UserLabelScore),
-  sentiment: S.Array(UserLabelScore),
-  emotion: S.Array(UserLabelScore),
-  moderation: S.Array(UserLabelScore)
+  topics: S.Array(UserTopicLabelScore),
+  sentiment: S.Array(UserSentimentLabelScore),
+  emotion: S.Array(UserEmotionLabelScore),
+  moderation: S.Array(UserModerationLabelScore)
 })
 
 export const UserWithLabels = S.Struct({
@@ -32,6 +53,10 @@ export const UserWithLabels = S.Struct({
 export type UserSimilarityScore = S.Schema.Type<typeof UserSimilarityScore>
 export type UserLabelTopResult = S.Schema.Type<typeof UserLabelTopResult>
 export type UserLabelScore = S.Schema.Type<typeof UserLabelScore>
+export type UserTopicLabelScore = S.Schema.Type<typeof UserTopicLabelScore>
+export type UserSentimentLabelScore = S.Schema.Type<typeof UserSentimentLabelScore>
+export type UserEmotionLabelScore = S.Schema.Type<typeof UserEmotionLabelScore>
+export type UserModerationLabelScore = S.Schema.Type<typeof UserModerationLabelScore>
 export type UserAiLabels = S.Schema.Type<typeof UserAiLabels>
 export type UserWithLabels = S.Schema.Type<typeof UserWithLabels>
 

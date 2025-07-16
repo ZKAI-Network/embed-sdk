@@ -26,11 +26,20 @@
     "build-annotate": "babel dist --plugins annotate-pure-calls --out-dir dist --source-maps",
     "fix-deps": "bun scripts/fix-deps.js",
     "check": "tsc -b tsconfig.json",
-    "test": "vitest",
+    "test": "echo '⚠️  No unit tests available - SDK tests require API keys' && echo '   Run test:integration instead'",
+    "test:integration": "vitest run --reporter=verbose",
+    "test:ui": "vitest --ui",
+    "test:posts": "vitest run test/search-posts.test.ts",
+    "test:users": "vitest run test/search-users.test.ts",
+    "test:feed": "vitest run test/feed.test.ts",
     "coverage": "vitest --coverage"
   },
   "dependencies": {
     "@embed-ai/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@effect/vitest": "latest",
+    "vitest": "latest"
   },
   "peerDependencies": {
     "effect": ">=3.0.0"

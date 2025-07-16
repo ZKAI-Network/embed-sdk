@@ -1,12 +1,16 @@
 import type {
   AllLabels,
   LabelCategories,
+  PostLabelsResponse,
+  PostSemanticSearchResponse,
   UserLabelsResponse,
   UserSemanticSearchResponse,
   UserSimilarityResponse,
   UserTopByLabelResponse
 } from "@embed-ai/types"
 import type { IHttpClient } from "../interfaces/index.js"
+import { byQuery as postsByQuery, getLabels as postsGetLabels } from "./post.js"
+import type { PostLabelsOptions, PostSemanticSearchOptions } from "./post.js"
 import { byQuery, getLabels, getTopByLabel, similar } from "./user.js"
 import type { UserLabelsOptions, UserSemanticSearchOptions, UserSimilarOptions, UserTopByLabelOptions } from "./user.js"
 
@@ -133,6 +137,77 @@ export class UsersNamespace {
 }
 
 /**
+ * Posts namespace containing all post search operations
+ *
+ * @example
+ * ```typescript
+ * const client = getClient('your-api-key')
+ *
+ * // Get labels for posts
+ * const postLabels = await client.search.posts.getLabels(['0x123...', '0x456...'])
+ *
+ * // Search posts by query
+ * const posts = await client.search.posts.byQuery('web3 developments')
+ * ```
+ */
+export class PostsNamespace {
+  constructor(private http: IHttpClient) {}
+
+  /**
+   * Get AI labels for a list of casts
+   *
+   * @param itemsList - Array of cast IDs to get labels for
+   * @param labelCategory - The category of labels to retrieve (default: "all")
+   * @param options - Optional configuration
+   * @returns Promise<PostLabelsResponse> - Array of casts with their AI labels
+   *
+   * @example
+   * ```typescript
+   * const client = getClient("your-api-key")
+   * const postLabels = await client.search.posts.getLabels([
+   *   "0x4888649440c8cfd3ef6e28f2096a201d20253176",
+   *   "0x0ecf95b73aa54d583877821ece241e94de701404"
+   * ], "moderation")
+   * console.log(postLabels[0].moderation[0].label) // "sexual"
+   * console.log(postLabels[0].moderation[0].score) // 0.0006675918
+   * ```
+   */
+  async getLabels(
+    itemsList: Array<string>,
+    labelCategory: LabelCategories = "all",
+    options?: PostLabelsOptions
+  ): Promise<PostLabelsResponse> {
+    return postsGetLabels(this.http, itemsList, labelCategory, options)
+  }
+
+  /**
+   * Search for casts by semantic query
+   *
+   * @param query - The text query to search for similar casts
+   * @param options - Optional configuration with top_k (default: 10, max: 100), return_ai_labels, return_metadata, and filters
+   * @returns Promise<PostSemanticSearchResponse> - Array of posts with item_id and scores
+   *
+   * @example
+   * ```typescript
+   * const client = getClient("your-api-key")
+   * const posts = await client.search.posts.byQuery("web3 developments", {
+   *   top_k: 10,
+   *   return_ai_labels: true,
+   *   return_metadata: true
+   * })
+   * console.log(posts[0].item_id) // "0x4c8e2e329dc481f4c445ff8c367a1df4a8694317"
+   * console.log(posts[0].score) // 0.864244163
+   * ```
+   */
+  async byQuery(
+    query: string,
+    options?: PostSemanticSearchOptions
+  ): Promise<PostSemanticSearchResponse> {
+    return postsByQuery(this.http, query, options)
+  }
+}
+
+/**
  * Search namespace containing all search-related operations
  *
  * @example
@@ -142,12 +217,18 @@ export class UsersNamespace {
  * // Access user search methods
  * const similarUsers = await client.search.users.similar('16085')
  * const searchResults = await client.search.users.byQuery('web3 developers')
+ *
+ * // Access post search methods
+ * const posts = await client.search.posts.byQuery('web3 developments')
+ * const postLabels = await client.search.posts.getLabels(['0x123...'])
  * ```
  */
 export class SearchNamespace {
   public readonly users: UsersNamespace
+  public readonly posts: PostsNamespace
 
   constructor(private http: IHttpClient) {
     this.users = new UsersNamespace(this.http)
+    this.posts = new PostsNamespace(this.http)
   }
 }

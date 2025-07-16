@@ -15,7 +15,7 @@
         "@changesets/cli": "^2.27.8",
         "@effect/build-utils": "^0.7.7",
         "@effect/eslint-plugin": "^0.2.0",
-        "@effect/language-service": "^0.2.0",
+        "@effect/language-service": "0.27.0",
         "@effect/vitest": "latest",
         "@eslint/compat": "1.2.2",
         "@eslint/eslintrc": "3.1.0",
@@ -43,6 +43,10 @@
       "version": "0.1.2",
       "dependencies": {
         "@embed-ai/types": "workspace:*",
+      },
+      "devDependencies": {
+        "@effect/vitest": "latest",
+        "vitest": "latest",
       },
       "peerDependencies": {
         "effect": ">=3.0.0",
@@ -155,7 +159,7 @@
 
     "@effect/eslint-plugin": ["@effect/eslint-plugin@0.2.0", "", { "dependencies": { "@dprint/formatter": "^0.4.1", "@dprint/typescript": "^0.91.3", "prettier-linter-helpers": "^1.0.0" } }, "sha512-PC/hEDGctYGYIjZyhM6kbD4FyHxLgoYNoQNjGkCXcFEzi71vQc3PJKe2JnCgzcUDvr/Nc2qgTVU4ONYwjHzQGA=="],
 
-    "@effect/language-service": ["@effect/language-service@0.2.0", "", {}, "sha512-DoK41yKGyQv79o0ca8gxEogMlt+IphXkdCXwgenbQjH1BXKD7tJAr0+VsDhblycQcvQ39f1l9NZN9CBqjM9ALA=="],
+    "@effect/language-service": ["@effect/language-service@0.27.0", "", { "bin": { "effect-language-service": "cli.js" } }, "sha512-ILN6c7s1rb7JhR2+yHNtAP+nygkRdsrEWZZRGyEuskGzOJ4QCUjXQk+K3yn6TYoulnzFzOEwW/KvfuKrA3jmAQ=="],
 
     "@effect/vitest": ["@effect/vitest@0.22.4", "", { "peerDependencies": { "effect": "^3.15.4", "vitest": "^3.0.0" } }, "sha512-JgDWWVCyo10IyKsRgRJmpEn8mP73vsW2TShBptZM9HsOOsCGHSWrr3RgNSlxcsEG8ZMyrix4jSMUBphuZcUqsQ=="],
 
@@ -1256,6 +1260,8 @@
     "@changesets/parse/js-yaml": ["js-yaml@3.14.1", "", { "dependencies": { "argparse": "^1.0.7", "esprima": "^4.0.0" }, "bin": { "js-yaml": "bin/js-yaml.js" } }, "sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g=="],
 
     "@changesets/write/prettier": ["prettier@2.8.8", "", { "bin": { "prettier": "bin-prettier.js" } }, "sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q=="],
+
+    "@embed-ai/sdk/@effect/vitest": ["@effect/vitest@0.24.1", "", { "peerDependencies": { "effect": "^3.16.14", "vitest": "^3.2.0" } }, "sha512-q5NVkJcmdiOlFLYhRLmeDfAk3maNDD4BYeeAr0Gy3TTXZWCX7hlWnzLoJpBVuJjjMJDC/HGxq9GFKxbP/oY7mQ=="],
 
     "@eslint-community/eslint-utils/eslint-visitor-keys": ["eslint-visitor-keys@3.4.3", "", {}, "sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag=="],
 

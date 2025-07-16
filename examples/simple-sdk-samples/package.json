@@ -3,6 +3,21 @@
   "version": "0.1.0",
   "description": "Simple examples demonstrating Embed AI SDK usage",
   "type": "module",
+  "scripts": {
+    "run-all": "bun run basic && bun run feed && bun run users && bun run posts",
+    "basic": "echo '=== Basic SDK Usage ===' && bun embed-typescript-sdk.ts",
+    "feed": "echo '=== Feed Management ===' && bun feed-management-example.ts",
+    "retry": "echo '=== Retry Example ===' && bun retry-example.ts",
+    "users": "bun run users:similar && bun run users:query && bun run users:labels && bun run users:top",
+    "users:similar": "echo '--- Users Similar ---' && bun search-users-similar.ts",
+    "users:query": "echo '--- Users by Query ---' && bun search-users-by-query.ts",
+    "users:labels": "echo '--- Users Labels ---' && bun search-users-get-labels.ts",
+    "users:top": "echo '--- Users Top by Label ---' && bun search-users-top-by-label.ts",
+    "posts": "bun run posts:query && bun run posts:labels && bun run posts:comprehensive",
+    "posts:query": "echo '--- Posts by Query ---' && bun search-posts-by-query.ts",
+    "posts:labels": "echo '--- Posts Labels ---' && bun search-posts-get-labels.ts",
+    "posts:comprehensive": "echo '--- Posts Comprehensive ---' && bun search-posts-comprehensive.ts"
+  },
   "dependencies": {
     "@embed-ai/sdk": "latest",
     "effect": ">=3.0.0"

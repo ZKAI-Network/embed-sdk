@@ -2,7 +2,7 @@
 /* global console, process */
 
 import { execSync } from "child_process"
-import { cpSync, existsSync, mkdirSync, rmSync, readFileSync, writeFileSync } from "fs"
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs"
 import { join, resolve } from "path"
 import { fileURLToPath } from "url"
 
@@ -43,12 +43,12 @@ try {
   // Fix package.json paths to remove ./dist/ prefix
   const packageJsonPath = join(reactTarget, "package.json")
   const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8"))
-  
+
   // Update paths to remove ./dist/ prefix
   packageJson.main = "./index.js"
   packageJson.module = "./index.js"
   packageJson.types = "./index.d.ts"
-  
+
   if (packageJson.exports) {
     packageJson.exports["."] = {
       types: "./index.d.ts",
@@ -71,7 +71,7 @@ try {
       import: "./lib/utils.js"
     }
   }
-  
+
   writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
 
   console.log("✅ Local React package linked successfully!")

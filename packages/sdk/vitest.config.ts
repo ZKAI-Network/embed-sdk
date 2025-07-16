@@ -4,7 +4,7 @@ import shared from "../../vitest.shared.js"
 const config: UserConfigExport = {
   test: {
     setupFiles: ["./test/setup.ts"],
-    testTimeout: 30000, // 30s timeout for API calls
+    testTimeout: 45000, // 45s timeout for API calls (allows for fast-fail retry logic)
     include: ["test/**/*.test.ts"],
     exclude: ["node_modules/**", "dist/**"],
     reporters: ["verbose", "json"],

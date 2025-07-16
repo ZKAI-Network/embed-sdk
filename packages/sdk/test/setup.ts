@@ -1,5 +1,7 @@
 // Test setup and configuration
 import { beforeAll } from "@effect/vitest"
+import type { mbdClientConfig } from "../src/index.js"
+import { getClient } from "../src/index.js"
 
 beforeAll(() => {
   // Check for required environment variables
@@ -19,5 +21,27 @@ beforeAll(() => {
   console.log(`   Environment: ${process.env.NODE_ENV || "development"}`)
   console.log(`   API Key: ${apiKey ? "✅ Present" : "❌ Missing"}`)
 })
+
+/**
+ * Create a test client with standard retry configuration
+ */
+export const getTestClient = (apiKey: string) => {
+  return getClient(apiKey)
+}
+
+/**
+ * Create a test client with reduced retry configuration for faster error handling tests
+ */
+export const getFastFailClient = (apiKey: string) => {
+  const fastFailConfig: mbdClientConfig = {
+    retry: {
+      maxRetries: 1, // Only retry once
+      initialDelay: 500, // Shorter delay
+      exponentialBackoff: false, // No exponential backoff
+      timeoutMs: 10000 // 10 second timeout instead of 30
+    }
+  }
+  return getClient(apiKey, fastFailConfig)
+}
 
 export {}

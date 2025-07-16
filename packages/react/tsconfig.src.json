@@ -4,6 +4,7 @@
   "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts"],
   "compilerOptions": {
     "outDir": "dist",
+    "rootDir": "src",
     "jsx": "react-jsx"
   },
   "references": [

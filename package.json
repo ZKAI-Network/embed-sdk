@@ -13,6 +13,7 @@
     "build:sdk": "cd packages/sdk && bun run build",
     "build:react": "cd packages/react && bun run build",
     "link-local-sdk": "bun scripts/link-local-sdk.mjs",
+    "link-local-react": "bun scripts/link-local-react.mjs",
     "check": "tsc -b tsconfig.json",
     "check-recursive": "bun run --filter='@embed-ai/*' check",
     "lint": "eslint \"**/{src,test,examples,scripts,dtslint}/**/*.{ts,mjs}\"",

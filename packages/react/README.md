@@ -92,3 +92,70 @@ function MyFeed() {
   - `item`: The `FeedItem` object to render.
   - `onShare`, `onReply`, `onViewProfile`, `onTip`: Callback functions for user actions.
 
+## Customization
+
+### Styling
+
+The components are built with Tailwind CSS and designed to be easily customizable. Each component supports style overrides and follows a customization-first approach.
+
+#### Overriding Styles
+
+You can customize the appearance by:
+
+1. **CSS Variables**: The components use CSS variables for theming
+2. **Tailwind Classes**: Override default classes with your own
+3. **Custom CSS**: Add your own styles via className props
+
+#### Examples
+
+```tsx
+// Custom styling for FeedGrid container
+<FeedGrid
+  title="My Custom Feed"
+  className="bg-gray-100 p-8 rounded-xl"
+  // ... other props
+>
+  {data?.items.map((item) => (
+    <FeedCard
+      key={item.item_id}
+      item={item}
+      className="bg-white/90 backdrop-blur-sm border-2 border-blue-200 hover:border-blue-400 transition-all"
+      // ... other props
+    />
+  ))}
+</FeedGrid>
+```
+
+```css
+/* Custom CSS variables for theming */
+:root {
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+  --text-primary: #111827;
+  --text-muted: #6b7280;
+  --primary-color: #3b82f6;
+  --primary-hover: #2563eb;
+}
+
+/* Dark theme example */
+.dark {
+  --card-bg: #1f2937;
+  --card-border: #374151;
+  --text-primary: #f9fafb;
+  --text-muted: #9ca3af;
+  --primary-color: #60a5fa;
+  --primary-hover: #3b82f6;
+}
+```
+
+#### Component Structure
+
+The components are designed to fit into any design system:
+
+- **FeedGrid**: Provides layout structure without forcing specific styling
+- **FeedCard**: Uses semantic HTML with accessible markup
+- **Responsive**: Works with any responsive design system
+- **Flexible**: All styling can be overridden without breaking functionality
+
+For advanced customization, you can wrap the components or create your own variants using the same data structures.
+

@@ -2,7 +2,7 @@
 /* global console, process */
 
 import { execSync } from "child_process"
-import { cpSync, existsSync, mkdirSync, rmSync } from "fs"
+import { cpSync, existsSync, mkdirSync, rmSync, readFileSync, writeFileSync } from "fs"
 import { join, resolve } from "path"
 import { fileURLToPath } from "url"
 
@@ -39,6 +39,40 @@ try {
 
   // Copy built React package
   cpSync(builtReactDir, reactTarget, { recursive: true })
+
+  // Fix package.json paths to remove ./dist/ prefix
+  const packageJsonPath = join(reactTarget, "package.json")
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8"))
+  
+  // Update paths to remove ./dist/ prefix
+  packageJson.main = "./index.js"
+  packageJson.module = "./index.js"
+  packageJson.types = "./index.d.ts"
+  
+  if (packageJson.exports) {
+    packageJson.exports["."] = {
+      types: "./index.d.ts",
+      import: "./index.js"
+    }
+    packageJson.exports["./ui"] = {
+      types: "./ui/index.d.ts",
+      import: "./ui/index.js"
+    }
+    packageJson.exports["./feed"] = {
+      types: "./feed/index.d.ts",
+      import: "./feed/index.js"
+    }
+    packageJson.exports["./media"] = {
+      types: "./media/index.d.ts",
+      import: "./media/index.js"
+    }
+    packageJson.exports["./utils"] = {
+      types: "./lib/utils.d.ts",
+      import: "./lib/utils.js"
+    }
+  }
+  
+  writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
 
   console.log("✅ Local React package linked successfully!")
   console.log("💡 You can now test with: cd examples/miniapp-monorepo/packages/client && bun run dev")

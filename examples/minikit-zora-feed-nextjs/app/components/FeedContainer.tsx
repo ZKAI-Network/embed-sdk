@@ -41,27 +41,27 @@ export function FeedContainer({ title = "Your Feed", feedId }: FeedContainerProp
   // MiniKit actions
   const handleShare = (item: FeedItem) => {
     const { author } = item.metadata;
-    const url = `https://warpcast.com/${author.username}/${item.item_id}`;
+    const url = `https://farcaster.xyz/${author.username}/${item.item_id}`;
     
     // Use openUrl to share for now - in a real app you'd use compose cast
     openUrl(url);
   };
 
   const handleReply = (item: FeedItem) => {
-    const url = `https://warpcast.com/${item.metadata.author.username}/${item.item_id}`;
+    const url = `https://farcaster.xyz/${item.metadata.author.username}/${item.item_id}`;
     openUrl(url);
   };
 
   const handleViewProfile = (item: FeedItem) => {
     const { author } = item.metadata;
-    const url = `https://warpcast.com/${author.username}`;
+    const url = `https://farcaster.xyz/${author.username}`;
     openUrl(url);
   };
 
   const handleTip = (item: FeedItem) => {
     // For now, just open the profile - in a real app you'd use sendToken
     const { author } = item.metadata;
-    const url = `https://warpcast.com/${author.username}`;
+    const url = `https://farcaster.xyz/${author.username}`;
     openUrl(url);
   };
 

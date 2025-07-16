@@ -148,3 +148,37 @@ body {
   margin: 0 !important;
   background: transparent !important;
 }
+
+/* Feed Grid header improvements */
+.feed-container .space-y-4 > div.flex.justify-between.items-center {
+  padding-bottom: 12px !important;
+  margin-bottom: 8px !important;
+}
+
+.feed-container .space-y-4 > div.flex.justify-between.items-center h3 {
+  line-height: 1.4 !important;
+  margin-bottom: 0 !important;
+}
+
+.feed-container .space-y-4 > div.flex.justify-between.items-center .flex.items-center.gap-2 {
+  align-items: center !important;
+}
+
+.feed-container .space-y-4 > div.flex.justify-between.items-center button {
+  padding-bottom: 8px !important;
+  padding-top: 8px !important;
+  line-height: 1.2 !important;
+}
+
+/* Better token name handling */
+.zora-embed-renderer .token-name-container {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.zora-embed-renderer .token-name-container h4 {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.3;
+}

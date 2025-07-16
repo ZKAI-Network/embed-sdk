@@ -8,8 +8,11 @@ export function Providers(props: { children: ReactNode }) {
   return (
     <MiniKitProvider
       apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
+      projectId={process.env.NEXT_PUBLIC_CDP_PROJECT_ID}
       chain={base}
+      //rpcUrl={process.env.NEXT_PUBLIC_RPC_URL}
       config={{
+        analytics: false,
         appearance: {
           mode: "auto",
           theme: "mini-app-theme",

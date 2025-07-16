@@ -105,9 +105,9 @@ export default function App() {
             variant="ghost"
             size="sm"
             className="text-[var(--ock-text-foreground-muted)] text-xs"
-            onClick={() => openUrl("https://base.org/builders/minikit")}
+            onClick={() => openUrl("https://getembed.ai")}
           >
-            Built on Base with MiniKit
+            Feeds powered by Embed! brought to you with love from dTech.
           </Button>
         </footer>
       </div>

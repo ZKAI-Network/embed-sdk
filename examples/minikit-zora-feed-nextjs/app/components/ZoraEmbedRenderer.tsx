@@ -58,25 +58,28 @@ function ZoraTokenEmbed({ zoraInfo, originalUrl }: ZoraTokenEmbedProps) {
 
   // Error state
   if (error || !token) {
+    console.error("Error in ZoraEmbedRenderer", error)
     return <ErrorTokenEmbed error={error} originalUrl={originalUrl} />;
   }
 
   // Success state - render Buy component integrated into the feed card
   return (
     <div className="zora-embed-renderer space-y-3 max-w-full overflow-hidden">
-      <div className="flex items-center space-x-3 min-w-0">
+      <div className="flex items-start space-x-3 min-w-0">
         {token.image && (
           <Image 
             src={token.image} 
             alt={token.name}
             width={32}
             height={32}
-            className="w-8 h-8 rounded-full flex-shrink-0"
+            className="w-8 h-8 rounded-full flex-shrink-0 mt-0.5"
           />
         )}
-        <div className="min-w-0 flex-1">
-          <h4 className="font-medium text-[var(--app-foreground)] truncate text-sm">
-            {token.name}
+        <div className="min-w-0 flex-1 token-name-container">
+          <h4 className="font-medium text-[var(--app-foreground)] text-sm leading-tight mb-1">
+            <span className="block break-words hyphens-auto" title={token.name}>
+              {token.name}
+            </span>
           </h4>
           <p className="text-xs text-[var(--app-foreground-muted)] truncate">
             {token.symbol} • {getChainDisplayName(zoraInfo.chainId)}

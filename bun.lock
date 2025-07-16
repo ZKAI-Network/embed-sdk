@@ -44,6 +44,10 @@
       "dependencies": {
         "@embed-ai/types": "workspace:*",
       },
+      "devDependencies": {
+        "@effect/vitest": "latest",
+        "vitest": "latest",
+      },
       "peerDependencies": {
         "effect": ">=3.0.0",
       },
@@ -1256,6 +1260,8 @@
     "@changesets/parse/js-yaml": ["js-yaml@3.14.1", "", { "dependencies": { "argparse": "^1.0.7", "esprima": "^4.0.0" }, "bin": { "js-yaml": "bin/js-yaml.js" } }, "sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g=="],
 
     "@changesets/write/prettier": ["prettier@2.8.8", "", { "bin": { "prettier": "bin-prettier.js" } }, "sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q=="],
+
+    "@embed-ai/sdk/@effect/vitest": ["@effect/vitest@0.24.1", "", { "peerDependencies": { "effect": "^3.16.14", "vitest": "^3.2.0" } }, "sha512-q5NVkJcmdiOlFLYhRLmeDfAk3maNDD4BYeeAr0Gy3TTXZWCX7hlWnzLoJpBVuJjjMJDC/HGxq9GFKxbP/oY7mQ=="],
 
     "@eslint-community/eslint-utils/eslint-visitor-keys": ["eslint-visitor-keys@3.4.3", "", {}, "sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag=="],
 

@@ -27,10 +27,19 @@
     "fix-deps": "bun scripts/fix-deps.js",
     "check": "tsc -b tsconfig.json",
     "test": "vitest",
-    "coverage": "vitest --coverage"
+    "test:ui": "vitest --ui",
+    "test:posts": "vitest run test/search-posts.test.ts",
+    "test:users": "vitest run test/search-users.test.ts", 
+    "test:feed": "vitest run test/feed.test.ts",
+    "coverage": "vitest --coverage",
+    "test:integration": "vitest run --reporter=verbose"
   },
   "dependencies": {
     "@embed-ai/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@effect/vitest": "latest",
+    "vitest": "latest"
   },
   "peerDependencies": {
     "effect": ">=3.0.0"

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { IconHome2, IconCompass, IconMenu, IconX } from "@tabler/icons-react";
-import { Button } from "./ui/button";
-import { cn } from "../lib/utils";
+import { Button, cn } from "@embed-ai/react";
 
 interface NavigationProps {
   page: string;

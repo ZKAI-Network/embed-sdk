@@ -11,7 +11,7 @@ import sdk, {
   type Context,
 } from "@farcaster/frame-sdk";
 import { isMobileContext } from "./utils/index";
-import { showToast } from "./components/generic/ToastHelper";
+import { toast } from "react-toastify";
 
 interface FrameContextType {
   isSDKLoaded: boolean;
@@ -24,18 +24,18 @@ interface FrameContextType {
   actions: {
     openUrl: (url: string) => void;
     close: () => void;
-    addFrame: () => Promise<any>;
+    addFrame: () => Promise<unknown>;
     viewProfile: (params: { fid: number }) => void;
-    composeCast: (params: {
+    composeCast(params: {
       text?: string;
       embeds?: [] | [string] | [string, string];
       parent?: { type: "cast"; hash: string };
-    }) => Promise<{ cast: any | null } | undefined>;
-    sendToken: (params: {
+    }): Promise<{ cast: unknown | null } | undefined>;
+    sendToken(params: {
       token: string;
       amount: string;
       recipientFid: number;
-    }) => Promise<any | undefined>;
+    }): Promise<unknown | undefined>;
   };
   frameInfo?: {
     environment: "server" | "client";
@@ -105,7 +105,7 @@ export default function FrameProvider({ children }: { children: ReactNode }) {
         sdk.on("frameAdded", ({ notificationDetails }) => {
           setLastEvent(
             `frameAdded${
-              !!notificationDetails ? ", notifications enabled" : ""
+              notificationDetails ? ", notifications enabled" : ""
             }`
           );
           setAdded(true);
@@ -194,10 +194,7 @@ export default function FrameProvider({ children }: { children: ReactNode }) {
       parent?: { type: "cast"; hash: string };
     }) => {
       if (!isRunningOnFrame) {
-        showToast({
-          type: "error",
-          message: "You can only cast within a Farcaster client",
-        });
+        toast.error("You can only cast within a Farcaster client");
         return;
       }
       try {
@@ -216,10 +213,7 @@ export default function FrameProvider({ children }: { children: ReactNode }) {
       recipientFid: number;
     }) => {
       if (!isRunningOnFrame) {
-        showToast({
-          type: "error",
-          message: "You can only send tokens within a Farcaster client",
-        });
+        toast.error("You can only send tokens within a Farcaster client");
         return;
       }
       try {

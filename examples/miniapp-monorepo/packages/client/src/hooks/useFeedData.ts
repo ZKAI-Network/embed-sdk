@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import type { FeedItem } from "../components/FeedCard"
+import type { FeedItem } from "@embed-ai/react/feed"
 import { useFrame } from "../FrameProvider"
 import { trpc } from "../trpc"
 
@@ -70,7 +70,7 @@ export function useFeedData(
     if (forYouData && pages.length === 0) {
       setPages([forYouData])
       setTimestamp(new Date().toLocaleTimeString())
-      if (forYouData.body.length === 0) {
+      if (forYouData?.length === 0) {
         setHasNextPage(false)
       }
     }
@@ -90,7 +90,7 @@ export function useFeedData(
       const nextPageData = await triggerQuery()
       if (nextPageData.data) {
         setPages((prevPages) => [...prevPages, nextPageData.data])
-        if (nextPageData.data.body.length === 0) {
+        if (nextPageData.data.length === 0) {
           setHasNextPage(false)
         }
       }
@@ -107,13 +107,13 @@ export function useFeedData(
     if (result.data) {
       setPages([result.data]) // Reset pages with new data
       setTimestamp(new Date().toLocaleTimeString())
-      setHasNextPage(result.data.body.length > 0)
+      setHasNextPage(result.data.length > 0)
     }
     return result
   }, [triggerQuery, fidToUse])
 
   const flattenedData = pages.flatMap((page) =>
-    (page.body as Array<any>).map((item) => ({
+    (page as Array<any>).map((item) => ({
       ...item,
       metadata: {
         ...item.metadata,

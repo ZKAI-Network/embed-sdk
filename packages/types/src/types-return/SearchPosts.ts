@@ -1,10 +1,10 @@
 import * as S from "effect/Schema"
-import { 
+import {
   AllLabels,
-  TopicLabels,
-  SentimentLabels,
   EmotionLabels,
   ModerationLabels,
+  SentimentLabels,
+  TopicLabels,
   Web3Labels
 } from "../types/LabelLiterals.js"
 
@@ -60,7 +60,6 @@ export const PostModerationLabels = S.Struct({
   moderation: S.Array(PostModerationLabelScore)
 })
 
-
 export type PostItemScore = S.Schema.Type<typeof PostItemScore>
 export type PostLabelScore = S.Schema.Type<typeof PostLabelScore>
 export type PostTopicLabelScore = S.Schema.Type<typeof PostTopicLabelScore>
@@ -73,4 +72,4 @@ export type PostWithLabels = S.Schema.Type<typeof PostWithLabels>
 export type PostModerationLabels = S.Schema.Type<typeof PostModerationLabels>
 
 export type PostLabelsResponse = Array<PostModerationLabels>
-export type PostSemanticSearchResponse = Array<PostItemScore> 
+export type PostSemanticSearchResponse = Array<PostItemScore>

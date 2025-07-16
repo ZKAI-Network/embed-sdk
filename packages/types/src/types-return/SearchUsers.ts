@@ -1,11 +1,5 @@
 import * as S from "effect/Schema"
-import { 
-  AllLabels,
-  TopicLabels,
-  SentimentLabels,
-  EmotionLabels,
-  ModerationLabels
-} from "../types/LabelLiterals.js"
+import { AllLabels, EmotionLabels, ModerationLabels, SentimentLabels, TopicLabels } from "../types/LabelLiterals.js"
 
 export const UserSimilarityScore = S.Struct({
   user_id: S.String,

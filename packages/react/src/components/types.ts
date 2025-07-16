@@ -5,7 +5,7 @@ export type OgData = {
   is_image?: boolean
   ogTitle?: string
   ogDescription?: string
-  ogImage?: { url: string }[]
+  ogImage?: Array<{ url: string }>
   ogUrl?: string
   requestUrl?: string
   [key: string]: any
@@ -30,7 +30,7 @@ export interface Author {
 export interface FeedItemMetadata {
   author: Author
   comments_count?: number
-  embed_items?: string[]
+  embed_items?: Array<string>
   likes_count?: number
   shares_count?: number
   text: string

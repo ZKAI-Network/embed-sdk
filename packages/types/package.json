@@ -1,6 +1,6 @@
 {
   "name": "@embed-ai/types",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "license": "BSD-3-Clause",
   "description": "TypeScript types for Embed AI APIs",

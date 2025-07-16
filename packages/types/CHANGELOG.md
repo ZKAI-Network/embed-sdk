@@ -1,5 +1,11 @@
 # @embed-ai/types
 
+## 0.1.3
+
+### Patch Changes
+
+- [#15](https://github.com/ZKAI-Network/embed-sdk/pull/15) [`1b088ae`](https://github.com/ZKAI-Network/embed-sdk/commit/1b088aefc69eac427f04cc85aabfec06290f8710) Thanks [@SamuelLHuber](https://github.com/SamuelLHuber)! - add post (item) search
+
 ## 0.1.2
 
 ### Patch Changes

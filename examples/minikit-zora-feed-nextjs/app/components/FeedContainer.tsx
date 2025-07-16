@@ -2,9 +2,10 @@
 
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
-import { FeedGrid, FeedCard, type FeedItem } from "@embed-ai/react/feed";
+import { FeedGrid, type FeedItem } from "@embed-ai/react/feed";
 import { useFeedData } from "../hooks/useFeedData";
 import { useOpenUrl } from "@coinbase/onchainkit/minikit";
+import { CustomFeedCard } from "./CustomFeedCard";
 
 interface FeedContainerProps {
   title?: string;
@@ -65,20 +66,21 @@ export function FeedContainer({ title = "Your Feed", feedId }: FeedContainerProp
   };
 
   return (
-    <FeedGrid
-      title={title}
-      isLoading={isLoading}
-      error={error}
-      isFetchingNextPage={isFetchingNextPage}
-      hasNextPage={hasNextPage}
-      onRefresh={refetch}
-      isRefreshing={isRefreshing}
-      loaderRef={ref}
-      isEmpty={isEmpty}
-    >
+    <div className="w-full max-w-full overflow-hidden feed-container">
+      <FeedGrid
+        title={title}
+        isLoading={isLoading}
+        error={error}
+        isFetchingNextPage={isFetchingNextPage}
+        hasNextPage={hasNextPage}
+        onRefresh={refetch}
+        isRefreshing={isRefreshing}
+        loaderRef={ref}
+        isEmpty={isEmpty}
+      >
       {data &&
         data.map((item) => (
-          <FeedCard
+          <CustomFeedCard
             key={item.item_id}
             item={item}
             onShare={() => handleShare(item)}
@@ -87,6 +89,7 @@ export function FeedContainer({ title = "Your Feed", feedId }: FeedContainerProp
             onTip={() => handleTip(item)}
           />
         ))}
-    </FeedGrid>
+      </FeedGrid>
+    </div>
   );
 }

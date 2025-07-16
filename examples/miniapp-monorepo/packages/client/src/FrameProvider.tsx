@@ -11,7 +11,7 @@ import sdk, {
   type Context,
 } from "@farcaster/frame-sdk";
 import { isMobileContext } from "./utils/index";
-import { showToast } from "@embed-ai/react";
+import { toast } from "react-toastify";
 
 interface FrameContextType {
   isSDKLoaded: boolean;
@@ -194,10 +194,7 @@ export default function FrameProvider({ children }: { children: ReactNode }) {
       parent?: { type: "cast"; hash: string };
     }) => {
       if (!isRunningOnFrame) {
-        showToast({
-          type: "error",
-          message: "You can only cast within a Farcaster client",
-        });
+        toast.error("You can only cast within a Farcaster client");
         return;
       }
       try {
@@ -216,10 +213,7 @@ export default function FrameProvider({ children }: { children: ReactNode }) {
       recipientFid: number;
     }) => {
       if (!isRunningOnFrame) {
-        showToast({
-          type: "error",
-          message: "You can only send tokens within a Farcaster client",
-        });
+        toast.error("You can only send tokens within a Farcaster client");
         return;
       }
       try {

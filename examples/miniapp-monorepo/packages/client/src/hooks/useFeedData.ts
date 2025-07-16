@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import type { FeedItem } from "../components/FeedCard"
+import type { FeedItem } from "@embed-ai/react/feed"
 import { useFrame } from "../FrameProvider"
 import { trpc } from "../trpc"
 

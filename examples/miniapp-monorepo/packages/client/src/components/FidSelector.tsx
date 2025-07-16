@@ -1,4 +1,6 @@
-import { Button, FarcasterUserSearch, Loader } from "@embed-ai/react";
+import { Button } from "@embed-ai/react";
+import { FarcasterUserSearch } from "@embed-ai/react/feed";
+import { Loader } from "@embed-ai/react/ui";
 import { useState } from "react";
 
 interface FidSelectorProps {

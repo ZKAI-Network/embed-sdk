@@ -1,6 +1,6 @@
 import { useInView } from "react-intersection-observer"
 import { useEffect } from "react"
-import { FeedGrid, FeedCard, type FeedItem } from "@embed-ai/react"
+import { FeedGrid, FeedCard, type FeedItem } from "@embed-ai/react/feed"
 import { useFrame } from "../FrameProvider"
 
 

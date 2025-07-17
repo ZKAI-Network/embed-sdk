@@ -1,5 +1,11 @@
 # @embed-ai/react
 
+## 0.1.1
+
+### Patch Changes
+
+- [#19](https://github.com/ZKAI-Network/embed-sdk/pull/19) [`551c618`](https://github.com/ZKAI-Network/embed-sdk/commit/551c6183d2c300a77709f4e75c7a1646c09e0f94) Thanks [@SamuelLHuber](https://github.com/SamuelLHuber)! - adjust build flow to be similar to sdk fixing missing src folder
+
 ## 0.1.0
 
 ### Minor Changes

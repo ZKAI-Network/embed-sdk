@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { parseEther } from "viem";
 import { useAccount, useWalletClient, usePublicClient } from "wagmi";
-import { tradeCoin, TradeParameters } from "@zoralabs/coins-sdk";
+import { TradeParameters } from "@zoralabs/coins-sdk";
+import { tradeCoinWithFee } from "../utils/tradeCoinWithFee";
 import Image from "next/image";
 
 interface ZoraBuyComponentProps {
@@ -58,7 +59,7 @@ export function ZoraBuyComponent({
         sender: account,
       };
 
-      const receipt = await tradeCoin({
+      const receipt = await tradeCoinWithFee({
         tradeParameters,
         walletClient,
         account: walletClient.account,

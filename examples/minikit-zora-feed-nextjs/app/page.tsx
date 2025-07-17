@@ -53,7 +53,7 @@ export default function App() {
           className="text-[var(--app-accent)] p-4"
           icon={<Icon name="plus" size="sm" />}
         >
-          Save Frame
+          Save Mini App
         </Button>
       );
     }

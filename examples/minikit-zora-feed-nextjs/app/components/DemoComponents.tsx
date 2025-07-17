@@ -109,30 +109,33 @@ export function Features({ setActiveTab }: FeaturesProps) {
           <li className="flex items-start">
             <Icon name="check" className="text-[var(--app-accent)] mt-1 mr-2" />
             <span className="text-[var(--app-foreground-muted)]">
-              Minimalistic and beautiful UI design
+              AI Feeds from getembed.ai
             </span>
           </li>
           <li className="flex items-start">
             <Icon name="check" className="text-[var(--app-accent)] mt-1 mr-2" />
             <span className="text-[var(--app-foreground-muted)]">
-              Responsive layout for all devices
+              Easy integration with @embed-ai/react & @embed-ai/sdk
             </span>
           </li>
           <li className="flex items-start">
             <Icon name="check" className="text-[var(--app-accent)] mt-1 mr-2" />
             <span className="text-[var(--app-foreground-muted)]">
-              Dark mode support
+              Instantly buy Zora coins from your feed while discovering
             </span>
           </li>
           <li className="flex items-start">
             <Icon name="check" className="text-[var(--app-accent)] mt-1 mr-2" />
             <span className="text-[var(--app-foreground-muted)]">
-              OnchainKit integration
+              Based OnchainKit integration
             </span>
           </li>
         </ul>
         <Button variant="outline" onClick={() => setActiveTab("home")}>
           Back to Home
+        </Button>
+        <Button variant="outline" className="mx-2" onClick={() => window.location.href="https://dtech.vision"}>
+          Built by dTech
         </Button>
       </Card>
     </div>
@@ -146,15 +149,15 @@ type HomeProps = {
 export function Home({ setActiveTab }: HomeProps) {
   return (
     <div className="space-y-6 animate-fade-in">
-      <Card title="Zora Feed Mini App">
+      <Card title="getembed.ai Zora Feed Mini App">
         <p className="text-[var(--app-foreground-muted)] mb-4">
-          Browse and interact with the Zora community feed using OnchainKit components.
+          A tokenized Base App Zora feed brought to you by getembed.ai and dTech.vision
         </p>
         <Button
           onClick={() => setActiveTab("features")}
           icon={<Icon name="arrow-right" size="sm" />}
         >
-          Explore Features
+          Learn more
         </Button>
       </Card>
 

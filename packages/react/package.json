@@ -45,9 +45,10 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "bun run build-esm && bun run build-annotate && cp package.json README.md ../../LICENSE dist/",
+    "build": "bun run build-esm && bun run build-annotate && cp package.json README.md ../../LICENSE dist/ && bun run fix-deps",
     "build-esm": "tsc --project tsconfig.build.json --noEmit && tsc --project tsconfig.src.json",
     "build-annotate": "babel dist --plugins annotate-pure-calls --out-dir dist --source-maps",
+    "fix-deps": "bun scripts/fix-deps.js",
     "check": "tsc -b tsconfig.json",
     "lint": "eslint ."
   },

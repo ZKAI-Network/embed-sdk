@@ -59,7 +59,7 @@ export function useTokenFromContract(
             address: contractAddress as `0x${string}`,
             symbol: zoraToken.symbol || 'UNKNOWN',
             decimals: 18, // Zora tokens are typically 18 decimals
-            image: '', // TODO: Check if image is available in different property
+            image: '',
             chainId: chainId,
           };
 

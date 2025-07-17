@@ -7,17 +7,25 @@ import { parseZoraUrl, isZoraTokenUrl } from "../utils/zora";
 
 // Test cases
 const testUrls = [
-  // Valid Zora URLs
+  // Valid Zora URLs (https format)
   "https://zora.co/coin/base:0x47f9cec54d9bc2014cb0e6fa58f54e0b222176c2",
   "https://zora.co/coin/base:0x47f9cec54d9bc2014cb0e6fa58f54e0b222176c2?referrer=0xb3bf9649116e3c00bfc1919b037f8c12b2cb197b",
   "https://zora.co/coin/ethereum:0x1234567890abcdef1234567890abcdef12345678",
   "https://zora.co/coin/optimism:0xabcdef1234567890abcdef1234567890abcdef12",
+  
+  // Valid Zora URLs (zoracoin protocol format)
+  "zoracoin://0x19433ed1feeecd0cd973ac73526732faaaf21dca",
+  "zoraCoin://0x19433ed1feeecd0cd973ac73526732faaaf21dca",
+  "ZORACOIN://0x19433ed1feeecd0cd973ac73526732faaaf21dca",
+  "zoracoin://0x47f9cec54d9bc2014cb0e6fa58f54e0b222176c2",
   
   // Invalid URLs
   "https://example.com/test",
   "https://zora.co/profile/someone",
   "https://zora.co/coin/invalid-format",
   "https://zora.co/coin/base:invalid-address",
+  "zoracoin://invalid-address",
+  "zoracoin://0x123", // Too short
   "not-a-url",
 ];
 
@@ -60,5 +68,25 @@ export const mockFeedItemWithZora = {
     ],
     likes_count: 10,
     comments_count: 5,
+  },
+};
+
+// Test data structure for feed items with zoracoin protocol
+export const mockFeedItemWithZoraCoin = {
+  item_id: "test-456",
+  metadata: {
+    author: {
+      username: "testuser2",
+      fid: 456,
+      display_name: "Test User 2",
+    },
+    text: "New token alert! 🚀",
+    embed_items: [
+      "zoracoin://0x19433ed1feeecd0cd973ac73526732faaaf21dca",
+      "zoraCoin://0x47f9cec54d9bc2014cb0e6fa58f54e0b222176c2",
+      "https://example.com/some-other-link",
+    ],
+    likes_count: 15,
+    comments_count: 8,
   },
 };

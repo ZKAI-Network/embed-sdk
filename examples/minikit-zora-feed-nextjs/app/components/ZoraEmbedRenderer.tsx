@@ -2,7 +2,7 @@
 
 import { type ReactNode } from "react";
 import Image from "next/image";
-import { Buy } from "@coinbase/onchainkit/buy";
+import { ZoraBuyComponent } from "./ZoraBuyComponent";
 import { parseZoraUrl, isZoraTokenUrl, isSupportedChain, getChainDisplayName } from "../utils/zora";
 import { useTokenFromContract } from "../hooks/useTokenFromContract";
 
@@ -69,28 +69,22 @@ function ZoraTokenEmbed({ zoraInfo, originalUrl }: ZoraTokenEmbedProps) {
         {token.image && (
           <Image 
             src={token.image} 
-            alt={token.name}
+            alt={"ZoraCoin"}
             width={32}
             height={32}
             className="w-8 h-8 rounded-full flex-shrink-0 mt-0.5"
           />
         )}
-        <div className="min-w-0 flex-1 token-name-container">
-          <h4 className="font-medium text-[var(--app-foreground)] text-sm leading-tight mb-1">
-            <span className="block break-words hyphens-auto" title={token.name}>
-              {token.name}
-            </span>
-          </h4>
-          <p className="text-xs text-[var(--app-foreground-muted)] truncate">
-            {token.symbol} • {getChainDisplayName(zoraInfo.chainId)}
-          </p>
-        </div>
       </div>
       
       <div className="w-full max-w-full overflow-hidden">
-        <div className="max-w-full [&>*]:max-w-full [&>*]:overflow-hidden">
-          <Buy toToken={token} />
-        </div>
+        <ZoraBuyComponent
+          tokenAddress={token.address}
+          tokenName={token.name}
+          tokenSymbol={token.symbol}
+          tokenImage={token.image || undefined}
+          chainId={token.chainId}
+        />
       </div>
     </div>
   );

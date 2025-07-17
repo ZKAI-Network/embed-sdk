@@ -23,10 +23,31 @@ const CHAIN_MAP: Record<string, number> = {
 
 /**
  * Parse a Zora URL to extract token information
- * Example: https://zora.co/coin/base:0x47f9cec54d9bc2014cb0e6fa58f54e0b222176c2?referrer=0xb3bf9649116e3c00bfc1919b037f8c12b2cb197b
+ * Supports both formats:
+ * - https://zora.co/coin/base:0x47f9cec54d9bc2014cb0e6fa58f54e0b222176c2?referrer=0xb3bf9649116e3c00bfc1919b037f8c12b2cb197b
+ * - zoracoin://0x19433ed1feeecd0cd973ac73526732faaaf21dca
+ * - zoraCoin://0x19433ed1feeecd0cd973ac73526732faaaf21dca (case insensitive)
  */
 export function parseZoraUrl(url: string): ZoraTokenInfo | null {
   try {
+    // Handle zoracoin:// and zoraCoin:// protocol formats
+    if (url.toLowerCase().startsWith('zoracoin://')) {
+      const contractAddress = url.replace(/^zoracoin:\/\//i, '');
+      
+      // Validate contract address (basic ethereum address format)
+      if (!/^0x[a-fA-F0-9]{40}$/.test(contractAddress)) {
+        return null;
+      }
+      
+      // Default to Base chain for zoracoin:// format
+      return {
+        chain: 'base',
+        chainId: 8453,
+        contractAddress: contractAddress.toLowerCase(),
+      };
+    }
+    
+    // Handle https://zora.co/coin/ format
     const urlObj = new URL(url);
     
     // Check if it's a Zora URL

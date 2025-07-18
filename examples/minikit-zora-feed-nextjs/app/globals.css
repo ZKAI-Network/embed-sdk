@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #111111;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #111111;
+    --foreground: #ffffff;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: "Geist", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 80%;
+}
+
+/* Feed content width constraints */
+.feed-container {
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.feed-container *,
+.feed-container *:before,
+.feed-container *:after {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.feed-container img,
+.feed-container video,
+.feed-container iframe,
+.feed-container canvas,
+.feed-container svg {
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: cover;
+}
+
+/* Text content overflow handling */
+.feed-container pre,
+.feed-container code {
+  max-width: 100%;
+  overflow-x: auto;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* Long text handling */
+.feed-container p,
+.feed-container div,
+.feed-container span,
+.feed-container h1,
+.feed-container h2,
+.feed-container h3,
+.feed-container h4,
+.feed-container h5,
+.feed-container h6 {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  max-width: 100%;
+}
+
+/* Link overflow handling */
+.feed-container a {
+  word-break: break-all;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+/* Flex containers */
+.feed-container [class*="flex"] {
+  min-width: 0;
+  flex-shrink: 1;
+}
+
+/* Grid containers */
+.feed-container [class*="grid"] {
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Zora Buy component integration */
+.feed-card-with-zora-container {
+  position: relative;
+}
+
+.feed-card-with-zora-container .feed-card-wrapper {
+  /* Remove bottom border radius to connect with Buy component */
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.feed-card-with-zora-container .feed-card-wrapper > * {
+  /* Remove bottom border radius from the actual FeedCard */
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.feed-card-with-zora-container .zora-buy-extension {
+  /* Style to match FeedCard appearance exactly */
+  background: var(--app-card-bg);
+  border-left: 1px solid var(--app-card-border);
+  border-right: 1px solid var(--app-card-border);
+  border-bottom: 1px solid var(--app-card-border);
+  border-radius: 0 0 12px 12px; /* Only bottom corners rounded */
+  padding: 16px;
+  margin-top: -1px; /* Overlap the border */
+  position: relative;
+}
+
+.feed-card-with-zora-container .zora-buy-extension::before {
+  /* Add a lighter separator line that goes fully across */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.05);
+  border-top: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+@media (prefers-color-scheme: dark) {
+  .feed-card-with-zora-container .zora-buy-extension::before {
+    background: rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+  }
+}
+
+.feed-card-with-zora-container .zora-buy-extension .zora-embed-renderer {
+  /* Remove the internal border since we're already inside the card */
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+/* Feed Grid header improvements */
+.feed-container .space-y-4 > div.flex.justify-between.items-center {
+  padding-bottom: 12px !important;
+  margin-bottom: 8px !important;
+}
+
+.feed-container .space-y-4 > div.flex.justify-between.items-center h3 {
+  line-height: 1.4 !important;
+  margin-bottom: 0 !important;
+}
+
+.feed-container .space-y-4 > div.flex.justify-between.items-center .flex.items-center.gap-2 {
+  align-items: center !important;
+}
+
+.feed-container .space-y-4 > div.flex.justify-between.items-center button {
+  padding-bottom: 8px !important;
+  padding-top: 8px !important;
+  line-height: 1.2 !important;
+}
+
+/* Better token name handling */
+.zora-embed-renderer .token-name-container {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.zora-embed-renderer .token-name-container h4 {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.3;
+}

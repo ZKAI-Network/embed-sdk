@@ -2,6 +2,7 @@ import { trpcServer } from "@hono/trpc-server"
 import { appRouter } from "@shared/trpc"
 import { type Context, Hono } from "hono"
 import { cors } from "hono/cors"
+import { serveStatic } from "hono/bun"
 
 const app = new Hono()
 
@@ -14,10 +15,6 @@ app.use(
     allowHeaders: ["Content-Type", "Authorization", "x-trpc-source"]
   })
 )
-
-app.get("/", (c: Context) => {
-  return c.text("Hello Hono!")
-})
 
 app.get("/health", (c: Context) => {
   return c.json({
@@ -41,6 +38,12 @@ app.use(
     }
   })
 )
+
+// Serve static files from the built client
+app.use("/*", serveStatic({ root: "../client/dist" }))
+
+// Fallback to index.html for SPA routing
+app.get("*", serveStatic({ path: "../client/dist/index.html" }))
 
 console.log("Hono server running on http://localhost:3000")
 

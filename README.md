@@ -2,7 +2,7 @@
 
 Built on top of [Effect](https://effect.website/)
 
-[adding code? contributing? click here][./CONTRIBUTING.md]
+[adding code? contributing? click here](./CONTRIBUTING.md)
 
 ## Publishing
 

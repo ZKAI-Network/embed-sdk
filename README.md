@@ -2,6 +2,8 @@
 
 Built on top of [Effect](https://effect.website/)
 
+[adding code? contributing? click here][./CONTRIBUTING.md]
+
 ## Publishing
 
 **To release packages:**

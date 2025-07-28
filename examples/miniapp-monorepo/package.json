@@ -9,7 +9,10 @@
   "scripts": {
     "dev:server": "bun --env-file=packages/server/.env --watch packages/server/src/index.ts",
     "dev:client": "bun --env-file=packages/client/.env --cwd packages/client dev",
-    "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\""
+    "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\"",
+    "build": "bun run build:client",
+    "build:client": "cd packages/client && bun run build",
+    "start": "bun packages/server/src/index.ts"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

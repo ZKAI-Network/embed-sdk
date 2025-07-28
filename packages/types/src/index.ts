@@ -13,3 +13,13 @@ export * from "./types/FeedDiversityConfigParam.js"
 
 // Add the new label literals
 export * from "./types/LabelLiterals.js"
+
+// Datasource API types
+export * from "./types/CreateDatasourceRequest.js"
+export * from "./types/CreateDatasourceResponse.js"
+export * from "./types/ErrorResponse.js"
+export * from "./types/IngestionResponse.js"
+export * from "./types/Interaction.js"
+export * from "./types/Item.js"
+export * from "./types/User.js"
+export * from "./types/ValidationErrorResponse.js"

@@ -4,8 +4,9 @@
   "description": "Simple examples demonstrating Embed AI SDK usage",
   "type": "module",
   "scripts": {
-    "run-all": "bun run basic && bun run feed && bun run users && bun run posts",
+    "run-all": "bun run basic && bun run datasource && bun run feed && bun run users && bun run posts",
     "basic": "echo '=== Basic SDK Usage ===' && bun embed-typescript-sdk.ts",
+    "datasource": "echo '=== Datasource Management ===' && bun datasource-example.ts",
     "feed": "echo '=== Feed Management ===' && bun feed-management-example.ts",
     "retry": "echo '=== Retry Example ===' && bun retry-example.ts",
     "users": "bun run users:similar && bun run users:query && bun run users:labels && bun run users:top",

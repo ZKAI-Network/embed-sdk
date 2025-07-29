@@ -22,6 +22,33 @@ This directory contains simple, standalone examples demonstrating how to use the
    API_KEY_EMBED=your_embed_api_key_here
    ```
 
+## Quick Commands
+
+Run individual examples:
+
+```bash
+# Basic SDK usage
+bun run basic
+
+# Datasource management
+bun run datasource
+
+# Feed management 
+bun run feed
+
+# User search examples
+bun run users
+
+# Posts search examples
+bun run posts
+
+# Retry configuration
+bun run retry
+
+# Run all examples
+bun run run-all
+```
+
 ## Examples
 
 ### 1. Basic SDK Usage (`embed-typescript-sdk.ts`)
@@ -37,7 +64,24 @@ bun run embed-typescript-sdk.ts
 - Fetches a feed for user ID "16085" with top 10 items
 - Displays the results in the console
 
-### 2. Feed Management (`feed-management-example.ts`)
+### 2. Datasource Management (`datasource-example.ts`)
+
+A comprehensive example demonstrating datasource creation and data ingestion capabilities.
+
+```bash
+bun run datasource-example.ts
+```
+
+**What it does:**
+- Creates a new datasource with automatic stream provisioning
+- Ingests user profile data from various protocols (Farcaster, Lens, Mirror)
+- Ingests content items (posts, articles, frames) with metadata
+- Tracks user interactions with content (likes, views, shares, bookmarks)
+- Demonstrates both single-item and bulk ingestion
+- Shows different interaction tracking streams (item vs user interactions)
+- Handles cross-protocol relationships (e.g., Lens user authoring Mirror content)
+
+### 3. Feed Management (`feed-management-example.ts`)
 
 A comprehensive example demonstrating feed creation, listing, retrieval, and updates.
 
@@ -52,7 +96,7 @@ bun run feed-management-example.ts
 - Updates the feed with new configuration
 - Shows before/after changes
 
-### 3. User Search Examples
+### 4. User Search Examples
 
 Examples demonstrating user search functionality:
 
@@ -66,7 +110,7 @@ bun run search-users-by-query.ts
 bun run search-users-similar.ts
 ```
 
-### 4. Posts Search Examples
+### 5. Posts Search Examples
 
 Examples demonstrating posts/casts search functionality:
 
@@ -86,7 +130,7 @@ bun run search-posts-comprehensive.ts
 - Advanced filtering by timestamp, AI labels, channels, etc.
 - Different configurations and error handling
 
-### 5. Retry Logic (`retry-example.ts`)
+### 6. Retry Logic (`retry-example.ts`)
 
 Advanced examples showing different retry configurations and error handling strategies.
 

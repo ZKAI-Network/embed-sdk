@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@effect/vitest"
 import type { PostLabelsResponse, PostSemanticSearchResponse } from "@embed-ai/types"
-import { Effect } from "effect"
+import * as Effect from "effect/Effect"
 import { getFastFailClient, getTestClient } from "./setup.js"
 
 const apiKey = process.env.API_KEY_EMBED

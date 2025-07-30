@@ -46,8 +46,8 @@ export async function GET(request: NextRequest) {
     const embedClient = getEmbedClient();
     const feedData = await embedClient.feed.byUserId(fid, feedId || undefined, {
       top_k: 10,
+      filters: { publication_types: ["miniapp"] }
     });
-
     return NextResponse.json(feedData);
   } catch (error) {
     console.error("Feed API error:", error);

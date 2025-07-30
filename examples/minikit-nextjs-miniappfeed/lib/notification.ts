@@ -1,5 +1,10 @@
-import type { FrameNotificationDetails } from "@farcaster/frame-sdk";
 import { redis } from "./redis";
+
+// Define FrameNotificationDetails locally since it's not exported
+interface FrameNotificationDetails {
+  url: string;
+  token: string;
+}
 
 const notificationServiceKey =
   process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME ?? "minikit";

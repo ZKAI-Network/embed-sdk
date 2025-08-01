@@ -14,13 +14,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,
     description:
-      "Zora Feeds from getembed.ai - app developed by dTech.vision",
+      "Mini App Feed from getembed.ai - app developed by dTech.vision",
     other: {
       "fc:frame": JSON.stringify({
         version: "next",
         imageUrl: process.env.NEXT_PUBLIC_APP_HERO_IMAGE,
         button: {
-          title: `Browse Zora Coins!`,
+          title: `Browse Mini Apps!`,
           action: {
             type: "launch_frame",
             name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,

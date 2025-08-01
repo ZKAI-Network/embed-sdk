@@ -1,5 +1,5 @@
 {
-  "name": "minikit-zora-feed-nextjs",
+  "name": "miniapp-feed-nextjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,7 +15,6 @@
     "@farcaster/frame-sdk": "^0.1.8",
     "@tanstack/react-query": "^5",
     "@upstash/redis": "^1.34.4",
-    "@zoralabs/coins-sdk": "^0.2.8",
     "canvas-confetti": "^1.9.3",
     "next": "^15.3.3",
     "react": "^18",

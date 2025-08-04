@@ -330,7 +330,7 @@ await client.feed.byWalletAddress(walletAddress: string, options?: FeedOptions)
 // Feed management to create new feeds and manage these custom feeds e.g. as custom feed per user in your app, which can be built on top of base feeds
 await client.feed.createConfig(options: CreateFeedOptions)
 await client.feed.getConfig(configId: string)
-await client.feed.listConfigs(visibility?: "private" | "public")
+await client.feed.listConfigs(visibility?: "private" | "template" | "public")
 await client.feed.updateConfig(options: UpdateFeedOptions)
 ```
 

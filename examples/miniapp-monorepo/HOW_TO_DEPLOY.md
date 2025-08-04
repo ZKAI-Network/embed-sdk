@@ -51,6 +51,3 @@ bun install && bun run build
 # Deploy static files to Fly.io
 fly launch --generate-name --region sjc
 fly deploy
-
-# Or use our automated script for full deployment
-./scripts/deploy.sh fly-full

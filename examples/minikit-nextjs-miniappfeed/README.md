@@ -52,6 +52,35 @@ REDIS_TOKEN=
 npm run dev
 ```
 
+## Deployment
+
+### Vercel
+
+To deploy on Vercel simply type
+
+```
+bunx vercel --prod
+```
+
+### Fly.io
+
+to deploy to fly.io run the following command and what you app become available
+
+```
+fly launch
+```
+
+or to deploy an update after you've deployed before use
+
+```
+fly deploy
+```
+
+### Docker
+
+You can deploy this sample with docker as well. The [Dockerfile](./Dockerfile) is in the repo root and can be deployed
+anyway you'd love your Docker to be deployed.
+
 ## Template Features
 
 ### Mini App Configuration

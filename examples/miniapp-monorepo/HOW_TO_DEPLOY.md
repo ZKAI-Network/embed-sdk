@@ -30,24 +30,31 @@ Get your miniapp-monorepo deployed in minutes with these simple commands.
 
 ## Option 2: Fly.io (Dockerized Deployment)
 
+**Prerequisites:**
 ```bash
 # Install Fly CLI
-brew install flyctl
+brew install flyctl  # macOS
+# curl -L https://fly.io/install.sh | sh  # other platforms
+fly auth login
+```
 
-# Clone and setup
-git clone <repo>
-cd examples/miniapp-monorepo
-
-# Environment Setup
-# Backend environment
-cp packages/server/.env.example packages/server/.env
-nano packages/server/.env  # Add your API_KEY_EMBED
-
-# Frontend Static Deployment
-# Build the frontend locally
-cd packages/client
-bun install && bun run build
-
-# Deploy static files to Fly.io
-fly launch --generate-name --region sjc
+**Backend:**
+```bash
+# From monorepo root
+fly launch --no-deploy
+fly secrets set API_KEY_EMBED=your_api_key_here
 fly deploy
+```
+
+**Frontend:**
+```bash
+# From packages/client
+fly launch --no-deploy
+# Build with backend URL
+VITE_API_URL=https://your-backend-app.fly.dev bun run build
+fly deploy
+```
+
+**Common Issues:**
+- Frontend shows localhost errors: Rebuild with correct `VITE_API_URL`
+- Backend returning 500 error: Check API_KEY_EMBED is set correctly (in the Secrets tab on the deployment on fly.io dashboard)

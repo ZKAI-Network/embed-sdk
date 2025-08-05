@@ -9,7 +9,6 @@
 **/lerna-debug.log*
 
 **/node_modules
-# **/dist - commented out because we need dist for static deployment
 **/dist-ssr
 **/*.local
 

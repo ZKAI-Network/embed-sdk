@@ -1,0 +1,69 @@
+# flyctl launch added from .gitignore
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+node_modules
+.pnp
+**/.pnp.js
+
+# testing
+coverage
+
+# production
+build
+dist
+**/.DS_Store
+
+# misc
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# bun
+**/.bun
+
+# flyctl launch added from node_modules/jayson/.gitignore
+node_modules/jayson/node_modules
+node_modules/jayson/**/.*
+!node_modules/jayson/**/.gitignore
+!node_modules/jayson/**/.travis.yml
+!node_modules/jayson/**/.jshintrc
+!node_modules/jayson/**/.npmignore
+node_modules/jayson/coverage
+node_modules/jayson/yarn-error.log
+
+# flyctl launch added from node_modules/tailwindcss/stubs/.gitignore
+!node_modules/tailwindcss/stubs/**/*
+
+# flyctl launch added from packages/client/.gitignore
+# Logs
+packages/client/**/logs
+packages/client/**/*.log
+packages/client/**/npm-debug.log*
+packages/client/**/yarn-debug.log*
+packages/client/**/yarn-error.log*
+packages/client/**/pnpm-debug.log*
+packages/client/**/lerna-debug.log*
+
+packages/client/**/node_modules
+packages/client/**/dist
+packages/client/**/dist-ssr
+packages/client/**/*.local
+
+# Editor directories and files
+packages/client/**/.vscode/*
+!packages/client/**/.vscode/extensions.json
+packages/client/**/.idea
+packages/client/**/.DS_Store
+packages/client/**/*.suo
+packages/client/**/*.ntvs*
+packages/client/**/*.njsproj
+packages/client/**/*.sln
+packages/client/**/*.sw?
+fly.toml

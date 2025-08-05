@@ -31,7 +31,7 @@ export function FeedGridContainer({
     threshold: 0,
   });
 
-  const { actions: { composeCast, viewProfile, sendToken } } = useFrame()
+  const { actions: { composeCast, viewProfile, sendToken }, isRunningOnFrame } = useFrame()
   
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -72,7 +72,13 @@ export function FeedGridContainer({
         };
 
         const handleViewProfile = () => {
-          viewProfile({ fid: author.fid });
+          if (isRunningOnFrame) {
+            // Use frame navigation when running inside Farcaster
+            viewProfile({ fid: author.fid });
+          } else {
+            // Redirect to Farcaster app when running outside frame
+            window.open(`https://farcaster.xyz/~/profiles/${author.fid}`, '_blank', 'noopener,noreferrer');
+          }
         };
 
         const handleTip = () => {

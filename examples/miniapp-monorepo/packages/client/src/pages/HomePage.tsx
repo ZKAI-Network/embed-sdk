@@ -120,7 +120,13 @@ export function HomePage(props: HomePageProps) {
             {/* Feed Content */}
             {isSDKLoaded && (
               <FeedGrid
-                title={isRunningOnFrame && userInfo ? `For you, @${userInfo.username}`: "For you (demo)"}
+                title={(() => {
+                  const selectedFeedData = FEEDS.find(feed => feed.id === selectedFeed);
+                  const feedName = selectedFeedData?.name || "Feed";
+                  return isRunningOnFrame && userInfo 
+                    ? `Customized for you, @${userInfo.username}`
+                    : `${feedName} (demo)`;
+                })()}
                 data={data}
                 isLoading={isLoading}
                 error={error}

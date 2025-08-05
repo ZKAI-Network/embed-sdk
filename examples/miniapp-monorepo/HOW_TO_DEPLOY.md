@@ -41,6 +41,7 @@ fly auth login
 **Backend:**
 ```bash
 # From monorepo root
+# Optional: Edit fly.toml to set custom app name and region
 fly launch --no-deploy
 fly secrets set API_KEY_EMBED=your_api_key_here
 fly deploy
@@ -49,6 +50,7 @@ fly deploy
 **Frontend:**
 ```bash
 # From packages/client
+# Optional: Edit fly.toml to set custom app name and region
 fly launch --no-deploy
 # Build with backend URL
 VITE_API_URL=https://your-backend-app.fly.dev bun run build

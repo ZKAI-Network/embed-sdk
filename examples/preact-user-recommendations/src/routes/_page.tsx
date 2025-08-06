@@ -73,6 +73,39 @@ export default function() {
     enabled: searchType === "query" ? !!searchQuery : !!selectedLabel,
   })
 
+  // Extract FIDs for bulk queries
+  const fids = data?.results?.map((user) => user.user_id) ?? []
+  const fidsString = fids.join(",")
+
+  // Bulk fetch Farcaster data for all users
+  const { data: bulkFarcasterData, isLoading: isLoadingBulkFarcaster } =
+    useQuery({
+      queryKey: ["farcaster-bulk", fidsString],
+      queryFn: async () => {
+        if (!fidsString) return null
+        const response = await fetch(`/api/farcaster?fid=${fidsString}`)
+        if (!response.ok) {
+          throw new Error("Failed to fetch bulk farcaster data")
+        }
+        return response.json()
+      },
+      enabled: fids.length > 0,
+    })
+
+  // Bulk fetch Labels data for all users
+  const { data: bulkLabelsData, isLoading: isLoadingBulkLabels } = useQuery({
+    queryKey: ["labels-bulk", fidsString],
+    queryFn: async () => {
+      if (!fidsString) return null
+      const response = await fetch(`/api/labels?fid=${fidsString}`)
+      if (!response.ok) {
+        throw new Error("Failed to fetch bulk labels data")
+      }
+      return response.json()
+    },
+    enabled: fids.length > 0,
+  })
+
   const handleSearch = (e: Event) => {
     e.preventDefault()
     refetch()
@@ -197,7 +230,14 @@ export default function() {
         {data && (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             {data.results.map((user, _index) => (
-              <UserCard key={user.user_id} user={user} />
+              <UserCard
+                key={user.user_id}
+                user={user}
+                bulkFarcasterData={bulkFarcasterData}
+                bulkLabelsData={bulkLabelsData}
+                isLoadingBulkFarcaster={isLoadingBulkFarcaster}
+                isLoadingBulkLabels={isLoadingBulkLabels}
+              />
             ))}
           </div>
         )}

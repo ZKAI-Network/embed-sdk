@@ -22,10 +22,15 @@ export const GET = Effect
       )
     }
 
+    // Parse FIDs - support both single FID and comma-separated FIDs
+    const fids = fid.split(",").map((id) => id.trim()).filter((id) =>
+      id.length > 0
+    )
+
     const client = getClient(process.env.API_KEY_EMBED!)
 
     const results: UserLabelsResponse = yield* Effect.tryPromise(() =>
-      client.search.users.getLabels([fid], "all", { top_k: 25 })
+      client.search.users.getLabels(fids, "all", { top_k: 25 })
     )
 
     return yield* HttpServerResponse.json({

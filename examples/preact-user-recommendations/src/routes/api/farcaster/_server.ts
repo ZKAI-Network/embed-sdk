@@ -20,6 +20,11 @@ export const GET = Effect
       )
     }
 
+    // Parse FIDs - support both single FID and comma-separated FIDs
+    const fids = fid.split(",").map((id) => id.trim()).filter((id) =>
+      id.length > 0
+    )
+
     if (!process.env.API_KEY_NEYNAR) {
       return yield* HttpServerResponse.json(
         { error: "API_KEY_NEYNAR environment variable is not set" },
@@ -29,11 +34,14 @@ export const GET = Effect
 
     // call neynar with a fetch call wrapped by effect to get user data and return the profile picture, username
     const response = yield* Effect.tryPromise(() =>
-      fetch(`https://api.neynar.com/v2/farcaster/user/bulk/?fids=${fid}`, {
-        headers: {
-          "x-api-key": process.env.API_KEY_NEYNAR!,
+      fetch(
+        `https://api.neynar.com/v2/farcaster/user/bulk/?fids=${fids.join(",")}`,
+        {
+          headers: {
+            "x-api-key": process.env.API_KEY_NEYNAR!,
+          },
         },
-      })
+      )
     )
 
     if (!response.ok) {
@@ -56,18 +64,32 @@ export const GET = Effect
       )
     }
 
-    const user = userdata.users[0]
-    if (!user) {
-      return yield* HttpServerResponse.json(
-        { error: `No user found for FID ${fid}` },
-        { status: 404 },
-      )
+    // Transform users array into a map keyed by FID for efficient lookup
+    const results: Record<string, { pfp?: string; username?: string }> = {}
+
+    for (const user of userdata.users) {
+      results[user.fid.toString()] = {
+        pfp: user.pfp_url,
+        username: user.username,
+      }
     }
 
-    const results = {
-      pfp: user.pfp_url,
-      username: user.username,
+    // For single FID requests, maintain backward compatibility
+    if (fids.length === 1) {
+      const singleResult = results[fids[0]]
+      if (!singleResult) {
+        return yield* HttpServerResponse.json(
+          { error: `No user found for FID ${fids[0]}` },
+          { status: 404 },
+        )
+      }
+      return yield* HttpServerResponse.json({
+        results: singleResult,
+        parameters: { fid },
+      })
     }
+
+    // For bulk requests, return all results
     return yield* HttpServerResponse.json({
       results,
       parameters: { fid },

@@ -1,6 +1,3 @@
-import type { UserLabelsResponse } from "@embed-ai/types"
-import { useQuery } from "@tanstack/react-query"
-
 interface UserSearchResult {
   user_id: string
   score: number
@@ -8,45 +5,43 @@ interface UserSearchResult {
   ratio?: number
 }
 
-interface FarcasterUserData {
-  results: {
-    pfp?: string
-    username?: string
-  }
-  parameters: { fid: string }
-}
-
-interface UserLabelsData {
-  results: UserLabelsResponse
-  parameters: { fid: string }
-}
-
 interface UserCardProps {
   user: UserSearchResult
+  bulkFarcasterData?: any
+  bulkLabelsData?: any
+  isLoadingBulkFarcaster?: boolean
+  isLoadingBulkLabels?: boolean
 }
 
-export function UserCard({ user }: UserCardProps) {
-  const { data: farcasterData, isLoading: isLoadingProfile } = useQuery({
-    queryKey: ["farcaster", user.user_id],
-    queryFn: async (): Promise<FarcasterUserData> => {
-      const response = await fetch(`/api/farcaster?fid=${user.user_id}`)
-      if (!response.ok) {
-        throw new Error("Failed to fetch user profile")
-      }
-      return response.json()
-    },
-  })
+export function UserCard({
+  bulkFarcasterData,
+  bulkLabelsData,
+  isLoadingBulkFarcaster = false,
+  isLoadingBulkLabels = false,
+  user,
+}: UserCardProps) {
+  // Extract user-specific data from bulk responses
+  const farcasterData = bulkFarcasterData?.results?.[user.user_id]
+    ? {
+      results: bulkFarcasterData.results[user.user_id],
+      parameters: { fid: user.user_id },
+    }
+    : null
 
-  const { data: labelsData, isLoading: isLoadingLabels } = useQuery({
-    queryKey: ["labels", user.user_id],
-    queryFn: async (): Promise<UserLabelsData> => {
-      const response = await fetch(`/api/labels?fid=${user.user_id}`)
-      if (!response.ok) {
-        throw new Error("Failed to fetch user labels")
+  const labelsData =
+    bulkLabelsData?.results?.find((result: any) => result.fid === user.user_id)
+      ? {
+        results: [
+          bulkLabelsData.results.find((result: any) =>
+            result.fid === user.user_id
+          ),
+        ],
+        parameters: { fid: user.user_id },
       }
-      return response.json()
-    },
-  })
+      : null
+
+  const isLoadingProfile = isLoadingBulkFarcaster
+  const isLoadingLabels = isLoadingBulkLabels
 
   return (
     <div className="card bg-base-800 shadow-lg hover:shadow-xl transition-shadow">
@@ -104,7 +99,8 @@ export function UserCard({ user }: UserCardProps) {
           <div className="flex flex-wrap gap-2">
             {isLoadingLabels
               ? (
-                Array.from({ length: 3 }).map((_, i) => (
+                // eslint-disable-next-line local-advanced/prefer-effect-constructors
+                Array.from({ length: 3 }).map((_unused, i) => (
                   <div key={i} className="skeleton h-6 w-20 rounded-full">
                   </div>
                 ))
@@ -113,8 +109,8 @@ export function UserCard({ user }: UserCardProps) {
                   && labelsData.results[0]?.ai_labels?.topics
               ? (
                 labelsData.results[0].ai_labels.topics.slice(0, 3).map((
-                  topic,
-                  index,
+                  topic: any,
+                  index: number,
                 ) => (
                   <div
                     key={index}

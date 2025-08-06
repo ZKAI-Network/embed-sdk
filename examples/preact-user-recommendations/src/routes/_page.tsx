@@ -79,91 +79,103 @@ export default function() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-base-500 to-base-100 p-3 lg:p-4">
-      <div className="container mx-auto max-w-4xl">
-        <div className="text-center mt-8 mb-4 lg:mb-6 flex justify-center">
-          <h1 className="text-xl lg:text-2xl font-bold text-base-content">
-            Discover Users
-          </h1>
-        </div>
-
-        {/* Search Form */}
-        <div className="bg-base-200 rounded-lg p-4 lg:p-6 mb-4 lg:mb-6">
-          <form onSubmit={handleSearch} className="space-y-4">
-            {/* Search Type Toggle */}
-            <div className="flex gap-2 justify-center">
-              <button
-                type="button"
-                className={`btn ${
-                  searchType === "query"
-                    ? "btn-primary"
-                    : "btn-outline btn-primary"
-                }`}
-                onClick={() => setSearchType("query")}
-              >
-                Semantic Search
-              </button>
-              <button
-                type="button"
-                className={`btn ${
-                  searchType === "label"
-                    ? "btn-primary"
-                    : "btn-outline btn-primary"
-                }`}
-                onClick={() => setSearchType("label")}
-              >
-                By Topic Label
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              {searchType === "query"
-                ? (
-                  <div className="space-y-3">
-                    <input
-                      type="text"
-                      placeholder="Search by interests (e.g., 'web3 developers')"
-                      className="input input-bordered w-full"
-                      value={searchQuery}
-                      onInput={(e) =>
-                        setSearchQuery(
-                          (e.target as HTMLInputElement)
-                            .value,
-                        )}
-                    />
-                  </div>
-                )
-                : (
-                  <div className="space-y-3">
-                    <select
-                      className="select select-bordered w-full"
-                      value={selectedLabel}
-                      onChange={(e) =>
-                        setSelectedLabel(
-                          (e.target as HTMLSelectElement)
-                            .value,
-                        )}
+    <div>
+      <div
+        className="flex flex-col items-center justify-center min-h-screen relative"
+        style={{
+          backgroundImage: `url(${""})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <div>
+          <div className="card rounded-2xl bg-base-200 shadow-sm">
+            <div className="card-body items-center">
+              <div className="text-center mb-8 md:mb-8 text-4xl font-bold text-white text-shadow-lg/30">
+                User Recommendations
+              </div>
+              {/* Search Form */}
+              <div>
+                <form onSubmit={handleSearch} className="space-y-4">
+                  {/* Search Type Toggle */}
+                  <div className="flex gap-2 justify-center">
+                    <button
+                      type="button"
+                      className={`btn ${
+                        searchType === "query"
+                          ? "btn-primary"
+                          : "btn-outline btn-primary"
+                      }`}
+                      onClick={() => setSearchType("query")}
                     >
-                      <option value="">
-                        Select a topic label
-                      </option>
-                      {TOPIC_LABELS.map((label) => (
-                        <option key={label} value={label}>
-                          {label
-                            .replace(/_/g, " ")
-                            .replace(/\b\w/g, (l) =>
-                              l
-                                .toUpperCase())}
-                        </option>
-                      ))}
-                    </select>
+                      Semantic Search
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn ${
+                        searchType === "label"
+                          ? "btn-primary"
+                          : "btn-outline btn-primary"
+                      }`}
+                      onClick={() => setSearchType("label")}
+                    >
+                      By Topic Label
+                    </button>
                   </div>
-                )}
-            </div>
-          </form>
-        </div>
 
-        {/* Results */}
+                  <div className="space-y-4">
+                    {searchType === "query"
+                      ? (
+                        <div className="space-y-3">
+                          <input
+                            type="text"
+                            placeholder="Search by interests (e.g., 'web3 developers')"
+                            className="input input-bordered w-full"
+                            value={searchQuery}
+                            onInput={(e) =>
+                              setSearchQuery(
+                                (e.target as HTMLInputElement)
+                                  .value,
+                              )}
+                          />
+                        </div>
+                      )
+                      : (
+                        <div className="space-y-3">
+                          <select
+                            className="select select-bordered w-full"
+                            value={selectedLabel}
+                            onChange={(e) =>
+                              setSelectedLabel(
+                                (e.target as HTMLSelectElement)
+                                  .value,
+                              )}
+                          >
+                            <option value="">
+                              Select a topic label
+                            </option>
+                            {TOPIC_LABELS.map((label) => (
+                              <option key={label} value={label}>
+                                {label
+                                  .replace(/_/g, " ")
+                                  .replace(/\b\w/g, (l) =>
+                                    l
+                                      .toUpperCase())}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Results */}
+      <div>
         {isLoading && (
           <div className="text-center py-12">
             <div className="loading loading-spinner loading-lg mb-4">

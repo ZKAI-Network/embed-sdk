@@ -99,9 +99,15 @@ export default function() {
       if (!fidsString) return null
       const response = await fetch(`/api/labels?fid=${fidsString}`)
       if (!response.ok) {
+        console.error(
+          "Bulk labels fetch failed:",
+          response.status,
+          response.statusText,
+        )
         throw new Error("Failed to fetch bulk labels data")
       }
-      return response.json()
+      const data = await response.json()
+      return data
     },
     enabled: fids.length > 0,
   })

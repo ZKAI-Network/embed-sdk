@@ -28,17 +28,39 @@ export function UserCard({
     }
     : null
 
-  const labelsData =
-    bulkLabelsData?.results?.find((result: any) => result.fid === user.user_id)
-      ? {
-        results: [
-          bulkLabelsData.results.find((result: any) =>
-            result.fid === user.user_id
-          ),
-        ],
-        parameters: { fid: user.user_id },
-      }
-      : null
+  // Fix labels data extraction
+  // Try to find the result by FID first
+  let labelsResult = bulkLabelsData?.results?.find((result: any) =>
+    result.fid?.toString() === user.user_id.toString()
+  )
+
+  // If no FID field, check if results are ordered by input FIDs
+  if (!labelsResult && bulkLabelsData?.results) {
+    // Get the index from the original FIDs array passed to the API
+    const fidIndex = bulkLabelsData.parameters?.fid?.split(",").indexOf(
+      user.user_id,
+    )
+    if (fidIndex >= 0 && fidIndex < bulkLabelsData.results.length) {
+      labelsResult = bulkLabelsData.results[fidIndex]
+    }
+  }
+
+  const labelsData = labelsResult ?
+    {
+      results: [labelsResult],
+      parameters: { fid: user.user_id },
+    } :
+    null
+
+  // Debug the extraction result
+  if (user.user_id === "725639") {
+    console.log("Labels extraction for first user:", {
+      labelsResult,
+      labelsData,
+      hasAiLabels: labelsResult?.ai_labels,
+      topics: labelsResult?.ai_labels?.topics,
+    })
+  }
 
   const isLoadingProfile = isLoadingBulkFarcaster
   const isLoadingLabels = isLoadingBulkLabels
@@ -115,9 +137,7 @@ export function UserCard({
                   <div
                     key={index}
                     className="badge badge-primary badge-sm"
-                    title={`Score: ${
-                      (topic.score * 100).toFixed(1)
-                    }%`}
+                    title={`Score: ${(topic.score * 100).toFixed(1)}%`}
                   >
                     {topic.label.replace(/_/g, " ")}
                   </div>

@@ -52,16 +52,6 @@ export function UserCard({
     } :
     null
 
-  // Debug the extraction result
-  if (user.user_id === "725639") {
-    console.log("Labels extraction for first user:", {
-      labelsResult,
-      labelsData,
-      hasAiLabels: labelsResult?.ai_labels,
-      topics: labelsResult?.ai_labels?.topics,
-    })
-  }
-
   const isLoadingProfile = isLoadingBulkFarcaster
   const isLoadingLabels = isLoadingBulkLabels
 

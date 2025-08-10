@@ -1,0 +1,32 @@
+# fly.toml app configuration file generated for miniapp-frontend on 2025-08-05T20:34:42+08:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'miniapp-frontend'
+primary_region = 'bos'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[http_service]
+  internal_port = 80
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+  [[http_service.checks]]
+    interval = '15s'
+    timeout = '4s'
+    grace_period = '5s'
+    method = 'get'
+    path = '/'
+    protocol = 'http'
+    tls_skip_verify = false
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

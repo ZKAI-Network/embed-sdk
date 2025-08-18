@@ -15,6 +15,14 @@ export const IngestionResponse = S.Struct({
   /** Number of failed records (for bulk operations) */
   failed_records: S.optional(pipe(S.Number, S.int(), S.greaterThanOrEqualTo(0)))
 })
+
+// Raw API response (internal use only)
+export const IngestionApiResponse = S.Struct({
+  status_code: pipe(S.Number, S.int()),
+  body: IngestionResponse
+})
+
 export type IngestionResponse = S.Schema.Type<typeof IngestionResponse>
 export const IngestionResponseEncoded = S.encodedSchema(IngestionResponse)
 export type IngestionResponseEncoded = S.Schema.Encoded<typeof IngestionResponse>
+export type IngestionApiResponse = S.Schema.Type<typeof IngestionApiResponse> // Internal use only

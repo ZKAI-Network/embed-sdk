@@ -11,6 +11,14 @@ export const CreateDatasourceResponse = S.Struct({
   /** Human-readable name (if provided) */
   name: S.optional(S.String)
 })
+
+// Raw API response (internal use only)
+export const CreateDatasourceApiResponse = S.Struct({
+  status_code: pipe(S.Number, S.int()),
+  body: CreateDatasourceResponse
+})
+
 export type CreateDatasourceResponse = S.Schema.Type<typeof CreateDatasourceResponse>
 export const CreateDatasourceResponseEncoded = S.encodedSchema(CreateDatasourceResponse)
 export type CreateDatasourceResponseEncoded = S.Schema.Encoded<typeof CreateDatasourceResponse>
+export type CreateDatasourceApiResponse = S.Schema.Type<typeof CreateDatasourceApiResponse> // Internal use only

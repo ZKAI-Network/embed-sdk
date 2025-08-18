@@ -102,7 +102,7 @@ export class DatasourceNamespace {
    */
   async ingestItems(
     datasourceId: string,
-    items: Item | Item[]
+    items: Item | Array<Item>
   ): Promise<IngestionResponse> {
     return ingestItems(this.http, datasourceId, items)
   }
@@ -139,7 +139,7 @@ export class DatasourceNamespace {
    */
   async ingestUsers(
     datasourceId: string,
-    users: User | User[]
+    users: User | Array<User>
   ): Promise<IngestionResponse> {
     return ingestUsers(this.http, datasourceId, users)
   }
@@ -197,7 +197,7 @@ export class DatasourceNamespace {
    */
   async trackItemInteractions(
     datasourceId: string,
-    interactions: Interaction | Interaction[]
+    interactions: Interaction | Array<Interaction>
   ): Promise<IngestionResponse> {
     return trackItemInteractions(this.http, datasourceId, interactions)
   }
@@ -226,7 +226,7 @@ export class DatasourceNamespace {
    */
   async trackUserInteractions(
     datasourceId: string,
-    interactions: Interaction | Interaction[]
+    interactions: Interaction | Array<Interaction>
   ): Promise<IngestionResponse> {
     return trackUserInteractions(this.http, datasourceId, interactions)
   }

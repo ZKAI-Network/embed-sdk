@@ -1,5 +1,11 @@
 # @embed-ai/react
 
+## 0.2.0
+
+### Minor Changes
+
+- [#28](https://github.com/ZKAI-Network/embed-sdk/pull/28) [`d29a76c`](https://github.com/ZKAI-Network/embed-sdk/commit/d29a76cf284bdf91b87ecb71830cfaad9ef3767f) Thanks [@mehdi-loup](https://github.com/mehdi-loup)! - Add render prop on FeedCard to enable full customization of cast design
+
 ## 0.1.1
 
 ### Patch Changes

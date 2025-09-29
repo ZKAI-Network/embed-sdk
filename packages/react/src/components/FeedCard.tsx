@@ -1,11 +1,19 @@
 import { IconCoin, IconHeart, IconMessageCircle, IconRepeat, IconShare, IconUser } from "@tabler/icons-react"
-import { useMemo, useState } from "react"
+import { type ReactNode, useMemo, useState } from "react"
 
-import { Avatar, AvatarFallback, AvatarImage, Card, CardContent, VideoPlayer } from "../index.js"
-import ImageGallery from "./ImageGallery.js"
-import { LocationCard } from "./LocationCard.js"
-import type { FeedItem } from "./types.js"
-import { UrlEmbed } from "./UrlEmbed.js"
+import {
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
+	Card,
+	CardContent,
+} from "../index.js";
+import { EmbedRenderer } from "./EmbedRenderer.js";
+import type { FeedItem } from "./types.js";
+
+export interface FeedCardRenderProps {
+	item: FeedItem;
+}
 
 interface FeedCardProps {
   item: FeedItem
@@ -13,9 +21,10 @@ interface FeedCardProps {
   onShare?: () => void
   onTip?: () => void
   onViewProfile?: () => void
+  render?: (args: FeedCardRenderProps) => ReactNode;
 }
 
-export function FeedCard({ item, onReply, onShare, onTip, onViewProfile }: FeedCardProps) {
+export function FeedCard({ item, onReply, onShare, onTip, onViewProfile, render }: FeedCardProps) {
   const { author, comments_count, embed_items, likes_count, shares_count, text } = item.metadata
 
   const [isExpanded, setIsExpanded] = useState(false)
@@ -25,6 +34,10 @@ export function FeedCard({ item, onReply, onShare, onTip, onViewProfile }: FeedC
     const display = longText && !isExpanded ? text.slice(0, 300) : text
     return { displayText: display, isLongText: longText }
   }, [text, isExpanded])
+ 
+  if (render) {
+    return render({ item })
+  }
 
   return (
     <Card className="border rounded-lg shadow-sm h-full">
@@ -78,55 +91,9 @@ export function FeedCard({ item, onReply, onShare, onTip, onViewProfile }: FeedC
         </div>
 
         {/* Embeds */}
-        {embed_items &&
-          embed_items.length > 0 &&
-          (() => {
-            const images: Array<string> = []
-            const videos: Array<string> = []
-            const otherEmbeds: Array<string> = []
-
-            embed_items.forEach((embed) => {
-              const imageExtensions = /\.(jpeg|jpg|gif|png|webp)$/i
-              const videoExtensions = /\.(mp4|webm|m3u8)$/i
-
-              if (videoExtensions.test(embed)) {
-                videos.push(embed)
-                return
-              }
-
-              let isImage = imageExtensions.test(embed) || embed.includes("/ipfs/")
-              if (!isImage) {
-                try {
-                  const url = new URL(embed)
-                  if (url.hostname === "imagedelivery.net") {
-                    isImage = true
-                  }
-                } catch {
-                  // Not a valid URL, ignore
-                }
-              }
-
-              if (isImage) {
-                images.push(embed)
-              } else {
-                otherEmbeds.push(embed)
-              }
-            })
-
-            return (
-              <div className="space-y-3 pt-2">
-                {videos.map((videoUrl, index) => <VideoPlayer key={`video-${index}`} src={videoUrl} />)}
-                {images.length > 0 && <ImageGallery images={images} />}
-                {otherEmbeds.map((embed, index) => {
-                  // Handle geographic location URLs
-                  if (embed.startsWith("geo:")) {
-                    return <LocationCard key={`geo-${index}`} geoUrl={embed} />
-                  }
-                  return <UrlEmbed key={`url-${index}`} url={embed} isLoading={false} />
-                })}
-              </div>
-            )
-          })()}
+        {embed_items && embed_items.length > 0 && (
+          <EmbedRenderer embed_items={embed_items} />
+        )}
 
         {/* Engagement Stats */}
         <div className="flex justify-between items-center mt-auto pt-4">

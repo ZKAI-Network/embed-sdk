@@ -34,6 +34,7 @@ export interface FeedItemMetadata {
   likes_count?: number
   shares_count?: number
   text: string
+  timestamp: number
 }
 
 export interface FeedItem {

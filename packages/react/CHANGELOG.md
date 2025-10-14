@@ -1,5 +1,11 @@
 # @embed-ai/react
 
+## 0.4.0
+
+### Minor Changes
+
+- [#30](https://github.com/ZKAI-Network/embed-sdk/pull/30) [`5894742`](https://github.com/ZKAI-Network/embed-sdk/commit/5894742c8d615476d2237d9a8bd9b7a3922a5b4c) Thanks [@mehdi-loup](https://github.com/mehdi-loup)! - Make it possible to hide the Feed Grid header
+
 ## 0.2.0
 
 ### Minor Changes

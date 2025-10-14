@@ -48,6 +48,9 @@ export function EmbedRenderer({embed_items}: {embed_items: string[]}) {
         if (embed.startsWith("geo:")) {
           return <LocationCard key={`geo-${embed}`} geoUrl={embed} />;
         }
+        if(embed.startsWith("zoraCoin://")) {
+          return null;
+        }
         return (
           <UrlEmbed
             key={`url-${embed}`}

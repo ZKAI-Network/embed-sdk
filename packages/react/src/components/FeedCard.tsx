@@ -2,17 +2,17 @@ import { IconCoin, IconHeart, IconMessageCircle, IconRepeat, IconShare, IconUser
 import { type ReactNode, useMemo, useState } from "react"
 
 import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
-	Card,
-	CardContent,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Card,
+  CardContent,
 } from "../index.js";
 import { EmbedRenderer } from "./EmbedRenderer.js";
 import type { FeedItem } from "./types.js";
 
 export interface FeedCardRenderProps {
-	item: FeedItem;
+  item: FeedItem;
 }
 
 interface FeedCardProps {
@@ -34,7 +34,7 @@ export function FeedCard({ item, onReply, onShare, onTip, onViewProfile, render 
     const display = longText && !isExpanded ? text.slice(0, 300) : text
     return { displayText: display, isLongText: longText }
   }, [text, isExpanded])
- 
+
   if (render) {
     return render({ item })
   }

@@ -15,7 +15,7 @@ interface FeedGridProps {
   isRefreshing: boolean
   loaderRef: (node?: Element | null | undefined) => void
   onRefresh: () => void
-  title: string
+  title?: string
 }
 
 export function FeedGrid({
@@ -28,25 +28,27 @@ export function FeedGrid({
   isRefreshing,
   loaderRef,
   onRefresh,
-  title
+  title,
 }: FeedGridProps) {
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg text-muted-foreground">{title}</h3>
-        <div className="flex items-center gap-2">
-          <Button
-            onClick={onRefresh}
-            disabled={isRefreshing}
-            variant="outline"
-            size="sm"
-          >
-            {isRefreshing && <Loader size="sm" className="mr-2" />}
-            Refresh
-          </Button>
-          {isLoading && <Loader size="sm" />}
+      {title && (
+        <div className="flex justify-between items-center">
+          <h3 className="text-lg text-muted-foreground">{title}</h3>
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={onRefresh}
+              disabled={isRefreshing}
+              variant="outline"
+              size="sm"
+            >
+              {isRefreshing && <Loader size="sm" className="mr-2" />}
+              Refresh
+            </Button>
+            {isLoading && <Loader size="sm" />}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Error State */}
       {error && <ErrorState message={error.message} />}

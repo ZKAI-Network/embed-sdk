@@ -55,9 +55,10 @@
     "vitest": "^2.1.4"
   },
   "dependencies": {
-    "@embed-ai/types": "workspace:*",
+    "@embed-ai/react": "workspace:*",
     "@embed-ai/sdk": "workspace:*",
-    "@embed-ai/react": "workspace:*"
+    "@embed-ai/types": "workspace:*",
+    "@zoralabs/coins-sdk": "0.3.2"
   },
   "trustedDependencies": [
     "@effect/build-utils"

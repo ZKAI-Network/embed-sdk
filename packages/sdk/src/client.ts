@@ -147,7 +147,7 @@ class HttpClient implements IHttpClient {
   constructor(config: mbdClientConfig & { token: string }) {
     this.config = {
       baseUrl: config.baseUrl ?? DEFAULT_CONFIG.baseUrl,
-      title: config.title ?? DEFAULT_CONFIG.title,
+      title: config.title ?? "",
       referer: config.referer ?? "",
       token: config.token,
       retry: {
@@ -210,14 +210,19 @@ class HttpClient implements IHttpClient {
 
     return Effect.tryPromise({
       try: async () => {
+        const headers: RequestInit["headers"] = {
+          "Authorization": useBasicAuth ? `Basic ${this.config.token}` : `Bearer ${this.config.token}`,
+          "Accept": "application/json"
+        }
+        if (this.config.referer) {
+          headers["HTTP-Referer"] = this.config.referer
+        }
+        if (this.config.title) {
+          headers["X-Title"] = this.config.title
+        }
         const requestOptions: RequestInit = {
           method,
-          headers: {
-            "Authorization": useBasicAuth ? `Basic ${this.config.token}` : `Bearer ${this.config.token}`,
-            "Accept": "application/json",
-            "HTTP-Referer": this.config.referer,
-            "X-Title": this.config.title
-          }
+          headers
         }
 
         // Add Content-Type and body for POST/PATCH requests

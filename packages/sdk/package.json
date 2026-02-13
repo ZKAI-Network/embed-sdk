@@ -1,6 +1,6 @@
 {
   "name": "@embed-ai/sdk",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "src/index.js",
   "license": "BSD-3-Clause",
   "description": "The typescript sdk package for embed AI APIs.",

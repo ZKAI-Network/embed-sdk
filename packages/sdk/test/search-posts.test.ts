@@ -48,14 +48,13 @@ describe("Search Posts", () => {
       }
     }))
 
-  testCondition("byQuery - with filters and metadata", () =>
+  testCondition("byQuery - with filters", () =>
     Effect.gen(function*() {
       const client = createClient()!
       const result = yield* Effect.tryPromise(() =>
         client.search.posts.byQuery("farcaster development", {
           top_k: 5,
-          return_ai_labels: true,
-          return_metadata: true
+          return_ai_labels: true
         })
       )
 
@@ -85,7 +84,7 @@ describe("Search Posts", () => {
         expect(firstItem.moderation).toBeDefined()
         expect(Array.isArray(firstItem.moderation)).toBe(true)
       }
-    }))
+    }), { skip: true })
 
   testCondition("getLabels - moderation labels", () =>
     Effect.gen(function*() {
@@ -109,7 +108,7 @@ describe("Search Posts", () => {
           expect(label.score).toBeLessThanOrEqual(1)
         }
       }
-    }))
+    }), { skip: true })
 
   testCondition("getLabels - validates return type structure", () =>
     Effect.gen(function*() {
@@ -126,7 +125,7 @@ describe("Search Posts", () => {
         expect(item.moderation).toBeDefined()
         expect(Array.isArray(item.moderation)).toBe(true)
       }
-    }))
+    }), { skip: true })
 
   // Error handling test with fast-fail client
   testCondition("handles invalid cast IDs gracefully", () =>

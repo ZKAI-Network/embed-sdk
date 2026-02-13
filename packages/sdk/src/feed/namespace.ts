@@ -55,7 +55,7 @@ export class FeedNamespace {
    */
   async byUserId(
     userId: string,
-    feedId?: string,
+    feedId: string,
     options?: FeedOptions
   ): Promise<ForYouResponse> {
     return byUserId(this.http, userId, feedId, options)

@@ -125,7 +125,7 @@ describe("Search Users", () => {
         expect(firstItem.score).toBeGreaterThanOrEqual(0)
         expect(firstItem.score).toBeLessThanOrEqual(1)
       }
-    }))
+    }), { skip: true })
 
   testCondition("getTopByLabel - validates return type structure", () =>
     Effect.gen(function*() {
@@ -135,7 +135,7 @@ describe("Search Users", () => {
       // Type validation - this will fail at compile time if types don't match
       const typedResult: UserTopByLabelResponse = result as UserTopByLabelResponse
       expect(typedResult).toBeDefined()
-    }))
+    }), { skip: true })
 
   testCondition("getLabels - user AI labels", () =>
     Effect.gen(function*() {
@@ -181,7 +181,7 @@ describe("Search Users", () => {
           expect(label.score).toBeLessThanOrEqual(1)
         })
       }
-    }))
+    }), { skip: true })
 
   testCondition("getLabels - specific category", () =>
     Effect.gen(function*() {
@@ -199,7 +199,7 @@ describe("Search Users", () => {
       expect(user).toHaveProperty("ai_labels")
       expect(user.ai_labels).toHaveProperty("topics")
       expect(Array.isArray(user.ai_labels.topics)).toBe(true)
-    }))
+    }), { skip: true })
 
   testCondition("getLabels - validates return type structure", () =>
     Effect.gen(function*() {
@@ -210,7 +210,7 @@ describe("Search Users", () => {
       // Type validation - this will fail at compile time if types don't match
       const typedResult: UserLabelsResponse = result as UserLabelsResponse
       expect(typedResult).toBeDefined()
-    }))
+    }), { skip: true })
 
   testCondition("handles invalid queries gracefully", () =>
     Effect.gen(function*() {

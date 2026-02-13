@@ -21,7 +21,7 @@ export async function byUserId(
     ...options
   }
 
-  const response = await httpClient.post<ForYouApiResponse>("/v2/farcaster/casts/feed/for-you", params)
+  const response = await httpClient.post<ForYouApiResponse>("/v3/for-you", params)
   return [...response.body]
 }
 
@@ -43,6 +43,6 @@ export async function byWalletAddress(
     ...options
   }
 
-  const response = await httpClient.post<ForYouApiResponse>("/v2/farcaster/casts/feed/for-you", params)
+  const response = await httpClient.post<ForYouApiResponse>("/v3/for-you", params)
   return [...response.body]
 }

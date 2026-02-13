@@ -18,7 +18,7 @@ describe("Feed", () => {
       Effect.gen(function*() {
         const client = createClient()!
         const userId = "16085" // Known user ID
-        const result = yield* Effect.tryPromise(() => client.feed.byUserId(userId, undefined, { top_k: 5 }))
+        const result = yield* Effect.tryPromise(() => client.feed.byUserId(userId, "feed_390", { top_k: 5 }))
 
         // Validate structure and types
         expect(Array.isArray(result)).toBe(true)
@@ -74,7 +74,7 @@ describe("Feed", () => {
     testCondition("byUserId - validates return type structure", () =>
       Effect.gen(function*() {
         const client = createClient()!
-        const result = yield* Effect.tryPromise(() => client.feed.byUserId("16085", undefined, { top_k: 2 }))
+        const result = yield* Effect.tryPromise(() => client.feed.byUserId("16085", "feed_390", { top_k: 2 }))
 
         // Type check - this should compile and runtime validate
         const typedResult: ForYouResponse = result as ForYouResponse
@@ -104,7 +104,7 @@ describe("Feed", () => {
       Effect.gen(function*() {
         const client = createFastFailClient()!
         const result = yield* Effect.exit(
-          Effect.tryPromise(() => client.feed.byUserId("invalid-user-id", undefined, { top_k: 1 }))
+          Effect.tryPromise(() => client.feed.byUserId("invalid-user-id", "feed_390", { top_k: 1 }))
         )
 
         // Should either succeed with empty results or fail gracefully

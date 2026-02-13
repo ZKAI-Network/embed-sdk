@@ -1,5 +1,14 @@
 # @embed-ai/sdk
 
+## 0.2.1
+
+### Patch Changes
+
+- [#35](https://github.com/ZKAI-Network/embed-sdk/pull/35) [`f4d1a91`](https://github.com/ZKAI-Network/embed-sdk/commit/f4d1a916c50a8942926ab7038c6909e66a12d7da) Thanks [@mehdi-loup](https://github.com/mehdi-loup)! - copy change
+
+- Updated dependencies [[`f4d1a91`](https://github.com/ZKAI-Network/embed-sdk/commit/f4d1a916c50a8942926ab7038c6909e66a12d7da)]:
+  - @embed-ai/types@0.1.4
+
 ## 0.2.0
 
 ### Minor Changes

@@ -35,6 +35,7 @@ jobs:
 
       - name: Publish to npm
         run: |
+          set -e
           for pkg in packages/types packages/sdk packages/react; do
             (cd "$pkg" && npm pkg delete private 2>/dev/null; npm publish --access public)
           done

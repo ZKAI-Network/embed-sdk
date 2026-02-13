@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- [#32](https://github.com/ZKAI-Network/embed-sdk/pull/32) [`e4770b9`](https://github.com/ZKAI-Network/embed-sdk/commit/e4770b943e034f743114748c1aa5182e927bc725) Thanks [@mehdi-loup](https://github.com/mehdi-loup)! - Update the for-you endpoint to V3
+- [#32](https://github.com/ZKAI-Network/embed-sdk/pull/32) [`e4770b9`](https://github.com/ZKAI-Network/embed-sdk/commit/e4770b943e034f743114748c1aa5182e927bc725) Thanks [@mehdi-loup](https://github.com/mehdi-loup)! - Update the for-you endpoint to v3 and update types
 
 ## 0.1.4
 

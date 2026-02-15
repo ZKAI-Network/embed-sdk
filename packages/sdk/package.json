@@ -6,7 +6,7 @@
   "description": "The typescript sdk package for embed AI APIs.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ZKAI-Network/embed-sdk/",
+    "url": "git+https://github.com/ZKAI-Network/embed-sdk.git",
     "directory": "packages/sdk"
   },
   "files": [

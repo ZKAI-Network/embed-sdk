@@ -9,7 +9,7 @@
   "description": "The reusable React component library for embed AI.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ZKAI-Network/embed-sdk/",
+    "url": "git+https://github.com/ZKAI-Network/embed-sdk.git",
     "directory": "packages/react"
   },
   "files": [

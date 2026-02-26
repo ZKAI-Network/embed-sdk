@@ -1,5 +1,11 @@
 # @embed-ai/react
 
+## 0.5.1
+
+### Patch Changes
+
+- [#39](https://github.com/ZKAI-Network/embed-sdk/pull/39) [`f35b363`](https://github.com/ZKAI-Network/embed-sdk/commit/f35b36363f81f56bb29e564e1926a43ad3773d65) Thanks [@mehdi-loup](https://github.com/mehdi-loup)! - fix: Update winning option background color
+
 ## 0.5.0
 
 ### Minor Changes

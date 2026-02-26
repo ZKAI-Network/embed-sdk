@@ -129,7 +129,7 @@ export function PolymarketFeedCard({ item, className }: PolymarketFeedCardProps)
             />
           )}
           <div className="flex-1 flex flex-col gap-2 min-w-0 flex-wrap">
-            <div className="flex justify-between items-center px-4 py-2.5 rounded-lg bg-green-100 text-white font-bold text-sm">
+            <div className="flex justify-between items-center px-4 py-2.5 rounded-lg bg-green-500 text-white font-bold text-sm">
               <span>YES</span>
               <span>{yesCents}¢</span>
             </div>

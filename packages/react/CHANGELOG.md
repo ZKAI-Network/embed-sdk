@@ -1,5 +1,11 @@
 # @embed-ai/react
 
+## 0.5.0
+
+### Minor Changes
+
+- [#37](https://github.com/ZKAI-Network/embed-sdk/pull/37) [`367f366`](https://github.com/ZKAI-Network/embed-sdk/commit/367f366921c246d760b78e230e37223b0af0ed76) Thanks [@mehdi-loup](https://github.com/mehdi-loup)! - Add support for Polymarket feeds
+
 ## 0.4.0
 
 ### Minor Changes

@@ -38,6 +38,37 @@ export interface FeedItemMetadata {
 }
 
 export interface FeedItem {
+  source: "farcaster"
   item_id: string
   metadata: FeedItemMetadata
+}
+
+export interface PolymarketFeedItem {
+  source: "polymarket"
+  item_id: string
+  metadata: PolymarketFeedItemMetadata
+}
+
+export interface PolymarketUserStory {
+  outcome?: string
+  usdc?: number
+  price?: number
+  user_pnl?: number
+  user_name?: string
+  user_pseudonym?: string
+  user_pfp?: string
+  timestamp?: string
+}
+
+export interface PolymarketFeedItemMetadata {
+  question?: string
+  image?: string
+  icon?: string
+  active?: boolean
+  closed?: boolean
+  volume_24hr?: number
+  one_day_price_change?: number
+  spread?: number
+  last_trade_price?: number
+  user_stories?: Array<PolymarketUserStory>
 }

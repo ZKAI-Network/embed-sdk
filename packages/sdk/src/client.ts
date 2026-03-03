@@ -2,6 +2,7 @@ import { pipe } from "effect"
 import * as Data from "effect/Data"
 import * as Effect from "effect/Effect"
 import * as Schedule from "effect/Schedule"
+import { DatasourceNamespace } from "./datasource/namespace.js"
 import { FeedNamespace } from "./feed/namespace.js"
 import type { IHttpClient } from "./interfaces/index.js"
 import { SearchNamespace } from "./search/namespace.js"
@@ -385,13 +386,19 @@ class HttpClient implements IHttpClient {
 // ============================================================================
 
 /**
- * Main Embed API client providing access to personalized feeds, feed management, and search
+ * Main Embed API client providing access to datasources, personalized feeds, feed management, and search
  *
  * @example
  * ```typescript
  * import { getClient } from '@embed-ai/sdk'
  *
  * const client = getClient('your-api-key')
+ *
+ * // Create a datasource
+ * const datasource = await client.datasource.create({ name: 'my-web3-app' })
+ *
+ * // Ingest content items
+ * await client.datasource.ingestItems(datasource.datasource_id, items)
  *
  * // Get personalized feed
  * const feed = await client.feed.byUserId('16085')
@@ -411,6 +418,7 @@ class HttpClient implements IHttpClient {
  */
 export class mbdClient {
   private http: HttpClient
+  public readonly datasource: DatasourceNamespace
   public readonly feed: FeedNamespace
   public readonly search: SearchNamespace
 
@@ -425,6 +433,7 @@ export class mbdClient {
     }
 
     this.http = new HttpClient(config)
+    this.datasource = new DatasourceNamespace(this.http)
     this.feed = new FeedNamespace(this.http)
     this.search = new SearchNamespace(this.http)
   }
@@ -443,6 +452,12 @@ export class mbdClient {
  *
  * // Basic usage
  * const client = getClient('your-api-key')
+ *
+ * // Create a datasource
+ * const datasource = await client.datasource.create({ name: 'my-web3-app' })
+ *
+ * // Ingest content items
+ * await client.datasource.ingestItems(datasource.datasource_id, items)
  *
  * // Get personalized feed
  * const feed = await client.feed.byUserId('16085')

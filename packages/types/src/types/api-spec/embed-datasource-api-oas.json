@@ -1,0 +1,1113 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Data Sources API",
+    "description": "API for managing datasources and ingesting structured data from web3 and social media protocols",
+    "version": "3.0.0",
+    "contact": {
+      "name": "MBD Support",
+      "email": "support@mbd.xyz"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.mbd.xyz/v3",
+      "description": "Production API"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/datasources": {
+      "post": {
+        "summary": "Create a new datasource",
+        "description": "Creates a new datasource with automatic Embed stream provisioning",
+        "operationId": "createDatasource",
+        "tags": [
+          "Datasources"
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDatasourceRequest"
+              },
+              "examples": {
+                "with_name": {
+                  "summary": "Create datasource with name",
+                  "value": {
+                    "name": "my-web3-app"
+                  }
+                },
+                "without_name": {
+                  "summary": "Create datasource without name",
+                  "value": {}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Datasource created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateDatasourceResponse"
+                },
+                "example": {
+                  "datasource_id": "datasource-e07d2ec0-643a",
+                  "customer_id": "e07d2ec0643a4f8b9c1d2e3f4a5b6c7d8e9f0a1b",
+                  "status": "provisioning",
+                  "name": "my-web3-app"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "description": "Datasource ID conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Datasource ID already exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/datasources/{datasource_id}/items": {
+      "post": {
+        "summary": "Ingest item data",
+        "description": "Ingest content items (posts, articles, videos, etc.) from various protocols",
+        "operationId": "ingestItems",
+        "tags": [
+          "Data Ingestion"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DatasourceId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Item"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Item"
+                    }
+                  }
+                ]
+              },
+              "examples": {
+                "single_item": {
+                  "summary": "Single item",
+                  "value": {
+                    "item_id": "farcaster.0xabc123",
+                    "protocol": "farcaster",
+                    "author_id": "farcaster.alice123",
+                    "created_at": "2024-01-15T10:30:00Z",
+                    "updated_at": "2024-01-15T10:30:00Z",
+                    "publication_type": "frame",
+                    "root_item_id": "farcaster.0xabc123",
+                    "language_score": 0.95,
+                    "title": "My Farcaster Frame"
+                  }
+                },
+                "bulk_items": {
+                  "summary": "Multiple items",
+                  "value": [
+                    {
+                      "item_id": "lens.post123",
+                      "protocol": "lens",
+                      "author_id": "lens.creator456",
+                      "created_at": "2024-01-15T10:30:00Z",
+                      "updated_at": "2024-01-15T10:30:00Z",
+                      "publication_type": "image",
+                      "root_item_id": "lens.post123",
+                      "language_score": 0.98,
+                      "title": "Beautiful Sunset"
+                    },
+                    {
+                      "item_id": "mirror.article789",
+                      "protocol": "mirror",
+                      "author_id": "mirror.writer321",
+                      "created_at": "2024-01-15T11:00:00Z",
+                      "updated_at": "2024-01-15T11:00:00Z",
+                      "publication_type": "article",
+                      "root_item_id": "mirror.article789",
+                      "language_score": 0.99,
+                      "title": "Web3 Development Guide"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Items ingested successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngestionResponse"
+                },
+                "examples": {
+                  "single_record": {
+                    "summary": "Single record response",
+                    "value": {
+                      "message": "Data ingested successfully",
+                      "stream_name": "datasource-e07d2ec0-643a.items",
+                      "sequence_number": "49610918017569739920569266808940816015796745953697128450"
+                    }
+                  },
+                  "bulk_records": {
+                    "summary": "Bulk records response",
+                    "value": {
+                      "message": "Data ingested successfully",
+                      "stream_name": "datasource-e07d2ec0-643a.items",
+                      "total_records": 2,
+                      "successful_records": 2,
+                      "failed_records": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/datasources/{datasource_id}/users": {
+      "post": {
+        "summary": "Ingest user data",
+        "description": "Ingest user profile data from various protocols",
+        "operationId": "ingestUsers",
+        "tags": [
+          "Data Ingestion"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DatasourceId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                ]
+              },
+              "examples": {
+                "single_user": {
+                  "summary": "Single user",
+                  "value": {
+                    "user_id": "farcaster.alice123",
+                    "protocol": "farcaster",
+                    "created_at": "2024-01-15T10:30:00Z",
+                    "updated_at": "2024-01-15T10:30:00Z",
+                    "username": "alice",
+                    "display_name": "Alice Cooper",
+                    "bio": "Web3 developer and content creator"
+                  }
+                },
+                "bulk_users": {
+                  "summary": "Multiple users",
+                  "value": [
+                    {
+                      "user_id": "lens.creator456",
+                      "protocol": "lens",
+                      "created_at": "2024-01-15T10:30:00Z",
+                      "updated_at": "2024-01-15T10:30:00Z",
+                      "username": "creator456",
+                      "display_name": "Content Creator"
+                    },
+                    {
+                      "user_id": "mirror.writer321",
+                      "protocol": "mirror",
+                      "created_at": "2024-01-15T11:00:00Z",
+                      "updated_at": "2024-01-15T11:00:00Z",
+                      "username": "writer321",
+                      "display_name": "Technical Writer"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Users ingested successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngestionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/datasources/{datasource_id}/items/interactions": {
+      "post": {
+        "summary": "Track item interactions",
+        "description": "Track user interactions with content items",
+        "operationId": "trackItemInteractions",
+        "tags": [
+          "Data Ingestion"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DatasourceId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Interaction"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Interaction"
+                    }
+                  }
+                ]
+              },
+              "examples": {
+                "user_interaction": {
+                  "summary": "User interaction",
+                  "value": {
+                    "item_id": "farcaster.0xabc123",
+                    "timestamp": 1705312200,
+                    "event_type": "like",
+                    "user_id": "farcaster.alice123"
+                  }
+                },
+                "anonymous_interaction": {
+                  "summary": "Anonymous interaction",
+                  "value": {
+                    "item_id": "lens.post456",
+                    "timestamp": 1705312800,
+                    "event_type": "view",
+                    "session_id": "sess_anonymous_xyz789"
+                  }
+                },
+                "bulk_interactions": {
+                  "summary": "Multiple interactions",
+                  "value": [
+                    {
+                      "item_id": "farcaster.0x111",
+                      "timestamp": 1705312200,
+                      "event_type": "view",
+                      "user_id": "farcaster.user1"
+                    },
+                    {
+                      "item_id": "lens.post222",
+                      "timestamp": 1705312300,
+                      "event_type": "like",
+                      "session_id": "sess_web_789"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Interactions tracked successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngestionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/datasources/{datasource_id}/users/interactions": {
+      "post": {
+        "summary": "Track user interactions",
+        "description": "Track user interactions (uses same schema as item interactions but routes to different stream)",
+        "operationId": "trackUserInteractions",
+        "tags": [
+          "Data Ingestion"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/DatasourceId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Interaction"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Interaction"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Interactions tracked successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngestionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "API key for authentication. Format: Bearer mbd-{key}"
+      }
+    },
+    "parameters": {
+      "DatasourceId": {
+        "name": "datasource_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "pattern": "^datasource-[a-zA-Z0-9]+-[a-zA-Z0-9]+$",
+          "example": "datasource-e07d2ec0-643a"
+        },
+        "description": "Unique datasource identifier"
+      }
+    },
+    "schemas": {
+      "CreateDatasourceRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable name for the datasource",
+            "example": "my-web3-app",
+            "maxLength": 255
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateDatasourceResponse": {
+        "type": "object",
+        "required": [
+          "datasource_id",
+          "customer_id",
+          "status"
+        ],
+        "properties": {
+          "datasource_id": {
+            "type": "string",
+            "pattern": "^datasource-[a-zA-Z0-9]+-[a-zA-Z0-9]+$",
+            "example": "datasource-e07d2ec0-643a",
+            "description": "Unique datasource identifier"
+          },
+          "customer_id": {
+            "type": "string",
+            "example": "e07d2ec0643a4f8b9c1d2e3f4a5b6c7d8e9f0a1b",
+            "description": "Customer ID associated with the datasource"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "provisioning",
+              "active",
+              "error"
+            ],
+            "example": "provisioning",
+            "description": "Current status of the datasource"
+          },
+          "name": {
+            "type": "string",
+            "example": "my-web3-app",
+            "description": "Human-readable name (if provided)"
+          }
+        }
+      },
+      "Item": {
+        "type": "object",
+        "required": [
+          "item_id",
+          "protocol",
+          "author_id",
+          "created_at",
+          "updated_at",
+          "publication_type",
+          "root_item_id",
+          "language_score"
+        ],
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_-]+$",
+            "example": "farcaster.0xabc123",
+            "description": "Format: protocol.protocol_item_id"
+          },
+          "protocol": {
+            "type": "string",
+            "enum": [
+              "farcaster",
+              "mirror",
+              "lens"
+            ],
+            "example": "farcaster",
+            "description": "Source protocol"
+          },
+          "author_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_-]+$",
+            "example": "farcaster.alice123",
+            "description": "Format: protocol.protocol_user_id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+            "example": "2024-01-15T10:30:00Z",
+            "description": "ISO 8601 UTC timestamp"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+            "example": "2024-01-15T10:30:00Z",
+            "description": "ISO 8601 UTC timestamp"
+          },
+          "publication_type": {
+            "type": "string",
+            "enum": [
+              "text_only",
+              "frame",
+              "article",
+              "image",
+              "video",
+              "audio"
+            ],
+            "example": "frame",
+            "description": "Type of content"
+          },
+          "root_item_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_-]+$",
+            "example": "farcaster.0xabc123",
+            "description": "Parent/root item ID"
+          },
+          "language_score": {
+            "type": "number",
+            "format": "float",
+            "minimum": 0,
+            "maximum": 1,
+            "example": 0.95,
+            "description": "Language confidence score"
+          },
+          "title": {
+            "type": "string",
+            "example": "My Farcaster Frame",
+            "description": "Item title"
+          },
+          "content": {
+            "type": "string",
+            "example": "Check out this interactive frame!",
+            "description": "Main content/text"
+          },
+          "excerpt": {
+            "type": "string",
+            "description": "Content summary"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "web3",
+              "farcaster"
+            ],
+            "description": "Array of tag strings"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es",
+              "fr",
+              "de",
+              "pt",
+              "it",
+              "ja",
+              "ko",
+              "zh",
+              "ru",
+              "ar"
+            ],
+            "example": "en",
+            "description": "Language code"
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://.*$"
+            },
+            "description": "Array of image URLs"
+          },
+          "video_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://.*$",
+            "description": "Video URL"
+          },
+          "audio_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://.*$",
+            "description": "Audio URL"
+          },
+          "cover_image_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://.*$",
+            "description": "Cover image URL"
+          },
+          "thumbnail_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://.*$",
+            "description": "Thumbnail URL"
+          },
+          "view_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "View count"
+          },
+          "like_count": {
+            "type": "integer",
+            "minimum": 0,
+            "example": 42,
+            "description": "Like count"
+          },
+          "comment_count": {
+            "type": "integer",
+            "minimum": 0,
+            "example": 5,
+            "description": "Comment count"
+          },
+          "share_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Share count"
+          },
+          "bookmark_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Bookmark count"
+          },
+          "word_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Word count"
+          },
+          "read_time_minutes": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Estimated read time"
+          },
+          "is_published": {
+            "type": "boolean",
+            "description": "Publication status"
+          },
+          "is_featured": {
+            "type": "boolean",
+            "description": "Featured status"
+          },
+          "is_pinned": {
+            "type": "boolean",
+            "description": "Pinned status"
+          },
+          "source_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://.*$",
+            "description": "Original source URL"
+          },
+          "canonical_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://.*$",
+            "description": "Canonical URL"
+          },
+          "location": {
+            "type": "string",
+            "description": "Geographic location"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Protocol-specific metadata"
+          },
+          "custom_fields": {
+            "type": "object",
+            "description": "Custom fields"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "protocol",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_-]+$",
+            "example": "farcaster.alice123",
+            "description": "Format: protocol.protocol_user_id"
+          },
+          "protocol": {
+            "type": "string",
+            "enum": [
+              "farcaster",
+              "mirror",
+              "lens",
+              "twitter",
+              "instagram"
+            ],
+            "example": "farcaster",
+            "description": "Source protocol"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+            "example": "2024-01-15T10:30:00Z",
+            "description": "ISO 8601 UTC timestamp"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+            "example": "2024-01-15T10:30:00Z",
+            "description": "ISO 8601 UTC timestamp"
+          },
+          "username": {
+            "type": "string",
+            "example": "alice",
+            "description": "Username/handle"
+          },
+          "display_name": {
+            "type": "string",
+            "example": "Alice Cooper",
+            "description": "Display name"
+          },
+          "bio": {
+            "type": "string",
+            "example": "Web3 developer and content creator",
+            "description": "User biography"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+            "description": "Email address"
+          },
+          "avatar_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://.*$",
+            "description": "Avatar image URL"
+          },
+          "banner_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://.*$",
+            "description": "Banner image URL"
+          },
+          "website": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://.*$",
+            "description": "Website URL"
+          },
+          "location": {
+            "type": "string",
+            "description": "Geographic location"
+          },
+          "follower_count": {
+            "type": "integer",
+            "minimum": 0,
+            "example": 1250,
+            "description": "Follower count"
+          },
+          "following_count": {
+            "type": "integer",
+            "minimum": 0,
+            "example": 890,
+            "description": "Following count"
+          },
+          "post_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Post count"
+          },
+          "verified": {
+            "type": "boolean",
+            "example": true,
+            "description": "Verification status"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "developer",
+              "web3"
+            ],
+            "description": "Array of tag strings"
+          },
+          "preferences": {
+            "type": "object",
+            "description": "User preferences"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Protocol-specific metadata"
+          }
+        }
+      },
+      "Interaction": {
+        "type": "object",
+        "required": [
+          "item_id",
+          "timestamp",
+          "event_type"
+        ],
+        "anyOf": [
+          {
+            "required": [
+              "user_id"
+            ]
+          },
+          {
+            "required": [
+              "session_id"
+            ]
+          }
+        ],
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_-]+$",
+            "example": "farcaster.0xabc123",
+            "description": "Format: protocol.protocol_item_id"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1705312200,
+            "description": "Unix epoch timestamp"
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "view",
+              "like",
+              "comment",
+              "share",
+              "bookmark"
+            ],
+            "example": "like",
+            "description": "Type of interaction"
+          },
+          "user_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_-]+$",
+            "example": "farcaster.alice123",
+            "description": "Format: protocol.protocol_user_id (required if session_id not provided)"
+          },
+          "session_id": {
+            "type": "string",
+            "example": "sess_anonymous_xyz789",
+            "description": "Session identifier for anonymous users (required if user_id not provided)"
+          }
+        }
+      },
+      "IngestionResponse": {
+        "type": "object",
+        "required": [
+          "message",
+          "stream_name"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Data ingested successfully",
+            "description": "Success message"
+          },
+          "stream_name": {
+            "type": "string",
+            "example": "datasource-e07d2ec0-643a.items",
+            "description": "Target Kinesis stream name"
+          },
+          "sequence_number": {
+            "type": "string",
+            "example": "49610918017569739920569266808940816015796745953697128450",
+            "description": "Kinesis sequence number (for single records)"
+          },
+          "total_records": {
+            "type": "integer",
+            "example": 3,
+            "description": "Total number of records (for bulk operations)"
+          },
+          "successful_records": {
+            "type": "integer",
+            "example": 3,
+            "description": "Number of successfully processed records (for bulk operations)"
+          },
+          "failed_records": {
+            "type": "integer",
+            "example": 0,
+            "description": "Number of failed records (for bulk operations)"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Detailed error information (for validation errors)"
+          },
+          "debug_info": {
+            "type": "object",
+            "description": "Debug information (for development)"
+          }
+        }
+      },
+      "ValidationErrorResponse": {
+        "type": "object",
+        "required": [
+          "error",
+          "details"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Validation failed",
+            "description": "Error type"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Missing required field: item_id",
+              "Field timestamp should be int, got str"
+            ],
+            "description": "List of validation errors"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad request - invalid input",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Missing or empty request body"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized - invalid or missing API key",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "missing_auth": {
+                "summary": "Missing Authorization header",
+                "value": {
+                  "error": "Authorization header required"
+                }
+              },
+              "invalid_key": {
+                "summary": "Invalid API key",
+                "value": {
+                  "error": "Invalid API key"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "description": "Validation failed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ValidationErrorResponse"
+            },
+            "example": {
+              "error": "Validation failed",
+              "details": [
+                "Missing required field: item_id",
+                "Field timestamp should be int, got str",
+                "Field item_id has invalid format. Expected format: ^[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_-]+$"
+              ]
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Internal server error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Datasources",
+      "description": "Datasource management operations"
+    },
+    {
+      "name": "Data Ingestion",
+      "description": "Data ingestion operations for items, users, and interactions"
+    }
+  ],
+  "externalDocs": {
+    "description": "Complete API Documentation",
+    "url": "https://github.com/mbdxyz/data-ingestion-api/blob/main/README.md"
+  }
+}
